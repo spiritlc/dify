@@ -30,27 +30,27 @@ const UndoRedo: FC<UndoRedoProps> = ({ handleUndo, handleRedo }) => {
 
   return (
     <div className='flex items-center p-0.5 rounded-lg border-[0.5px] border-gray-100 bg-white shadow-lg text-gray-500'>
-      <TipPopup title={t('workflow.common.undo')!} shortcuts={['ctrl', 'z']}>
+      <TipPopup title={t('workflow.common.undo')!} shortcuts={['ctrl', 'z']} needsDelay={false}>
         <div
           data-tooltip-id='workflow.undo'
           className={`
-        flex items-center px-1.5 w-8 h-8 rounded-md text-[13px] font-medium 
-        hover:bg-black/5 hover:text-gray-700 cursor-pointer select-none
-        ${(nodesReadOnly || buttonsDisabled.undo) && 'hover:bg-transparent opacity-50 !cursor-not-allowed'}
-      `}
+            flex items-center px-1.5 w-8 h-8 rounded-md text-[13px] font-medium 
+            hover:bg-black/5 hover:text-gray-700 cursor-pointer select-none
+            ${(nodesReadOnly || buttonsDisabled.undo) && 'hover:bg-transparent opacity-50 !cursor-not-allowed'}
+          `}
           onClick={() => !nodesReadOnly && !buttonsDisabled.undo && handleUndo()}
         >
           <RiArrowGoBackLine className='h-4 w-4' />
         </div>
       </TipPopup>
-      <TipPopup title={t('workflow.common.redo')!} shortcuts={['ctrl', 'y']}>
+      <TipPopup title={t('workflow.common.redo')!} shortcuts={['ctrl', 'y']} needsDelay={false}>
         <div
           data-tooltip-id='workflow.redo'
           className={`
-        flex items-center px-1.5 w-8 h-8 rounded-md text-[13px] font-medium 
-        hover:bg-black/5 hover:text-gray-700 cursor-pointer select-none
-        ${(nodesReadOnly || buttonsDisabled.redo) && 'hover:bg-transparent opacity-50 !cursor-not-allowed'}
-      `}
+            flex items-center px-1.5 w-8 h-8 rounded-md text-[13px] font-medium 
+            hover:bg-black/5 hover:text-gray-700 cursor-pointer select-none
+            ${(nodesReadOnly || buttonsDisabled.redo) && 'hover:bg-transparent opacity-50 !cursor-not-allowed'}
+          `}
           onClick={() => !nodesReadOnly && !buttonsDisabled.redo && handleRedo()}
         >
           <RiArrowGoForwardFill className='h-4 w-4' />

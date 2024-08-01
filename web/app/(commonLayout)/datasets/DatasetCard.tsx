@@ -109,7 +109,7 @@ const DatasetCard = ({
     <>
       <Link
         href={`/datasets/${dataset.id}/documents`}
-        className='group flex col-span-1 bg-white border-2 border-solid border-transparent rounded-xl shadow-sm min-h-[160px] flex flex-col transition-all duration-200 ease-in-out cursor-pointer hover:shadow-lg'
+        className='group col-span-1 bg-white border-2 border-solid border-transparent rounded-xl shadow-sm min-h-[160px] flex flex-col transition-all duration-200 ease-in-out cursor-pointer hover:shadow-lg'
         data-disable-nprogress={true}
       >
         <div className='flex pt-[14px] px-[14px] pb-3 h-[66px] items-center gap-3 grow-0 shrink-0'>
@@ -127,7 +127,7 @@ const DatasetCard = ({
                   selector={`dataset-tag-${dataset.id}`}
                   htmlContent={t('dataset.unavailableTip')}
                 >
-                  <span className='shrink-0 inline-flex w-max ml-1 px-1 border boder-gray-200 rounded-md text-gray-500 text-xs font-normal leading-[18px]'>{t('dataset.unavailable')}</span>
+                  <span className='shrink-0 inline-flex w-max ml-1 px-1 border border-gray-200 rounded-md text-gray-500 text-xs font-normal leading-[18px]'>{t('dataset.unavailable')}</span>
                 </Tooltip>
               )}
             </div>

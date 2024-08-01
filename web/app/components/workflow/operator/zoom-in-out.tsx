@@ -226,6 +226,7 @@ const ZoomInOut: FC = () => {
             <TipPopup
               title={t('workflow.operator.zoomOut')}
               shortcuts={['ctrl', '-']}
+              needsDelay={false}
             >
               <div
                 className='flex items-center justify-center w-8 h-8 rounded-lg cursor-pointer hover:bg-black/5'
@@ -241,6 +242,7 @@ const ZoomInOut: FC = () => {
             <TipPopup
               title={t('workflow.operator.zoomIn')}
               shortcuts={['ctrl', '+']}
+              needsDelay={false}
             >
               <div
                 className='flex items-center justify-center w-8 h-8 rounded-lg cursor-pointer hover:bg-black/5'

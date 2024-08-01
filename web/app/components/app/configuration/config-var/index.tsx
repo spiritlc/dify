@@ -282,10 +282,16 @@ const ConfigVar: FC<IConfigVarProps> = ({ promptVariables, readonly, onPromptVar
         <div className='flex items-center'>
           <div className='mr-1'>{t('appDebug.variableTitle')}</div>
           {!readonly && (
-            <Tooltip htmlContent={<div className='w-[180px]'>
-              {t('appDebug.variableTip')}
-            </div>} selector='config-var-tooltip'>
-              <RiQuestionLine className='w-[14px] h-[14px] text-gray-400' />
+            <Tooltip
+              htmlContent={
+                <div className='w-[180px]'>
+                  {t('appDebug.variableTip')}
+                </div>
+              }
+              selector='config-var-tooltip'
+              position='left'
+            >
+              <RiQuestionLine className='w-[14px] h-[14px] text-text-quaternary hover:text-text-tertiary' />
             </Tooltip>
           )}
         </div>

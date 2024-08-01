@@ -14,6 +14,7 @@ export type TooltipProps = {
   popupClassName?: string
   offset?: OffsetOptions
   asChild?: boolean
+  needsDelay?: boolean
 }
 
 const arrow = (
@@ -29,6 +30,7 @@ const Tooltip: FC<TooltipProps> = ({
   popupClassName,
   offset,
   asChild,
+  needsDelay = true,
 }) => {
   const [open, setOpen] = useState(false)
   const [isHoverPopup, {
@@ -59,10 +61,15 @@ const Tooltip: FC<TooltipProps> = ({
       setNotHoverPopup()
 
     // give time to move to the popup
-    setTimeout(() => {
-      if (!isHoverPopupRef.current && !isHoverTriggerRef.current)
-        setOpen(false)
-    }, 500)
+    if (needsDelay) {
+      setTimeout(() => {
+        if (!isHoverPopupRef.current && !isHoverTriggerRef.current)
+          setOpen(false)
+      }, 500)
+    }
+    else {
+      setOpen(false)
+    }
   }
 
   return (

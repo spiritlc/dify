@@ -6,15 +6,18 @@ type TipPopupProps = {
   title: string
   children: React.ReactNode
   shortcuts?: string[]
+  needsDelay?: boolean
 }
 const TipPopup = ({
   title,
   children,
   shortcuts,
+  needsDelay,
 }: TipPopupProps) => {
   return (
     <TooltipPlus
       offset={4}
+      needsDelay={needsDelay}
       hideArrow
       popupClassName='!p-0 !bg-gray-25'
       popupContent={

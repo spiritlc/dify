@@ -160,8 +160,10 @@ const Prompt: FC<ISimplePromptInput> = ({
                   htmlContent={<div className='w-[180px]'>
                     {t('appDebug.promptTip')}
                   </div>}
-                  selector='config-prompt-tooltip'>
-                  <RiQuestionLine className='w-[14px] h-[14px] text-indigo-400' />
+                  selector='config-prompt-tooltip'
+                  position='left'
+                >
+                  <RiQuestionLine className='w-[14px] h-[14px] text-text-quaternary hover:text-text-tertiary' />
                 </Tooltip>
               )}
             </div>

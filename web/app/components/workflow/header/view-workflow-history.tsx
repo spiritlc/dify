@@ -123,6 +123,7 @@ const ViewWorkflowHistory = () => {
         <PortalToFollowElemTrigger onClick={() => !nodesReadOnly && setOpen(v => !v)}>
           <TipPopup
             title={t('workflow.changeHistory.title')}
+            needsDelay={false}
           >
             <div
               className={`
