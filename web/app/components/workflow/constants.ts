@@ -9,11 +9,9 @@ import IfElseDefault from './nodes/if-else/default'
 import CodeDefault from './nodes/code/default'
 import TemplateTransformDefault from './nodes/template-transform/default'
 import HttpRequestDefault from './nodes/http/default'
-import ParameterExtractorDefault from './nodes/parameter-extractor/default'
 import ToolDefault from './nodes/tool/default'
 import VariableAssignerDefault from './nodes/variable-assigner/default'
 import EndNodeDefault from './nodes/end/default'
-import IterationDefault from './nodes/iteration/default'
 
 type NodesExtraData = {
   author: string
@@ -26,7 +24,7 @@ type NodesExtraData = {
 }
 export const NODES_EXTRA_DATA: Record<BlockEnum, NodesExtraData> = {
   [BlockEnum.Start]: {
-    author: 'Dify',
+    author: 'HomeGPTagent',
     about: '',
     availablePrevNodes: [],
     availableNextNodes: [],
@@ -35,7 +33,7 @@ export const NODES_EXTRA_DATA: Record<BlockEnum, NodesExtraData> = {
     checkValid: StartNodeDefault.checkValid,
   },
   [BlockEnum.End]: {
-    author: 'Dify',
+    author: 'HomeGPTagent',
     about: '',
     availablePrevNodes: [],
     availableNextNodes: [],
@@ -44,7 +42,7 @@ export const NODES_EXTRA_DATA: Record<BlockEnum, NodesExtraData> = {
     checkValid: EndNodeDefault.checkValid,
   },
   [BlockEnum.Answer]: {
-    author: 'Dify',
+    author: 'HomeGPTagent',
     about: '',
     availablePrevNodes: [],
     availableNextNodes: [],
@@ -53,7 +51,7 @@ export const NODES_EXTRA_DATA: Record<BlockEnum, NodesExtraData> = {
     checkValid: AnswerDefault.checkValid,
   },
   [BlockEnum.LLM]: {
-    author: 'Dify',
+    author: 'HomeGPTagent',
     about: '',
     availablePrevNodes: [],
     availableNextNodes: [],
@@ -62,7 +60,7 @@ export const NODES_EXTRA_DATA: Record<BlockEnum, NodesExtraData> = {
     checkValid: LLMDefault.checkValid,
   },
   [BlockEnum.KnowledgeRetrieval]: {
-    author: 'Dify',
+    author: 'HomeGPTagent',
     about: '',
     availablePrevNodes: [],
     availableNextNodes: [],
@@ -71,7 +69,7 @@ export const NODES_EXTRA_DATA: Record<BlockEnum, NodesExtraData> = {
     checkValid: KnowledgeRetrievalDefault.checkValid,
   },
   [BlockEnum.IfElse]: {
-    author: 'Dify',
+    author: 'HomeGPTagent',
     about: '',
     availablePrevNodes: [],
     availableNextNodes: [],
@@ -79,17 +77,8 @@ export const NODES_EXTRA_DATA: Record<BlockEnum, NodesExtraData> = {
     getAvailableNextNodes: IfElseDefault.getAvailableNextNodes,
     checkValid: IfElseDefault.checkValid,
   },
-  [BlockEnum.Iteration]: {
-    author: 'Dify',
-    about: '',
-    availablePrevNodes: [],
-    availableNextNodes: [],
-    getAvailablePrevNodes: IterationDefault.getAvailablePrevNodes,
-    getAvailableNextNodes: IterationDefault.getAvailableNextNodes,
-    checkValid: IterationDefault.checkValid,
-  },
   [BlockEnum.Code]: {
-    author: 'Dify',
+    author: 'HomeGPTagent',
     about: '',
     availablePrevNodes: [],
     availableNextNodes: [],
@@ -98,7 +87,7 @@ export const NODES_EXTRA_DATA: Record<BlockEnum, NodesExtraData> = {
     checkValid: CodeDefault.checkValid,
   },
   [BlockEnum.TemplateTransform]: {
-    author: 'Dify',
+    author: 'HomeGPTagent',
     about: '',
     availablePrevNodes: [],
     availableNextNodes: [],
@@ -107,7 +96,7 @@ export const NODES_EXTRA_DATA: Record<BlockEnum, NodesExtraData> = {
     checkValid: TemplateTransformDefault.checkValid,
   },
   [BlockEnum.QuestionClassifier]: {
-    author: 'Dify',
+    author: 'HomeGPTagent',
     about: '',
     availablePrevNodes: [],
     availableNextNodes: [],
@@ -116,7 +105,7 @@ export const NODES_EXTRA_DATA: Record<BlockEnum, NodesExtraData> = {
     checkValid: QuestionClassifierDefault.checkValid,
   },
   [BlockEnum.HttpRequest]: {
-    author: 'Dify',
+    author: 'HomeGPTagent',
     about: '',
     availablePrevNodes: [],
     availableNextNodes: [],
@@ -125,34 +114,16 @@ export const NODES_EXTRA_DATA: Record<BlockEnum, NodesExtraData> = {
     checkValid: HttpRequestDefault.checkValid,
   },
   [BlockEnum.VariableAssigner]: {
-    author: 'Dify',
+    author: 'HomeGPTagent',
     about: '',
     availablePrevNodes: [],
     availableNextNodes: [],
     getAvailablePrevNodes: VariableAssignerDefault.getAvailablePrevNodes,
     getAvailableNextNodes: VariableAssignerDefault.getAvailableNextNodes,
     checkValid: VariableAssignerDefault.checkValid,
-  },
-  [BlockEnum.VariableAggregator]: {
-    author: 'Dify',
-    about: '',
-    availablePrevNodes: [],
-    availableNextNodes: [],
-    getAvailablePrevNodes: VariableAssignerDefault.getAvailablePrevNodes,
-    getAvailableNextNodes: VariableAssignerDefault.getAvailableNextNodes,
-    checkValid: VariableAssignerDefault.checkValid,
-  },
-  [BlockEnum.ParameterExtractor]: {
-    author: 'Dify',
-    about: '',
-    availablePrevNodes: [],
-    availableNextNodes: [],
-    getAvailablePrevNodes: ParameterExtractorDefault.getAvailablePrevNodes,
-    getAvailableNextNodes: ParameterExtractorDefault.getAvailableNextNodes,
-    checkValid: ParameterExtractorDefault.checkValid,
   },
   [BlockEnum.Tool]: {
-    author: 'Dify',
+    author: 'HomeGPTagent',
     about: '',
     availablePrevNodes: [],
     availableNextNodes: [],
@@ -206,12 +177,6 @@ export const NODES_INITIAL_DATA = {
     desc: '',
     ...IfElseDefault.defaultValue,
   },
-  [BlockEnum.Iteration]: {
-    type: BlockEnum.Iteration,
-    title: '',
-    desc: '',
-    ...IterationDefault.defaultValue,
-  },
   [BlockEnum.Code]: {
     type: BlockEnum.Code,
     title: '',
@@ -245,23 +210,8 @@ export const NODES_INITIAL_DATA = {
     variables: [],
     ...HttpRequestDefault.defaultValue,
   },
-  [BlockEnum.ParameterExtractor]: {
-    type: BlockEnum.ParameterExtractor,
-    title: '',
-    desc: '',
-    variables: [],
-    ...ParameterExtractorDefault.defaultValue,
-  },
   [BlockEnum.VariableAssigner]: {
     type: BlockEnum.VariableAssigner,
-    title: '',
-    desc: '',
-    variables: [],
-    output_type: '',
-    ...VariableAssignerDefault.defaultValue,
-  },
-  [BlockEnum.VariableAggregator]: {
-    type: BlockEnum.VariableAggregator,
     title: '',
     desc: '',
     variables: [],
@@ -280,19 +230,11 @@ export const NODE_WIDTH = 240
 export const X_OFFSET = 60
 export const NODE_WIDTH_X_OFFSET = NODE_WIDTH + X_OFFSET
 export const Y_OFFSET = 39
-export const MAX_TREE_DEPTH = 50
+export const MAX_TREE_DEEPTH = 30
 export const START_INITIAL_POSITION = { x: 80, y: 282 }
 export const AUTO_LAYOUT_OFFSET = {
   x: -42,
   y: 243,
-}
-export const ITERATION_NODE_Z_INDEX = 1
-export const ITERATION_CHILDREN_Z_INDEX = 1002
-export const ITERATION_PADDING = {
-  top: 85,
-  right: 16,
-  bottom: 20,
-  left: 16,
 }
 
 export const RETRIEVAL_OUTPUT_STRUCT = `{
@@ -317,10 +259,67 @@ export const RETRIEVAL_OUTPUT_STRUCT = `{
 
 export const SUPPORT_OUTPUT_VARS_NODE = [
   BlockEnum.Start, BlockEnum.LLM, BlockEnum.KnowledgeRetrieval, BlockEnum.Code, BlockEnum.TemplateTransform,
-  BlockEnum.HttpRequest, BlockEnum.Tool, BlockEnum.VariableAssigner, BlockEnum.VariableAggregator, BlockEnum.QuestionClassifier,
-  BlockEnum.ParameterExtractor, BlockEnum.Iteration,
+  BlockEnum.HttpRequest, BlockEnum.Tool, BlockEnum.VariableAssigner,
 ]
 
+const USAGE = {
+  variable: 'usage',
+  type: VarType.object,
+  children: [
+    {
+      variable: 'prompt_tokens',
+      type: VarType.number,
+    },
+    {
+      variable: 'prompt_unit_price',
+      type: VarType.number,
+    },
+    {
+      variable: 'prompt_price_unit',
+      type: VarType.number,
+    },
+    {
+      variable: 'prompt_price',
+      type: VarType.number,
+    },
+    {
+      variable: 'completion_tokens',
+      type: VarType.number,
+    },
+    {
+      variable: 'completion_unit_price',
+      type: VarType.number,
+    },
+    {
+      variable: 'completion_price_unit',
+      type: VarType.number,
+    },
+    {
+      variable: 'completion_unit_price',
+      type: VarType.number,
+    },
+    {
+      variable: 'completion_price',
+      type: VarType.number,
+    },
+    {
+      variable: 'total_tokens',
+      type: VarType.number,
+    },
+    {
+      variable: 'total_price',
+      type: VarType.number,
+    },
+    {
+      variable: 'currency',
+      type: VarType.string,
+    },
+    {
+      variable: 'latency',
+      type: VarType.number,
+    },
+  ],
+}
 export const LLM_OUTPUT_STRUCT: Var[] = [
   {
     variable: 'text',
@@ -342,11 +341,36 @@ export const TEMPLATE_TRANSFORM_OUTPUT_STRUCT: Var[] = [
   },
 ]
 
-export const QUESTION_CLASSIFIER_OUTPUT_STRUCT = [
+const QUESTION_CLASSIFIER_OUTPUT_STRUCT_COMMON: Var[] = [
+  USAGE,
   {
-    variable: 'class_name',
+    variable: 'topic',
     type: VarType.string,
   },
+]
+
+export const CHAT_QUESTION_CLASSIFIER_OUTPUT_STRUCT = [
+  {
+    variable: 'model_mode',
+    type: VarType.string,
+  },
+  {
+    variable: 'messages',
+    type: VarType.arrayObject,
+  },
+  ...QUESTION_CLASSIFIER_OUTPUT_STRUCT_COMMON,
+]
+
+export const COMPLETION_QUESTION_CLASSIFIER_OUTPUT_STRUCT = [
+  {
+    variable: 'model_mode',
+    type: VarType.string,
+  },
+  {
+    variable: 'text',
+    type: VarType.string,
+  },
+  ...QUESTION_CLASSIFIER_OUTPUT_STRUCT_COMMON,
 ]
 
 export const HTTP_REQUEST_OUTPUT_STRUCT: Var[] = [
@@ -360,7 +384,7 @@ export const HTTP_REQUEST_OUTPUT_STRUCT: Var[] = [
   },
   {
     variable: 'headers',
-    type: VarType.object,
+    type: VarType.string,
   },
   {
     variable: 'files',
@@ -377,23 +401,4 @@ export const TOOL_OUTPUT_STRUCT: Var[] = [
     variable: 'files',
     type: VarType.arrayFile,
   },
-  {
-    variable: 'json',
-    type: VarType.arrayObject,
-  },
 ]
-
-export const PARAMETER_EXTRACTOR_COMMON_STRUCT: Var[] = [
-  {
-    variable: '__is_success',
-    type: VarType.number,
-  },
-  {
-    variable: '__reason',
-    type: VarType.string,
-  },
-]
-
-export const WORKFLOW_DATA_UPDATE = 'WORKFLOW_DATA_UPDATE'
-export const CUSTOM_NODE = 'custom'
-export const DSL_EXPORT_CHECK = 'DSL_EXPORT_CHECK'

@@ -78,6 +78,7 @@ const ConfigParamModal: FC<Props> = ({
       isShow={isShow}
       onClose={onHide}
       className='!p-8 !pb-6 !mt-14 !max-w-none !w-[640px]'
+      wrapperClassName='!z-50'
     >
       <div className='mb-2 text-xl font-semibold text-[#1D2939]'>
         {t(`appAnnotation.initSetup.${isInit ? 'title' : 'configTitle'}`)}
@@ -123,10 +124,11 @@ const ConfigParamModal: FC<Props> = ({
       </div>
 
       <div className='mt-6 flex gap-2 justify-end'>
-        <Button onClick={onHide}>{t('common.operation.cancel')}</Button>
+        <Button className='!text-sm' onClick={onHide}>{t('common.operation.cancel')}</Button>
         <Button
-          variant='primary'
+          type='primary'
           onClick={handleSave}
+          className='flex items-center border-[0.5px] !text-sm'
           loading={isLoading}
         >
           <div></div>

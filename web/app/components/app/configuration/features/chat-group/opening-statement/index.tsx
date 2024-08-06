@@ -2,16 +2,12 @@
 'use client'
 import type { FC } from 'react'
 import React, { useEffect, useRef, useState } from 'react'
-import {
-  RiAddLine,
-  RiDeleteBinLine,
-} from '@remixicon/react'
+import cn from 'classnames'
 import { useContext } from 'use-context-selector'
 import produce from 'immer'
 import { useTranslation } from 'react-i18next'
 import { useBoolean } from 'ahooks'
 import { ReactSortable } from 'react-sortablejs'
-import cn from '@/utils/classnames'
 import ConfigContext from '@/context/debug-configuration'
 import Panel from '@/app/components/app/configuration/base/feature-panel'
 import Button from '@/app/components/base/button'
@@ -20,7 +16,7 @@ import { getInputKeys } from '@/app/components/base/block-input'
 import ConfirmAddVar from '@/app/components/app/configuration/config-prompt/confirm-add-var'
 import { getNewVar } from '@/utils/var'
 import { varHighlightHTML } from '@/app/components/app/configuration/base/var-highlight'
-import Toast from '@/app/components/base/toast'
+import { Plus, Trash03 } from '@/app/components/base/icons/src/vender/line/general'
 
 const MAX_QUESTION_NUM = 5
 
@@ -94,15 +90,6 @@ const OpeningStatement: FC<IOpeningStatementProps> = ({
   }
 
   const handleConfirm = () => {
-    if (!(tempValue || '').trim()) {
-      Toast.notify({
-        type: 'error',
-        message: t('common.errorMsg.fieldRequired', {
-          field: t('appDebug.openingStatement.title'),
-        }),
-      })
-      return
-    }
     const keys = getInputKeys(tempValue)
     const promptKeys = promptVariables.map(item => item.key)
     let notIncludeKeys: string[] = []
@@ -144,23 +131,11 @@ const OpeningStatement: FC<IOpeningStatementProps> = ({
   const headerRight = !readonly ? (
     isFocus ? (
       <div className='flex items-center space-x-1'>
-        <Button
-          variant='ghost'
-          size='small'
-          onClick={handleCancel}
-        >
-          {t('common.operation.cancel')}
-        </Button>
-        <Button
-          onClick={handleConfirm}
-          variant="primary"
-          size='small'
-        >
-          {t('common.operation.save')}
-        </Button>
+        <div className='px-3 leading-[18px] text-xs font-medium text-gray-700 cursor-pointer' onClick={handleCancel}>{t('common.operation.cancel')}</div>
+        <Button className='!h-8 !px-3 text-xs' onClick={handleConfirm} type="primary">{t('common.operation.save')}</Button>
       </div>
     ) : (
-      <OperationBtn type='edit' actionName={hasValue ? '' : t('appDebug.openingStatement.writeOpener') as string} onClick={handleEdit} />
+      <OperationBtn type='edit' actionName={hasValue ? '' : t('appDebug.openingStatement.writeOpner') as string} onClick={handleEdit} />
     )
   ) : null
 
@@ -217,7 +192,7 @@ const OpeningStatement: FC<IOpeningStatementProps> = ({
                     setTempSuggestedQuestions(tempSuggestedQuestions.filter((_, i) => index !== i))
                   }}
                 >
-                  <RiDeleteBinLine className='w-3.5 h-3.5' />
+                  <Trash03 className='w-3.5 h-3.5' />
                 </div>
               </div>
             )
@@ -226,7 +201,7 @@ const OpeningStatement: FC<IOpeningStatementProps> = ({
           <div
             onClick={() => { setTempSuggestedQuestions([...tempSuggestedQuestions, '']) }}
             className='mt-1 flex items-center h-9 px-3 gap-2 rounded-lg cursor-pointer text-gray-400  bg-gray-100 hover:bg-gray-200'>
-            <RiAddLine className='w-4 h-4' />
+            <Plus className='w-4 h-4'></Plus>
             <div className='text-gray-500 text-[13px]'>{t('appDebug.variableConig.addOption')}</div>
           </div>
         )}

@@ -6,12 +6,12 @@ import { useContext } from 'use-context-selector'
 import { useTranslation } from 'react-i18next'
 import { omit } from 'lodash-es'
 import { ArrowRightIcon } from '@heroicons/react/24/solid'
+import cn from 'classnames'
 import SegmentCard from '../completed/SegmentCard'
 import { FieldInfo } from '../metadata'
 import style from '../completed/style.module.css'
 import { DocumentContext } from '../index'
 import s from './style.module.css'
-import cn from '@/utils/classnames'
 import Button from '@/app/components/base/button'
 import Divider from '@/app/components/base/divider'
 import { ToastContext } from '@/app/components/base/toast'
@@ -22,6 +22,7 @@ import { formatNumber } from '@/utils/format'
 import { fetchIndexingStatus as doFetchIndexingStatus, fetchIndexingEstimate, fetchProcessRule, pauseDocIndexing, resumeDocIndexing } from '@/service/datasets'
 import DatasetDetailContext from '@/context/dataset-detail'
 import StopEmbeddingModal from '@/app/components/datasets/create/stop-embedding-modal'
+import { basicUrl } from '@/config'
 
 type Props = {
   detail?: FullDocumentDetail
@@ -126,13 +127,17 @@ const EmbeddingDetail: FC<Props> = ({ detail, stopPosition = 'top', datasetId: d
     return status
   }
 
-  const isStopQuery = useRef(false)
-  const stopQueryStatus = useCallback(() => {
-    isStopQuery.current = true
-  }, [])
+  const [isStopQuery, setIsStopQuery] = useState(false)
+  const isStopQueryRef = useRef(isStopQuery)
+  useEffect(() => {
+    isStopQueryRef.current = isStopQuery
+  }, [isStopQuery])
+  const stopQueryStatus = () => {
+    setIsStopQuery(true)
+  }
 
-  const startQueryStatus = useCallback(async () => {
-    if (isStopQuery.current)
+  const startQueryStatus = async () => {
+    if (isStopQueryRef.current)
       return
 
     try {
@@ -142,7 +147,6 @@ const EmbeddingDetail: FC<Props> = ({ detail, stopPosition = 'top', datasetId: d
         detailUpdate()
         return
       }
-
       await sleep(2500)
       await startQueryStatus()
     }
@@ -150,15 +154,16 @@ const EmbeddingDetail: FC<Props> = ({ detail, stopPosition = 'top', datasetId: d
       await sleep(2500)
       await startQueryStatus()
     }
-  }, [stopQueryStatus])
+  }
 
   useEffect(() => {
-    isStopQuery.current = false
+    setIsStopQuery(false)
     startQueryStatus()
     return () => {
       stopQueryStatus()
     }
-  }, [startQueryStatus, stopQueryStatus])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const { data: indexingEstimateDetail, error: indexingEstimateErr } = useSWR({
     action: 'fetchIndexingEstimate',
@@ -180,7 +185,7 @@ const EmbeddingDetail: FC<Props> = ({ detail, stopPosition = 'top', datasetId: d
   const modalCloseHandle = () => setShowModal(false)
   const router = useRouter()
   const navToDocument = () => {
-    router.push(`/datasets/${localDatasetId}/documents/${localDocumentId}`)
+    router.push(`${basicUrl}/datasets/${localDatasetId}/documents/${localDocumentId}`)
   }
 
   const isEmbedding = useMemo(() => ['indexing', 'splitting', 'parsing', 'cleaning'].includes(indexingStatusDetail?.indexing_status || ''), [indexingStatusDetail])
@@ -279,7 +284,7 @@ const EmbeddingDetail: FC<Props> = ({ detail, stopPosition = 'top', datasetId: d
               {t('datasetCreation.stepThree.resume')}
             </Button>
           )}
-          <Button className='w-fit' variant='primary' onClick={navToDocument}>
+          <Button className='w-fit' type='primary' onClick={navToDocument}>
             <span>{t('datasetCreation.stepThree.navTo')}</span>
             <ArrowRightIcon className='h-4 w-4 ml-2 stroke-current stroke-1' />
           </Button>

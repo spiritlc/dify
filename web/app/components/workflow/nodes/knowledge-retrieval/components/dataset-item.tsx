@@ -2,19 +2,14 @@
 import type { FC } from 'react'
 import React, { useCallback } from 'react'
 import { useBoolean } from 'ahooks'
-import {
-  RiDeleteBinLine,
-  RiEditLine,
-} from '@remixicon/react'
 import type { DataSet } from '@/models/datasets'
 import { DataSourceType } from '@/models/datasets'
+import { Settings01, Trash03 } from '@/app/components/base/icons/src/vender/line/general'
 import FileIcon from '@/app/components/base/file-icon'
 import { Folder } from '@/app/components/base/icons/src/vender/solid/files'
 import SettingsModal from '@/app/components/app/configuration/dataset-config/settings-modal'
 import Drawer from '@/app/components/base/drawer'
 import useBreakpoints, { MediaType } from '@/hooks/use-breakpoints'
-import Badge from '@/app/components/base/badge'
-import { useKnowledge } from '@/hooks/use-knowledge'
 
 type Props = {
   payload: DataSet
@@ -31,7 +26,6 @@ const DatasetItem: FC<Props> = ({
 }) => {
   const media = useBreakpoints()
   const isMobile = media === MediaType.mobile
-  const { formatIndexingTechniqueAndMethod } = useKnowledge()
 
   const [isShowSettingsModal, {
     setTrue: showSettingsModal,
@@ -65,20 +59,16 @@ const DatasetItem: FC<Props> = ({
             className='flex items-center justify-center w-6 h-6 hover:bg-black/5 rounded-md cursor-pointer'
             onClick={showSettingsModal}
           >
-            <RiEditLine className='w-4 h-4 text-gray-500' />
+            <Settings01 className='w-4 h-4 text-gray-500' />
           </div>
           <div
             className='flex items-center justify-center w-6 h-6 hover:bg-black/5 rounded-md cursor-pointer'
             onClick={onRemove}
           >
-            <RiDeleteBinLine className='w-4 h-4 text-gray-500' />
+            <Trash03 className='w-4 h-4 text-gray-500' />
           </div>
         </div>
       )}
-      <Badge
-        className='group-hover/dataset-item:hidden shrink-0'
-        text={formatIndexingTechniqueAndMethod(payload.indexing_technique, payload.retrieval_model_dict?.search_method)}
-      />
 
       {isShowSettingsModal && (
         <Drawer isOpen={isShowSettingsModal} onClose={hideSettingsModal} footer={null} mask={isMobile} panelClassname='mt-16 mx-2 sm:mr-2 mb-3 !p-0 !max-w-[640px] rounded-xl'>

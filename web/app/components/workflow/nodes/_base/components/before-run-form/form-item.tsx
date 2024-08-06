@@ -3,17 +3,14 @@ import type { FC } from 'react'
 import React, { useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 import produce from 'immer'
-import {
-  RiDeleteBinLine,
-} from '@remixicon/react'
 import type { InputVar } from '../../../../types'
 import { BlockEnum, InputVarType } from '../../../../types'
 import CodeEditor from '../editor/code-editor'
 import { CodeLanguage } from '../../../code/types'
-import TextEditor from '../editor/text-editor'
 import Select from '@/app/components/base/select'
 import TextGenerationImageUploader from '@/app/components/base/image-uploader/text-generation-image-uploader'
 import { Resolution } from '@/types/app'
+import { Trash03 } from '@/app/components/base/icons/src/vender/line/general'
 import { useFeatures } from '@/app/components/base/features/hooks'
 import { VarBlockIcon } from '@/app/components/workflow/block-icon'
 import { Line3 } from '@/app/components/base/icons/src/public/common'
@@ -24,7 +21,6 @@ type Props = {
   value: any
   onChange: (value: any) => void
   className?: string
-  autoFocus?: boolean
 }
 
 const FormItem: FC<Props> = ({
@@ -32,12 +28,11 @@ const FormItem: FC<Props> = ({
   value,
   onChange,
   className,
-  autoFocus,
 }) => {
   const { t } = useTranslation()
   const { type } = payload
   const fileSettings = useFeatures(s => s.features.file)
-  const handleArrayItemChange = useCallback((index: number) => {
+  const handleContextItemChange = useCallback((index: number) => {
     return (newValue: any) => {
       const newValues = produce(value, (draft: any) => {
         draft[index] = newValue
@@ -46,7 +41,7 @@ const FormItem: FC<Props> = ({
     }
   }, [value, onChange])
 
-  const handleArrayItemRemove = useCallback((index: number) => {
+  const handleContextItemRemove = useCallback((index: number) => {
     return () => {
       const newValues = produce(value, (draft: any) => {
         draft.splice(index, 1)
@@ -80,13 +75,9 @@ const FormItem: FC<Props> = ({
     }
     return ''
   })()
-
-  const isArrayLikeType = [InputVarType.contexts, InputVarType.iterator].includes(type)
-  const isContext = type === InputVarType.contexts
-  const isIterator = type === InputVarType.iterator
   return (
     <div className={`${className}`}>
-      {!isArrayLikeType && <div className='h-8 leading-8 text-[13px] font-medium text-gray-700 truncate'>{typeof payload.label === 'object' ? nodeKey : payload.label}</div>}
+      {type !== InputVarType.contexts && <div className='h-8 leading-8 text-[13px] font-medium text-gray-700 truncate'>{typeof payload.label === 'object' ? nodeKey : payload.label}</div>}
       <div className='grow'>
         {
           type === InputVarType.textInput && (
@@ -96,7 +87,6 @@ const FormItem: FC<Props> = ({
               value={value || ''}
               onChange={e => onChange(e.target.value)}
               placeholder={t('appDebug.variableConig.inputPlaceholder')!}
-              autoFocus={autoFocus}
             />
           )
         }
@@ -109,7 +99,6 @@ const FormItem: FC<Props> = ({
               value={value || ''}
               onChange={e => onChange(e.target.value)}
               placeholder={t('appDebug.variableConig.inputPlaceholder')!}
-              autoFocus={autoFocus}
             />
           )
         }
@@ -121,7 +110,6 @@ const FormItem: FC<Props> = ({
               value={value || ''}
               onChange={e => onChange(e.target.value)}
               placeholder={t('appDebug.variableConig.inputPlaceholder')!}
-              autoFocus={autoFocus}
             />
           )
         }
@@ -153,9 +141,9 @@ const FormItem: FC<Props> = ({
           type === InputVarType.files && (
             <TextGenerationImageUploader
               settings={{
-                ...fileSettings?.image,
+                ...fileSettings.image,
                 detail: Resolution.high,
-              } as any}
+              }}
               onFilesChange={files => onChange(files.filter(file => file.progress !== -1).map(fileItem => ({
                 type: 'image',
                 transfer_method: fileItem.type,
@@ -167,7 +155,7 @@ const FormItem: FC<Props> = ({
         }
 
         {
-          isContext && (
+          type === InputVarType.contexts && (
             <div className='space-y-2'>
               {(value || []).map((item: any, index: number) => (
                 <CodeEditor
@@ -176,38 +164,14 @@ const FormItem: FC<Props> = ({
                   title={<span>JSON</span>}
                   headerRight={
                     (value as any).length > 1
-                      ? (<RiDeleteBinLine
-                        onClick={handleArrayItemRemove(index)}
+                      ? (<Trash03
+                        onClick={handleContextItemRemove(index)}
                         className='mr-1 w-3.5 h-3.5 text-gray-500 cursor-pointer'
                       />)
                       : undefined
                   }
                   language={CodeLanguage.json}
-                  onChange={handleArrayItemChange(index)}
-                />
-              ))}
-            </div>
-          )
-        }
-
-        {
-          isIterator && (
-            <div className='space-y-2'>
-              {(value || []).map((item: any, index: number) => (
-                <TextEditor
-                  key={index}
-                  isInNode
-                  value={item}
-                  title={<span>{t('appDebug.variableConig.content')} {index + 1} </span>}
-                  onChange={handleArrayItemChange(index)}
-                  headerRight={
-                    (value as any).length > 1
-                      ? (<RiDeleteBinLine
-                        onClick={handleArrayItemRemove(index)}
-                        className='mr-1 w-3.5 h-3.5 text-gray-500 cursor-pointer'
-                      />)
-                      : undefined
-                  }
+                  onChange={handleContextItemChange(index)}
                 />
               ))}
             </div>

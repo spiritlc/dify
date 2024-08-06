@@ -1,10 +1,9 @@
 const translation = {
   list: {
     title: 'ドキュメント',
-    desc: 'ナレッジのすべてのファイルがここに表示され、ナレッジ全体がDifyの引用やチャットプラグインを介してリンクされるか、インデックス化されることができます。',
+    desc: 'ナレッジのすべてのファイルがここに表示され、ナレッジ全体がHomeGPTagentの引用やチャットプラグインを介してリンクされるか、インデックス化されることができます。',
     addFile: 'ファイルを追加',
     addPages: 'ページを追加',
-    addUrl: 'URLを追加',
     table: {
       header: {
         fileName: 'ファイル名',
@@ -14,8 +13,6 @@ const translation = {
         status: 'ステータス',
         action: 'アクション',
       },
-      rename: '名前を変更',
-      name: '名前',
     },
     action: {
       uploadFile: '新しいファイルをアップロード',
@@ -52,7 +49,7 @@ const translation = {
         tip: 'ファイルをアップロードしたり、ウェブサイトから同期したり、NotionやGitHubなどのウェブアプリから同期することができます。',
       },
       sync: {
-        tip: 'Difyは定期的にNotionからファイルをダウンロードし、処理を完了します。',
+        tip: 'HomeGPTagentは定期的にNotionからファイルをダウンロードし、処理を完了します。',
       },
     },
     delete: {

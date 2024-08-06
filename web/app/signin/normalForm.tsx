@@ -2,15 +2,17 @@
 import React, { useEffect, useReducer, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useRouter } from 'next/navigation'
+import classNames from 'classnames'
 import useSWR from 'swr'
-import Link from 'next/link'
+import { useContext } from 'use-context-selector'
 import Toast from '../components/base/toast'
 import style from './page.module.css'
-import classNames from '@/utils/classnames'
-import { IS_CE_EDITION, SUPPORT_MAIL_LOGIN, apiPrefix, emailRegex } from '@/config'
+import { IS_CE_EDITION, apiPrefix, basicUrl } from '@/config'
 import Button from '@/app/components/base/button'
 import { login, oauth } from '@/service/common'
+import I18n from '@/context/i18n'
 import { getPurifyHref } from '@/utils'
+const validEmailReg = /^[\w\.-]+@([\w-]+\.)+[\w-]{2,}$/
 
 type IState = {
   formValid: boolean
@@ -61,9 +63,8 @@ function reducer(state: IState, action: IAction) {
 
 const NormalForm = () => {
   const { t } = useTranslation()
-  const useEmailLogin = IS_CE_EDITION || SUPPORT_MAIL_LOGIN
-
   const router = useRouter()
+  const { locale } = useContext(I18n)
 
   const [state, dispatch] = useReducer(reducer, {
     formValid: false,
@@ -77,7 +78,7 @@ const NormalForm = () => {
 
   const [isLoading, setIsLoading] = useState(false)
   const handleEmailPasswordLogin = async () => {
-    if (!emailRegex.test(email)) {
+    if (!validEmailReg.test(email)) {
       Toast.notify({
         type: 'error',
         message: t('login.error.emailInValid'),
@@ -94,9 +95,10 @@ const NormalForm = () => {
           remember_me: true,
         },
       })
+
       if (res.result === 'success') {
         localStorage.setItem('console_token', res.data)
-        router.replace('/apps')
+        router.replace(`${basicUrl}/apps`)
       }
       else {
         Toast.notify({
@@ -140,7 +142,7 @@ const NormalForm = () => {
       dispatch({ type: 'google_login_failed' })
     if (google)
       window.location.href = google.redirect_url
-  }, [google, google_error])
+  }, [google, google])
 
   return (
     <>
@@ -151,13 +153,14 @@ const NormalForm = () => {
 
       <div className="w-full mx-auto mt-8">
         <div className="bg-white ">
-          {!useEmailLogin && (
+          {!IS_CE_EDITION && (
             <div className="flex flex-col gap-3 mt-6">
               <div className='w-full'>
                 <a href={getPurifyHref(`${apiPrefix}/oauth/login/github`)}>
                   <Button
+                    type='default'
                     disabled={isLoading}
-                    className='w-full hover:!bg-gray-50'
+                    className='w-full hover:!bg-gray-50 !text-sm !font-medium'
                   >
                     <>
                       <span className={
@@ -174,8 +177,9 @@ const NormalForm = () => {
               <div className='w-full'>
                 <a href={getPurifyHref(`${apiPrefix}/oauth/login/google`)}>
                   <Button
+                    type='default'
                     disabled={isLoading}
-                    className='w-full hover:!bg-gray-50'
+                    className='w-full hover:!bg-gray-50 !text-sm !font-medium'
                   >
                     <>
                       <span className={
@@ -193,7 +197,7 @@ const NormalForm = () => {
           )}
 
           {
-            useEmailLogin && <>
+            IS_CE_EDITION && <>
               {/* <div className="relative mt-6">
                 <div className="absolute inset-0 flex items-center" aria-hidden="true">
                   <div className="w-full border-t border-gray-300" />
@@ -224,11 +228,23 @@ const NormalForm = () => {
                 <div className='mb-4'>
                   <label htmlFor="password" className="my-2 flex items-center justify-between text-sm font-medium text-gray-900">
                     <span>{t('login.password')}</span>
-                    <Link href='/forgot-password' className='text-primary-600'>
-                      {t('login.forget')}
-                    </Link>
+                    {/* <Tooltip
+                      selector='forget-password'
+                      htmlContent={
+                        <div>
+                          <div className='font-medium'>{t('login.forget')}</div>
+                          <div className='font-medium text-gray-500'>
+                            <code>
+                              sudo rm -rf /
+                            </code>
+                          </div>
+                        </div>
+                      }
+                    >
+                      <span className='cursor-pointer text-primary-600'>{t('login.forget')}</span>
+                    </Tooltip> */}
                   </label>
-                  <div className="relative mt-1">
+                  <div className="relative mt-1 rounded-md shadow-sm">
                     <input
                       id="password"
                       value={password}
@@ -257,40 +273,31 @@ const NormalForm = () => {
                 <div className='mb-2'>
                   <Button
                     tabIndex={0}
-                    variant='primary'
+                    type='primary'
                     onClick={handleEmailPasswordLogin}
                     disabled={isLoading}
-                    className="w-full"
+                    className="w-full !fone-medium !text-sm"
                   >{t('login.signBtn')}</Button>
                 </div>
               </form>
             </>
           }
           {/*  agree to our Terms and Privacy Policy. */}
-          <div className="w-hull text-center block mt-2 text-xs text-gray-600">
+          {/* <div className="w-hull text-center block mt-2 text-xs text-gray-600">
             {t('login.tosDesc')}
             &nbsp;
             <Link
               className='text-primary-600'
               target='_blank' rel='noopener noreferrer'
-              href='https://dify.ai/terms'
+              href='https://HomeGPTagent.ai/terms'
             >{t('login.tos')}</Link>
             &nbsp;&&nbsp;
             <Link
               className='text-primary-600'
               target='_blank' rel='noopener noreferrer'
-              href='https://dify.ai/privacy'
+              href='https://HomeGPTagent.ai/privacy'
             >{t('login.pp')}</Link>
-          </div>
-
-          {IS_CE_EDITION && <div className="w-hull text-center block mt-2 text-xs text-gray-600">
-            {t('login.goToInit')}
-            &nbsp;
-            <Link
-              className='text-primary-600'
-              href='/install'
-            >{t('login.setAdminAccount')}</Link>
-          </div>}
+          </div> */}
 
         </div>
       </div>

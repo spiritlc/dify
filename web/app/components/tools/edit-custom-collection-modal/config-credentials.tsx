@@ -2,11 +2,9 @@
 import type { FC } from 'react'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import {
-  RiQuestionLine,
-} from '@remixicon/react'
+import cn from 'classnames'
 import Tooltip from '../../base/tooltip'
-import cn from '@/utils/classnames'
+import { HelpCircle } from '../../base/icons/src/vender/line/general'
 import type { Credential } from '@/app/components/tools/types'
 import Drawer from '@/app/components/base/drawer-plus'
 import Button from '@/app/components/base/button'
@@ -14,7 +12,6 @@ import Radio from '@/app/components/base/radio/ui'
 import { AuthHeaderPrefix, AuthType } from '@/app/components/tools/types'
 
 type Props = {
-  positionCenter?: boolean
   credential: Credential
   onChange: (credential: Credential) => void
   onHide: () => void
@@ -41,23 +38,22 @@ const SelectItem: FC<ItemProps> = ({ text, value, isChecked, onClick }) => {
 }
 
 const ConfigCredential: FC<Props> = ({
-  positionCenter,
   credential,
   onChange,
   onHide,
 }) => {
   const { t } = useTranslation()
+  console.log('当前的数据是', credential)
   const [tempCredential, setTempCredential] = React.useState<Credential>(credential)
 
   return (
     <Drawer
       isShow
-      positionCenter={positionCenter}
       onHide={onHide}
       title={t('tools.createTool.authMethod.title')!}
-      panelClassName='mt-2 !w-[520px] h-fit'
+      panelClassName='mt-2 !w-[520px]'
       maxWidthClassName='!max-w-[520px]'
-      height={'fit-content'}
+      height='calc(100vh - 16px)'
       headerClassName='!border-b-black/5'
       body={
         <div className='pt-2 px-6'>
@@ -80,7 +76,18 @@ const ConfigCredential: FC<Props> = ({
                     auth_type: value as AuthType,
                     api_key_header: tempCredential.api_key_header || 'Authorization',
                     api_key_value: tempCredential.api_key_value || '',
-                    api_key_header_prefix: tempCredential.api_key_header_prefix || AuthHeaderPrefix.custom,
+                    api_key_header_prefix: AuthHeaderPrefix.basic,
+                  })}
+                />
+                <SelectItem
+                  text={t('tools.createTool.authMethod.types.sign_key')}
+                  value={AuthType.signKey}
+                  isChecked={tempCredential.auth_type === AuthType.signKey}
+                  onClick={value => setTempCredential({
+                    auth_type: value as AuthType,
+                    sign_mode: AuthHeaderPrefix.haigeek,
+                    system_id: tempCredential.system_id || 'Authorization',
+                    system_key: tempCredential.system_key || '',
                   })}
                 />
               </div>
@@ -119,7 +126,7 @@ const ConfigCredential: FC<Props> = ({
                         </div>
                       }
                     >
-                      <RiQuestionLine className='ml-0.5 w-[14px] h-[14px] text-gray-400' />
+                      <HelpCircle className='ml-0.5 w-[14px] h-[14px] text-gray-400'/>
                     </Tooltip>
                   </div>
                   <input
@@ -139,12 +146,67 @@ const ConfigCredential: FC<Props> = ({
                   />
                 </div>
               </>)}
+            {tempCredential.auth_type === AuthType.signKey && (
+              <>
+                <div className={keyClassNames}>{t('tools.createTool.authHeaderPrefix.title')}</div>
+                <div className='flex space-x-3'>
+                  {/* <SelectItem
+                    text={t('tools.createTool.authHeaderPrefix.types.bigData')}
+                    value={AuthHeaderPrefix.bigData}
+                    isChecked={tempCredential.sign_mode === AuthHeaderPrefix.bigData}
+                    onClick={value => setTempCredential({ ...tempCredential, sign_mode: value as AuthHeaderPrefix })}
+                  />
+                  <SelectItem
+                    text={t('tools.createTool.authHeaderPrefix.types.iot')}
+                    value={AuthHeaderPrefix.iot}
+                    isChecked={tempCredential.sign_mode === AuthHeaderPrefix.iot}
+                    onClick={value => setTempCredential({ ...tempCredential, sign_mode: value as AuthHeaderPrefix })}
+                  /> */}
+                  <SelectItem
+                    text={t('tools.createTool.authHeaderPrefix.types.haigeek')}
+                    value={AuthHeaderPrefix.haigeek}
+                    isChecked={tempCredential.sign_mode === AuthHeaderPrefix.haigeek}
+                    onClick={value => setTempCredential({ ...tempCredential, sign_mode: value as AuthHeaderPrefix })}
+                  />
+                </div>
+                <div>
+                  <div className='flex items-center h-8 text-sm font-medium text-gray-900'>
+                    {t('tools.createTool.authMethod.signKey')}
+                    <Tooltip
+                      selector='model-page-system-reasoning-model-tip'
+                      htmlContent={
+                        <div className='w-[261px] text-gray-500'>
+                          {t('tools.createTool.authMethod.keyTooltip')}
+                        </div>
+                      }
+                    >
+                      <HelpCircle className='ml-0.5 w-[14px] h-[14px] text-gray-400'/>
+                    </Tooltip>
+                  </div>
+                  <input
+                    value={tempCredential.system_id}
+                    onChange={e => setTempCredential({ ...tempCredential, system_id: e.target.value })}
+                    className='w-full h-10 px-3 text-sm font-normal bg-gray-100 rounded-lg grow'
+                    placeholder={t('tools.createTool.authMethod.types.apiKeyPlaceholder')!}
+                  />
+                </div>
+                <div>
+                  <div className={keyClassNames}>{t('tools.createTool.authMethod.signValue')}</div>
+                  <input
+                    value={tempCredential.system_key}
+                    onChange={e => setTempCredential({ ...tempCredential, system_key: e.target.value })}
+                    className='w-full h-10 px-3 text-sm font-normal bg-gray-100 rounded-lg grow'
+                    placeholder={t('tools.createTool.authMethod.types.apiValuePlaceholder')!}
+                  />
+                </div>
+              </>)}
 
           </div>
 
           <div className='mt-4 shrink-0 flex justify-end space-x-2 py-4'>
-            <Button onClick={onHide}>{t('common.operation.cancel')}</Button>
-            <Button variant='primary' onClick={() => {
+            <Button className='flex items-center h-8 !px-3 !text-[13px] font-medium !text-gray-700' onClick={onHide}>{t('common.operation.cancel')}</Button>
+            <Button className='flex items-center h-8 !px-3 !text-[13px] font-medium' type='primary' onClick={() => {
+              console.log(tempCredential, '现在要设置的内容')
               onChange(tempCredential)
               onHide()
             }}>{t('common.operation.save')}</Button>

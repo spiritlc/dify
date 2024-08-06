@@ -1,21 +1,19 @@
 'use client'
 import { useTranslation } from 'react-i18next'
 import { Fragment, useCallback } from 'react'
-import {
-  RiAddLine,
-  RiArrowDownSLine,
-  RiArrowRightSLine,
-} from '@remixicon/react'
+import cn from 'classnames'
 import { Menu, Transition } from '@headlessui/react'
 import { useRouter } from 'next/navigation'
 import { debounce } from 'lodash-es'
-import cn from '@/utils/classnames'
 import AppIcon from '@/app/components/base/app-icon'
 import { AiText, ChatBot, CuteRobote } from '@/app/components/base/icons/src/vender/solid/communication'
 import { Route } from '@/app/components/base/icons/src/vender/solid/mapsAndTravel'
 import { useAppContext } from '@/context/app-context'
 import { useStore as useAppStore } from '@/app/components/app/store'
+import { ChevronDown, ChevronRight } from '@/app/components/base/icons/src/vender/line/arrows'
 import { FileArrow01, FilePlus01, FilePlus02 } from '@/app/components/base/icons/src/vender/line/files'
+import { Plus } from '@/app/components/base/icons/src/vender/line/general'
+import { basicUrl } from '@/config'
 
 export type NavItem = {
   id: string
@@ -23,13 +21,13 @@ export type NavItem = {
   link: string
   icon: string
   icon_background: string
-  mode?: string
+  mode: string
 }
 export type INavSelectorProps = {
   navs: NavItem[]
   curNav?: Omit<NavItem, 'link'>
   createText: string
-  isApp?: boolean
+  isApp: boolean
   onCreate: (state: string) => void
   onLoadmore?: () => void
 }
@@ -37,8 +35,8 @@ export type INavSelectorProps = {
 const NavSelector = ({ curNav, navs, createText, isApp, onCreate, onLoadmore }: INavSelectorProps) => {
   const { t } = useTranslation()
   const router = useRouter()
-  const { isCurrentWorkspaceEditor } = useAppContext()
-  const setAppDetail = useAppStore(state => state.setAppDetail)
+  const { isCurrentWorkspaceManager } = useAppContext()
+  const { setAppDetail } = useAppStore()
 
   const handleScroll = useCallback(debounce((e) => {
     if (typeof onLoadmore === 'function') {
@@ -55,11 +53,11 @@ const NavSelector = ({ curNav, navs, createText, isApp, onCreate, onLoadmore }: 
         {({ open }) => (
           <>
             <Menu.Button className={cn(
-              'group inline-flex items-center w-full h-7 justify-center rounded-[10px] pl-2 pr-2.5 text-[14px] font-semibold text-components-main-nav-nav-button-text-active hover:hover:bg-components-main-nav-nav-button-bg-active-hover',
-              open && 'bg-components-main-nav-nav-button-bg-active',
+              'group inline-flex items-center w-full h-7 justify-center rounded-[10px] pl-2 pr-2.5 text-[14px] font-semibold text-primary-600 hover:bg-primary-50',
+              open && 'bg-primary-50',
             )}>
               <div className='max-w-[180px] truncate' title={curNav?.name}>{curNav?.name}</div>
-              <RiArrowDownSLine
+              <ChevronDown
                 className={cn('shrink-0 w-3 h-3 ml-1 opacity-50 group-hover:opacity-100', open && '!opacity-100')}
                 aria-hidden="true"
               />
@@ -76,13 +74,11 @@ const NavSelector = ({ curNav, navs, createText, isApp, onCreate, onLoadmore }: 
                   navs.map(nav => (
                     <Menu.Item key={nav.id}>
                       <div className='flex items-center w-full px-3 py-[6px] text-gray-700 text-[14px] rounded-lg font-normal hover:bg-gray-100 cursor-pointer truncate' onClick={() => {
-                        if (curNav?.id === nav.id)
-                          return
                         setAppDetail()
-                        router.push(nav.link)
+                        router.push(`${basicUrl}${nav.link}`)
                       }} title={nav.name}>
                         <div className='relative w-6 h-6 mr-2 rounded-md'>
-                          <AppIcon size='tiny' icon={nav.icon} background={nav.icon_background} />
+                          <AppIcon size='tiny' icon={nav.icon} background={nav.icon_background}/>
                           {!!nav.mode && (
                             <span className={cn(
                               'absolute w-3.5 h-3.5 -bottom-0.5 -right-0.5 p-0.5 bg-white rounded border-[0.5px] border-[rgba(0,0,0,0.02)] shadow-sm',
@@ -113,19 +109,19 @@ const NavSelector = ({ curNav, navs, createText, isApp, onCreate, onLoadmore }: 
                   ))
                 }
               </div>
-              {!isApp && isCurrentWorkspaceEditor && (
+              {!isApp && (
                 <Menu.Button className='p-1 w-full'>
                   <div onClick={() => onCreate('')} className={cn(
                     'flex items-center gap-2 px-3 py-[6px] rounded-lg cursor-pointer hover:bg-gray-100',
                   )}>
                     <div className='shrink-0 flex justify-center items-center w-6 h-6 bg-gray-50 rounded-[6px] border-[0.5px] border-gray-200 border'>
-                      <RiAddLine className='w-4 h-4 text-gray-500' />
+                      <Plus className='w-4 h-4 text-gray-500' />
                     </div>
                     <div className='grow text-left font-normal text-[14px] text-gray-700'>{createText}</div>
                   </div>
                 </Menu.Button>
               )}
-              {isApp && isCurrentWorkspaceEditor && (
+              {isApp && isCurrentWorkspaceManager && (
                 <Menu as="div" className="relative w-full h-full">
                   {({ open }) => (
                     <>
@@ -135,10 +131,10 @@ const NavSelector = ({ curNav, navs, createText, isApp, onCreate, onLoadmore }: 
                           open && '!bg-gray-100',
                         )}>
                           <div className='shrink-0 flex justify-center items-center w-6 h-6 bg-gray-50 rounded-[6px] border-[0.5px] border-gray-200 border'>
-                            <RiAddLine className='w-4 h-4 text-gray-500' />
+                            <Plus className='w-4 h-4 text-gray-500' />
                           </div>
                           <div className='grow text-left font-normal text-[14px] text-gray-700'>{createText}</div>
-                          <RiArrowRightSLine className='shrink-0 w-3.5 h-3.5  text-gray-500' />
+                          <ChevronRight className='shrink-0 w-3.5 h-3.5  text-gray-500'/>
                         </div>
                       </Menu.Button>
                       <Transition

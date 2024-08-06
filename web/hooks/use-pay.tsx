@@ -12,6 +12,7 @@ import {
 } from '@/service/common'
 import type { ConfirmCommonProps } from '@/app/components/base/confirm/common'
 import Confirm from '@/app/components/base/confirm/common'
+import { basicUrl } from '@/config'
 
 export type ConfirmType = Pick<ConfirmCommonProps, 'type' | 'title' | 'desc'>
 
@@ -96,7 +97,7 @@ export const useCheckFreeQuota = () => {
 
   useEffect(() => {
     if (error)
-      router.replace('/', { forceOptimisticNavigation: false })
+      router.replace(`${basicUrl}/`, { forceOptimisticNavigation: false })
   }, [error, router])
 
   useEffect(() => {
@@ -130,7 +131,7 @@ export const useCheckNotion = () => {
 
   useEffect(() => {
     if (data)
-      router.replace('/', { forceOptimisticNavigation: false })
+      router.replace(`${basicUrl}/`, { forceOptimisticNavigation: false })
   }, [data, router])
   useEffect(() => {
     if (type === 'notion') {
@@ -160,7 +161,7 @@ export const CheckModal = () => {
 
   const handleCancelShowPayStatusModal = useCallback(() => {
     setShowPayStatusModal(false)
-    router.replace('/', { forceOptimisticNavigation: false })
+    router.replace(`${basicUrl}/`, { forceOptimisticNavigation: false })
   }, [router])
 
   const confirmInfo = anthropicConfirmInfo || freeQuotaConfirmInfo || notionConfirmInfo || billingConfirmInfo

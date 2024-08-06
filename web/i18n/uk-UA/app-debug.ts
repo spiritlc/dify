@@ -201,7 +201,7 @@ const translation = {
   },
   automatic: {
     title: 'Автоматизована оркестрація застосунків',
-    description: 'Опишіть свій сценарій, Dify збере для вас застосунок.',
+    description: 'Опишіть свій сценарій, HomeGPTagent збере для вас застосунок.',
     intendedAudience: 'Хто є цільовою аудиторією?',
     intendedAudiencePlaceHolder: 'напр. Студент',
     solveProblem: 'Які проблеми вони сподіваються вирішити за допомогою AI?',
@@ -316,15 +316,12 @@ const translation = {
       language: 'Мова', // Language
       resolutionTooltip: 'Мовна підтримка для синтезу мовлення.', // Text-to-speech voice support language。
       voice: 'Голос', // Voice
-      autoPlay: 'Автоматичне відтворення',
-      autoPlayEnabled: 'ВІДЧИНЕНО',
-      autoPlayDisabled: 'закриття',
     },
   },
   openingStatement: {
     title: 'Вступ до розмови', // Conversation Opener
     add: 'Додати', // Add
-    writeOpener: 'Напишіть вступне повідомлення', // Write opener
+    writeOpner: 'Напишіть вступне повідомлення', // Write opener
     placeholder: 'Напишіть тут своє вступне повідомлення, ви можете використовувати змінні, спробуйте ввести {{variable}}.', // Write your opener message here...
     openingQuestion: 'Відкриваючі питання', // Opening Questions
     noDataPlaceHolder: 'Початок розмови з користувачем може допомогти ШІ встановити більш тісний зв’язок з ним у розмовних застосунках.', // ... conversational applications.

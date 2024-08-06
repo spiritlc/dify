@@ -33,7 +33,7 @@ const NextStep = ({
 
   return (
     <div className='flex py-1'>
-      <div className='shrink-0 relative flex items-center justify-center w-9 h-9 bg-background-default rounded-lg border-[0.5px] border-divider-regular shadow-xs'>
+      <div className='shrink-0 relative flex items-center justify-center w-9 h-9 bg-white rounded-lg border-[0.5px] border-gray-200 shadow-xs'>
         <BlockIcon
           type={selectedNode!.data.type}
           toolIcon={toolIcon}
@@ -54,7 +54,7 @@ const NextStep = ({
           !nodeWithBranches && !outgoers.length && (
             <Add
               nodeId={selectedNode!.id}
-              nodeData={selectedNode!.data}
+              nodeType={selectedNode!.data.type}
               sourceHandle='source'
             />
           )
@@ -85,7 +85,7 @@ const NextStep = ({
                       <Add
                         key={branch.id}
                         nodeId={selectedNode!.id}
-                        nodeData={selectedNode!.data}
+                        nodeType={selectedNode!.data.type}
                         sourceHandle={branch.id}
                         branchName={branch.name}
                       />

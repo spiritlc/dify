@@ -8,13 +8,13 @@ import { getLanguage } from '@/i18n/language'
 type II18NContext = {
   locale: Locale
   i18n: Record<string, any>
-  setLocaleOnClient: (_lang: Locale, _reloadPage?: boolean) => void
+  setLocaleOnClient: (locale: Locale, reloadPage?: boolean) => void
 }
 
 const I18NContext = createContext<II18NContext>({
   locale: 'en-US',
   i18n: {},
-  setLocaleOnClient: (_lang: Locale, _reloadPage?: boolean) => { },
+  setLocaleOnClient: (lang: Locale, reloadPage?: boolean) => { },
 })
 
 export const useI18N = () => useContext(I18NContext)

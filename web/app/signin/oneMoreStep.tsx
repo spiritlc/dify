@@ -13,6 +13,7 @@ import { timezones } from '@/utils/timezone'
 import { LanguagesSupported, languages } from '@/i18n/language'
 import { oneMoreStep } from '@/service/common'
 import Toast from '@/app/components/base/toast'
+import { basicUrl } from '@/config'
 // import I18n from '@/context/i18n'
 
 type IState = {
@@ -72,7 +73,7 @@ const OneMoreStep = () => {
       dispatch({ type: 'failed', payload: null })
     }
     if (data)
-      router.push('/apps')
+      router.push(`${basicUrl}/apps`)
   }, [data, error])
 
   return (
@@ -145,8 +146,8 @@ const OneMoreStep = () => {
           </div>
           <div>
             <Button
-              variant='primary'
-              className='w-full'
+              type='primary'
+              className='w-full !fone-medium !text-sm'
               disabled={state.formState === 'processing'}
               onClick={() => {
                 dispatch({ type: 'formState', value: 'processing' })
@@ -161,7 +162,7 @@ const OneMoreStep = () => {
             <Link
               className='text-primary-600'
               target='_blank' rel='noopener noreferrer'
-              href={'https://docs.dify.ai/user-agreement/open-source'}
+              href={'https://docs.HomeGPTagent.ai/user-agreement/open-source'}
             >{t('login.license.link')}</Link>
           </div>
         </div>

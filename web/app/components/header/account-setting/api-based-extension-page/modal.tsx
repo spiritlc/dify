@@ -3,7 +3,6 @@ import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import Modal from '@/app/components/base/modal'
 import Button from '@/app/components/base/button'
-import { BookOpen01 } from '@/app/components/base/icons/src/vender/line/education'
 import type { ApiBasedExtension } from '@/models/common'
 import {
   addApiBasedExtension,
@@ -75,6 +74,7 @@ const ApiBasedExtensionModal: FC<ApiBasedExtensionModalProps> = ({
     <Modal
       isShow
       onClose={() => { }}
+      wrapperClassName='!z-[103]'
       className='!p-8 !pb-6 !max-w-none !w-[640px]'
     >
       <div className='mb-2 text-xl font-semibold text-gray-900'>
@@ -98,14 +98,14 @@ const ApiBasedExtensionModal: FC<ApiBasedExtensionModalProps> = ({
       <div className='py-2'>
         <div className='flex justify-between items-center h-9 text-sm font-medium text-gray-900'>
           {t('common.apiBasedExtension.modal.apiEndpoint.title')}
-          <a
+          {/* <a
             href={t('common.apiBasedExtension.linkUrl') || '/'}
             target='_blank' rel='noopener noreferrer'
             className='group flex items-center text-xs text-gray-500 font-normal hover:text-primary-600'
           >
             <BookOpen01 className='mr-1 w-3 h-3 text-gray-500 group-hover:text-primary-600' />
             {t('common.apiBasedExtension.link')}
-          </a>
+          </a> */}
         </div>
         <input
           value={localeData.api_endpoint || ''}
@@ -130,12 +130,13 @@ const ApiBasedExtensionModal: FC<ApiBasedExtensionModalProps> = ({
       <div className='flex items-center justify-end mt-6'>
         <Button
           onClick={onCancel}
-          className='mr-2'
+          className='mr-2 text-sm font-medium'
         >
           {t('common.operation.cancel')}
         </Button>
         <Button
-          variant='primary'
+          type='primary'
+          className='text-sm font-medium'
           disabled={!localeData.name || !localeData.api_endpoint || !localeData.api_key || loading}
           onClick={handleSave}
         >

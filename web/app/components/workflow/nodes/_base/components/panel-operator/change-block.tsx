@@ -7,39 +7,38 @@ import { useTranslation } from 'react-i18next'
 import { intersection } from 'lodash-es'
 import BlockSelector from '@/app/components/workflow/block-selector'
 import {
-  useAvailableBlocks,
+  useNodesExtraData,
   useNodesInteractions,
 } from '@/app/components/workflow/hooks'
 import type {
-  Node,
+  BlockEnum,
   OnSelectBlock,
 } from '@/app/components/workflow/types'
 
 type ChangeBlockProps = {
   nodeId: string
-  nodeData: Node['data']
+  nodeType: BlockEnum
   sourceHandle: string
 }
 const ChangeBlock = ({
   nodeId,
-  nodeData,
+  nodeType,
   sourceHandle,
 }: ChangeBlockProps) => {
   const { t } = useTranslation()
   const { handleNodeChange } = useNodesInteractions()
-  const {
-    availablePrevBlocks,
-    availableNextBlocks,
-  } = useAvailableBlocks(nodeData.type, nodeData.isInIteration)
+  const nodesExtraData = useNodesExtraData()
+  const availablePrevNodes = nodesExtraData[nodeType].availablePrevNodes
+  const availableNextNodes = nodesExtraData[nodeType].availableNextNodes
 
   const availableNodes = useMemo(() => {
-    if (availablePrevBlocks.length && availableNextBlocks.length)
-      return intersection(availablePrevBlocks, availableNextBlocks)
-    else if (availablePrevBlocks.length)
-      return availablePrevBlocks
+    if (availableNextNodes.length && availableNextNodes.length)
+      return intersection(availablePrevNodes, availableNextNodes)
+    else if (availablePrevNodes.length)
+      return availablePrevNodes
     else
-      return availableNextBlocks
-  }, [availablePrevBlocks, availableNextBlocks])
+      return availableNextNodes
+  }, [availablePrevNodes, availableNextNodes])
 
   const handleSelect = useCallback<OnSelectBlock>((type, toolDefaultValue) => {
     handleNodeChange(nodeId, type, sourceHandle, toolDefaultValue)

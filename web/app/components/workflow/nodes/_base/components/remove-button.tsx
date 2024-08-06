@@ -1,8 +1,8 @@
 'use client'
 import type { FC } from 'react'
 import React from 'react'
-import { RiDeleteBinLine } from '@remixicon/react'
-import cn from '@/utils/classnames'
+import cn from 'classnames'
+import { Trash03 } from '@/app/components/base/icons/src/vender/line/general'
 
 type Props = {
   className?: string
@@ -18,7 +18,7 @@ const Remove: FC<Props> = ({
       className={cn(className, 'p-1 cursor-pointer rounded-md hover:bg-black/5 text-gray-500 hover:text-gray-800')}
       onClick={onClick}
     >
-      <RiDeleteBinLine className='w-4 h-4' />
+      <Trash03 className='w-4 h-4' />
     </div>
   )
 }

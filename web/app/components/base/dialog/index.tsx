@@ -1,7 +1,7 @@
 import { Fragment, useCallback } from 'react'
 import type { ElementType, ReactNode } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
-import classNames from '@/utils/classnames'
+import classNames from 'classnames'
 
 // https://headlessui.com/react/dialog
 

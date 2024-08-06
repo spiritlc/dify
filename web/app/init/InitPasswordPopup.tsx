@@ -7,6 +7,7 @@ import Loading from '../components/base/loading'
 import Button from '@/app/components/base/button'
 import { fetchInitValidateStatus, initValidate } from '@/service/common'
 import type { InitValidateStatusResponse } from '@/models/common'
+import { basicUrl } from '@/config'
 
 const InitPasswordPopup = () => {
   const [password, setPassword] = useState('')
@@ -22,7 +23,7 @@ const InitPasswordPopup = () => {
       const response = await initValidate({ body: { password } })
       if (response.result === 'success') {
         setValidated(true)
-        router.push('/install') // or render setup form
+        router.push(`${basicUrl}/install`) // or render setup form
       }
       else {
         throw new Error('Validation failed')
@@ -69,7 +70,7 @@ const InitPasswordPopup = () => {
               </div>
             </div>
             <div className="flex flex-row flex-wrap justify-stretch p-0">
-              <Button variant="primary" onClick={handleValidation} className="basis-full min-w-28">
+              <Button type="primary" onClick={handleValidation} className="basis-full min-w-28">
                 {t('login.validate')}
               </Button>
             </div>

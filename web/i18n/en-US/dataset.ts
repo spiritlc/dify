@@ -1,18 +1,17 @@
 const translation = {
   knowledge: 'Knowledge',
   documentCount: ' docs',
-  wordCount: ' k words',
+  wordCount: 'k words',
   appCount: ' linked apps',
   createDataset: 'Create Knowledge',
   createDatasetIntro: 'Import your own text data or write data in real-time via Webhook for LLM context enhancement.',
   deleteDatasetConfirmTitle: 'Delete this Knowledge?',
   deleteDatasetConfirmContent:
     'Deleting the Knowledge is irreversible. Users will no longer be able to access your Knowledge, and all prompt configurations and logs will be permanently deleted.',
-  datasetUsedByApp: 'The knowledge is being used by some apps. Apps will no longer be able to use this Knowledge, and all prompt configurations and logs will be permanently deleted.',
   datasetDeleted: 'Knowledge deleted',
   datasetDeleteFailed: 'Failed to delete Knowledge',
   didYouKnow: 'Did you know?',
-  intro1: 'The Knowledge can be integrated into the Dify application ',
+  intro1: 'The Knowledge can be integrated into the HomeGPTagent application ',
   intro2: 'as a context',
   intro3: ',',
   intro4: 'or it ',
@@ -21,7 +20,7 @@ const translation = {
   unavailable: 'Unavailable',
   unavailableTip: 'Embedding model is not available, the default embedding model needs to be configured',
   datasets: 'KNOWLEDGE',
-  datasetsApi: 'API ACCESS',
+  datasetsApi: 'API',
   retrieval: {
     semantic_search: {
       title: 'Vector Search',
@@ -33,7 +32,7 @@ const translation = {
     },
     hybrid_search: {
       title: 'Hybrid Search',
-      description: 'Execute full-text search and vector searches simultaneously, re-rank to select the best match for the user\'s query. Users can choose to set weights or configure to a Rerank model.',
+      description: 'Execute full-text search and vector searches simultaneously, re-rank to select the best match for the user\'s query. Configuration of the Rerank model APIis necessary.',
       recommend: 'Recommend',
     },
     invertedIndex: {
@@ -43,34 +42,6 @@ const translation = {
     change: 'Change',
     changeRetrievalMethod: 'Change retrieval method',
   },
-  docsFailedNotice: 'documents failed to be indexed',
-  retry: 'Retry',
-  indexingTechnique: {
-    high_quality: 'HQ',
-    economy: 'ECO',
-  },
-  indexingMethod: {
-    semantic_search: 'VECTOR',
-    full_text_search: 'FULL TEXT',
-    hybrid_search: 'HYBRID',
-    invertedIndex: 'INVERTED',
-  },
-  mixtureHighQualityAndEconomicTip: 'The Rerank model is required for mixture of high quality and economical knowledge bases.',
-  inconsistentEmbeddingModelTip: 'The Rerank model is required if the Embedding models of the selected knowledge bases are inconsistent.',
-  retrievalSettings: 'Retrieval Setting',
-  rerankSettings: 'Rerank Setting',
-  weightedScore: {
-    title: 'Weighted Score',
-    description: 'By adjusting the weights assigned, this rerank strategy determines whether to prioritize semantic or keyword matching.',
-    semanticFirst: 'Semantic first',
-    keywordFirst: 'Keyword first',
-    customized: 'Customized',
-    semantic: 'Semantic',
-    keyword: 'Keyword',
-  },
-  nTo1RetrievalLegacy: 'N-to-1 retrieval will be officially deprecated from September. It is recommended to use the latest Multi-path retrieval to obtain better results. ',
-  nTo1RetrievalLegacyLink: 'Learn more',
-  nTo1RetrievalLegacyLinkText: ' N-to-1 retrieval will be officially deprecated in September.',
 }
 
 export default translation

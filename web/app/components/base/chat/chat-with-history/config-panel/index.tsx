@@ -7,7 +7,8 @@ import AppIcon from '@/app/components/base/app-icon'
 import { MessageDotsCircle } from '@/app/components/base/icons/src/vender/solid/communication'
 import { Edit02 } from '@/app/components/base/icons/src/vender/line/general'
 import { Star06 } from '@/app/components/base/icons/src/vender/solid/shapes'
-import LogoSite from '@/app/components/base/logo/logo-site'
+import { FootLogo } from '@/app/components/share/chat/welcome/massive-component'
+import { basicUrl } from '@/config'
 
 const ConfigPanel = () => {
   const { t } = useTranslation()
@@ -67,9 +68,7 @@ const ConfigPanel = () => {
                   {t('share.chat.configStatusDes')}
                 </div>
                 <Button
-                  variant='secondary-accent'
-                  size='small'
-                  className='shrink-0'
+                  className='shrink-0 px-2 py-0 h-6 bg-white text-xs font-medium text-primary-600 rounded-md'
                   onClick={() => setCollapsed(false)}
                 >
                   <Edit02 className='mr-1 w-3 h-3' />
@@ -95,8 +94,8 @@ const ConfigPanel = () => {
               <Form />
               <div className={`pl-[136px] flex items-center ${isMobile && '!pl-0'}`}>
                 <Button
-                  variant='primary'
-                  className='mr-2'
+                  type='primary'
+                  className='mr-2 text-sm font-medium'
                   onClick={() => {
                     setCollapsed(true)
                     handleStartChat()
@@ -105,6 +104,7 @@ const ConfigPanel = () => {
                   {t('common.operation.save')}
                 </Button>
                 <Button
+                  className='text-sm font-medium'
                   onClick={() => setCollapsed(true)}
                 >
                   {t('common.operation.cancel')}
@@ -118,9 +118,8 @@ const ConfigPanel = () => {
             <div className='p-6 rounded-b-xl'>
               <Form />
               <Button
-                className={`${inputsForms.length && !isMobile && 'ml-[136px]'}`}
-                variant='primary'
-                size='large'
+                className={`px-4 py-0 h-9 ${inputsForms.length && !isMobile && 'ml-[136px]'}`}
+                type='primary'
                 onClick={handleStartChat}
               >
                 <MessageDotsCircle className='mr-2 w-4 h-4 text-white' />
@@ -136,8 +135,8 @@ const ConfigPanel = () => {
             {site?.privacy_policy
               ? <div className={`flex items-center ${isMobile && 'w-full justify-end'}`}>{t('share.chat.privacyPolicyLeft')}
                 <a
-                  className='text-gray-500 px-1'
-                  href={site?.privacy_policy}
+                  className='text-gray-500'
+                  href={`${basicUrl}${site?.privacy_policy}`}
                   target='_blank' rel='noopener noreferrer'>{t('share.chat.privacyPolicyMiddle')}</a>
                 {t('share.chat.privacyPolicyRight')}
               </div>
@@ -148,14 +147,14 @@ const ConfigPanel = () => {
                 ? null
                 : (
                   <div className={`flex items-center justify-end ${isMobile && 'w-full'}`}>
-                    <div className='flex items-center pr-3 space-x-3'>
+                    <a className='flex items-center pr-3 space-x-3' href="https://HomeGPTagent.ai/" target="_blank">
                       <span className='uppercase'>{t('share.chat.powerBy')}</span>
                       {
                         customConfig?.replace_webapp_logo
                           ? <img src={customConfig?.replace_webapp_logo} alt='logo' className='block w-auto h-5' />
-                          : <LogoSite className='!h-5' />
+                          : <FootLogo />
                       }
-                    </div>
+                    </a>
                   </div>
                 )
             }

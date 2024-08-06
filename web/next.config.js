@@ -1,4 +1,3 @@
-const { codeInspectorPlugin } = require('code-inspector-plugin')
 const withMDX = require('@next/mdx')({
   extension: /\.mdx?$/,
   options: {
@@ -12,12 +11,15 @@ const withMDX = require('@next/mdx')({
   },
 })
 
+const env = process.env.NODE_ENV
+console.log('环境', env)
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  webpack: (config, { dev, isServer }) => {
-    config.plugins.push(codeInspectorPlugin({ bundler: 'webpack' }))
-    return config
-  },
+  basePath: env === 'development' ? '' : '',
+  // // // // publicRuntimeConfig: {
+  // // // //   basePath: "/app",
+  // // // // },
+  assetPrefix: env === 'development' ? '' : '/airtool/',
   productionBrowserSourceMaps: false, // enable browser source map generation during the production build
   // Configure pageExtensions to include md and mdx
   pageExtensions: ['ts', 'tsx', 'js', 'jsx', 'md', 'mdx'],
@@ -34,13 +36,32 @@ const nextConfig = {
     // https://nextjs.org/docs/api-reference/next.config.js/ignoring-typescript-errors
     ignoreBuildErrors: true,
   },
-  reactStrictMode: true,
   async redirects() {
     return [
       {
         source: '/',
-        destination: '/apps',
+        destination: '/airtool/apps',
         permanent: false,
+      },
+    ]
+  },
+  async rewrites() {
+    return [
+      {
+        source: '/skytool/console/:path*',
+        destination: 'https://bd-ys.haier.net/skytool/console/:path*',
+      },
+      {
+        source: '/skytool/:path*',
+        destination: 'https://bd-ys.haier.net/skytool/:path*',
+      },
+      {
+        source: '/system-manager-rest/:path*',
+        destination: 'https://data.haier.net/system-manager-rest/:path*',
+      },
+      {
+        source: '/ommp/:path*',
+        destination: 'https://ommp.haiersmarthomes.com:9999/ommp/:path*',
       },
     ]
   },

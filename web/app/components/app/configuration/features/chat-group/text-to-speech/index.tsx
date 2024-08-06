@@ -40,15 +40,14 @@ const TextToSpeech: FC = () => {
           { languageInfo?.example && (
             <AudioBtn
               value={languageInfo?.example}
-              isAudition
-              voice={textToSpeechConfig.voice}
-              noCache
+              voice={voiceItem?.value}
+              isAudition={true}
             />
           )}
         </div>
       }
       noBodySpacing
-      isShowTextToSpeech
+      isShowTextToSpeech={true}
     />
   )
 }

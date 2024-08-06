@@ -11,8 +11,6 @@ export type ConversationItem = {
 
 export type SiteInfo = {
   title: string
-  chat_color_theme?: string
-  chat_color_theme_inverted?: boolean
   icon?: string
   icon_background?: string
   description?: string
@@ -20,8 +18,6 @@ export type SiteInfo = {
   prompt_public?: boolean
   copyright?: string
   privacy_policy?: string
-  custom_disclaimer?: string
-  show_workflow_steps?: boolean
 }
 
 export type AppMeta = {

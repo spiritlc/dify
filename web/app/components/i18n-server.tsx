@@ -7,7 +7,7 @@ export type II18NServerProps = {
   children: React.ReactNode
 }
 
-const I18NServer = ({
+const I18NServer = async ({
   children,
 }: II18NServerProps) => {
   const locale = getLocaleOnServer()

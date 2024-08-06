@@ -8,7 +8,7 @@ const translation = {
   },
   contribute: {
     line1: 'Je suis intéressé par',
-    line2: 'contribuer des outils à Dify.',
+    line2: 'contribuer des outils à HomeGPTagent.',
     viewGuide: 'Voir le guide',
   },
   author: 'Par',
@@ -71,10 +71,6 @@ const translation = {
     },
     privacyPolicy: 'Politique de confidentialité',
     privacyPolicyPlaceholder: 'Veuillez entrer la politique de confidentialité',
-    customDisclaimer: 'Clause de non-responsabilité personnalisée',
-    customDisclaimerPlaceholder: 'Entrez le texte de la clause de non-responsabilité personnalisée',
-    deleteToolConfirmTitle: 'Supprimer cet outil ?',
-    deleteToolConfirmContent: 'La suppression de l\'outil est irréversible. Les utilisateurs ne pourront plus accéder à votre outil.',
   },
   test: {
     title: 'Test',

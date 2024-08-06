@@ -2,19 +2,17 @@
 import type { FC } from 'react'
 import React, { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import {
-  RiErrorWarningFill,
-} from '@remixicon/react'
+import cn from 'classnames'
 import { useBoolean, useClickAway } from 'ahooks'
 import { XMarkIcon } from '@heroicons/react/24/outline'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import TabHeader from '../../base/tab-header'
 import Button from '../../base/button'
 import { checkOrSetAccessToken } from '../utils'
+import { AlertCircle } from '../../base/icons/src/vender/solid/alertsAndFeedback'
 import s from './style.module.css'
 import RunBatch from './run-batch'
 import ResDownload from './run-batch/res-download'
-import cn from '@/utils/classnames'
 import useBreakpoints, { MediaType } from '@/hooks/use-breakpoints'
 import RunOnce from '@/app/components/share/text-generation/run-once'
 import { fetchSavedMessage as doFetchSavedMessage, fetchAppInfo, fetchAppParams, removeMessage, saveMessage } from '@/service/share'
@@ -32,7 +30,7 @@ import { userInputsFormToPromptVariables } from '@/utils/model-config'
 import Res from '@/app/components/share/text-generation/result'
 import SavedItems from '@/app/components/app/text-generate/saved-items'
 import type { InstalledApp } from '@/models/explore'
-import { DEFAULT_VALUE_MAX_LEN, appDefaultIconBackground } from '@/config'
+import { DEFAULT_VALUE_MAX_LEN, appDefaultIconBackground, basicUrl } from '@/config'
 import Toast from '@/app/components/base/toast'
 import type { VisionFile, VisionSettings } from '@/types/app'
 import { Resolution, TransferMethod } from '@/types/app'
@@ -82,10 +80,8 @@ const TextGeneration: FC<IMainProps> = ({
   const pathname = usePathname()
   useEffect(() => {
     const params = new URLSearchParams(searchParams)
-    if (params.has('mode')) {
-      params.delete('mode')
-      router.replace(`${pathname}?${params.toString()}`)
-    }
+    params.delete('mode')
+    router.replace(`${pathname.startsWith(basicUrl) ? '' : basicUrl}${pathname}?${params.toString()}`)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -404,7 +400,7 @@ const TextGeneration: FC<IMainProps> = ({
       if (canReplaceLogo)
         document.title = `${siteInfo.title}`
       else
-        document.title = `${siteInfo.title} - Powered by Dify`
+        document.title = `${siteInfo.title} - Powered by HomeGPTagent`
     }
   }, [siteInfo?.title, canReplaceLogo])
 
@@ -442,7 +438,6 @@ const TextGeneration: FC<IMainProps> = ({
     visionConfig={visionConfig}
     completionFiles={completionFiles}
     isShowTextToSpeech={!!textToSpeechConfig?.enabled}
-    siteInfo={siteInfo}
   />)
 
   const renderBatchRes = () => {
@@ -478,11 +473,11 @@ const TextGeneration: FC<IMainProps> = ({
           <div className='flex items-center space-x-2'>
             {allFailedTaskList.length > 0 && (
               <div className='flex items-center'>
-                <RiErrorWarningFill className='w-4 h-4 text-[#D92D20]' />
+                <AlertCircle className='w-4 h-4 text-[#D92D20]' />
                 <div className='ml-1 text-[#D92D20]'>{t('share.generation.batchFailed.info', { num: allFailedTaskList.length })}</div>
                 <Button
-                  variant='primary'
-                  className='ml-2'
+                  type='primary'
+                  className='ml-2 !h-8 !px-3'
                   onClick={handleRetryAllFailedTask}
                 >{t('share.generation.batchFailed.retry')}</Button>
                 <div className='mx-3 w-[1px] h-3.5 bg-gray-200'></div>
@@ -545,7 +540,7 @@ const TextGeneration: FC<IMainProps> = ({
               </div>
               {!isPC && (
                 <Button
-                  className='shrink-0 ml-2'
+                  className='shrink-0 !h-8 !px-3 ml-2'
                   onClick={showResSidebar}
                 >
                   <div className='flex items-center space-x-2 text-primary-600 text-[13px] font-medium'>
@@ -623,8 +618,8 @@ const TextGeneration: FC<IMainProps> = ({
                 <div>·</div>
                 <div>{t('share.chat.privacyPolicyLeft')}
                   <a
-                    className='text-gray-500 px-1'
-                    href={siteInfo.privacy_policy}
+                    className='text-gray-500'
+                    href={`${basicUrl}${siteInfo.privacy_policy}`}
                     target='_blank' rel='noopener noreferrer'>{t('share.chat.privacyPolicyMiddle')}</a>
                   {t('share.chat.privacyPolicyRight')}
                 </div>

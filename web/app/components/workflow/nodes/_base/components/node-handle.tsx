@@ -14,9 +14,8 @@ import type { Node } from '../../../types'
 import BlockSelector from '../../../block-selector'
 import type { ToolDefaultValue } from '../../../block-selector/types'
 import {
-  useAvailableBlocks,
+  useNodesExtraData,
   useNodesInteractions,
-  useNodesReadOnly,
 } from '../../../hooks'
 import { useStore } from '../../../store'
 
@@ -35,12 +34,10 @@ export const NodeTargetHandle = memo(({
 }: NodeHandleProps) => {
   const [open, setOpen] = useState(false)
   const { handleNodeAdd } = useNodesInteractions()
-  const { getNodesReadOnly } = useNodesReadOnly()
+  const nodesExtraData = useNodesExtraData()
   const connected = data._connectedTargetHandleIds?.includes(handleId)
-  const { availablePrevBlocks } = useAvailableBlocks(data.type, data.isInIteration)
-  const isConnectable = !!availablePrevBlocks.length && (
-    !data.isIterationStart
-  )
+  const availablePrevNodes = nodesExtraData[data.type].availablePrevNodes
+  const isConnectable = !!availablePrevNodes.length
 
   const handleOpenChange = useCallback((v: boolean) => {
     setOpen(v)
@@ -81,7 +78,7 @@ export const NodeTargetHandle = memo(({
         onClick={handleHandleClick}
       >
         {
-          !connected && isConnectable && !getNodesReadOnly() && (
+          !connected && isConnectable && !data._isInvalidConnection && (
             <BlockSelector
               open={open}
               onOpenChange={handleOpenChange}
@@ -95,7 +92,7 @@ export const NodeTargetHandle = memo(({
                 ${data.selected && '!flex'}
                 ${open && '!flex'}
               `}
-              availableBlocksTypes={availablePrevBlocks}
+              availableBlocksTypes={availablePrevNodes}
             />
           )
         }
@@ -115,10 +112,9 @@ export const NodeSourceHandle = memo(({
   const notInitialWorkflow = useStore(s => s.notInitialWorkflow)
   const [open, setOpen] = useState(false)
   const { handleNodeAdd } = useNodesInteractions()
-  const { getNodesReadOnly } = useNodesReadOnly()
-  const { availableNextBlocks } = useAvailableBlocks(data.type, data.isInIteration)
-  const isConnectable = !!availableNextBlocks.length
-
+  const nodesExtraData = useNodesExtraData()
+  const availableNextNodes = nodesExtraData[data.type].availableNextNodes
+  const isConnectable = !!availableNextNodes.length
   const connected = data._connectedSourceHandleIds?.includes(handleId)
   const handleOpenChange = useCallback((v: boolean) => {
     setOpen(v)
@@ -163,7 +159,7 @@ export const NodeSourceHandle = memo(({
         onClick={handleHandleClick}
       >
         {
-          !connected && isConnectable && !getNodesReadOnly() && (
+          !connected && isConnectable && !data._isInvalidConnection && (
             <BlockSelector
               open={open}
               onOpenChange={handleOpenChange}
@@ -176,7 +172,7 @@ export const NodeSourceHandle = memo(({
                 ${data.selected && '!flex'}
                 ${open && '!flex'}
               `}
-              availableBlocksTypes={availableNextBlocks}
+              availableBlocksTypes={availableNextNodes}
             />
           )
         }

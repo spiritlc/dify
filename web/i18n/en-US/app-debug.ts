@@ -24,7 +24,7 @@ const translation = {
     resetConfig: 'Reset',
     debugConfig: 'Debug',
     addFeature: 'Add Feature',
-    automatic: 'Generate',
+    automatic: 'Automatic',
     stopResponding: 'Stop responding',
     agree: 'like',
     disagree: 'dislike',
@@ -51,7 +51,7 @@ const translation = {
       title: 'Experience enhance',
     },
     conversationOpener: {
-      title: 'Conversation Opener',
+      title: 'Conversation remakers',
       description: 'In a chat app, the first sentence that the AI actively speaks to the user is usually used as a welcome.',
     },
     suggestedQuestionsAfterAnswer: {
@@ -199,58 +199,22 @@ const translation = {
       },
     },
   },
-  generate: {
-    title: 'Prompt Generator',
-    description: 'The Prompt Generator uses the configured model to optimize prompts for higher quality and better structure. Please write clear and detailed instructions.',
-    tryIt: 'Try it',
-    instruction: 'Instructions',
-    instructionPlaceHolder: 'Write clear and specific instructions.',
+  automatic: {
+    title: 'Automated application orchestration',
+    description: 'Describe your scenario, HomeGPTagent will orchestrate an application for you.',
+    intendedAudience: 'Who is the intended audience?',
+    intendedAudiencePlaceHolder: 'e.g. Student',
+    solveProblem: 'What problems do they hope AI can solve for them?',
+    solveProblemPlaceHolder: 'e.g. Extract insights and summarize information from long reports and articles',
     generate: 'Generate',
-    resTitle: 'Generated Prompt',
-    noDataLine1: 'Describe your use case on the left,',
-    noDataLine2: 'the orchestration preview will show here.',
-    apply: 'Apply',
+    audiencesRequired: 'Audiences required',
+    problemRequired: 'Problem required',
+    resTitle: 'We have orchestrated the following application for you.',
+    apply: 'Apply this orchestration',
+    noData: 'Describe your use case on the left, the orchestration preview will show here.',
     loading: 'Orchestrating the application for you...',
     overwriteTitle: 'Override existing configuration?',
-    overwriteMessage: 'Applying this prompt will override existing configuration.',
-    template: {
-      pythonDebugger: {
-        name: 'Python debugger',
-        instruction: 'A bot that can generate and debug your code based on your instruction',
-      },
-      translation: {
-        name: 'Translation',
-        instruction: 'A translator that can translate multiple languages',
-      },
-      professionalAnalyst: {
-        name: 'Professional analyst',
-        instruction: 'Extract insights, identify risk and distill key information from long reports into single memo',
-      },
-      excelFormulaExpert: {
-        name: 'Excel formula expert',
-        instruction: 'A chatbot that can help novice users understand, use and create Excel formulas based on user instructions',
-      },
-      travelPlanning: {
-        name: 'Travel planning',
-        instruction: 'The Travel Planning Assistant is an intelligent tool designed to help users effortlessly plan their trips',
-      },
-      SQLSorcerer: {
-        name: 'SQL sorcerer',
-        instruction: 'Transform everyday language into SQL queries',
-      },
-      GitGud: {
-        name: 'Git gud',
-        instruction: 'Generate appropriate Git commands based on user described version control actions',
-      },
-      meetingTakeaways: {
-        name: 'Meeting takeaways',
-        instruction: 'Distill meetings into concise summaries including discussion topics, key takeaways, and action items',
-      },
-      writingsPolisher: {
-        name: 'Writing polisher',
-        instruction: 'Use advanced copyediting techniques to improve your writings',
-      },
-    },
+    overwriteMessage: 'Applying this orchestration will override existing configuration.',
   },
   resetConfig: {
     title: 'Confirm reset?',
@@ -320,7 +284,6 @@ const translation = {
     'varName': 'Variable Name',
     'labelName': 'Label Name',
     'inputPlaceholder': 'Please input',
-    'content': 'Content',
     'required': 'Required',
     'errorMsg': {
       varNameRequired: 'Variable name is required',
@@ -359,15 +322,12 @@ const translation = {
       language: 'Language',
       resolutionTooltip: 'Text-to-speech voice support language。',
       voice: 'Voice',
-      autoPlay: 'Auto Play',
-      autoPlayEnabled: 'Turn On',
-      autoPlayDisabled: 'Turn Off',
     },
   },
   openingStatement: {
     title: 'Conversation Opener',
     add: 'Add',
-    writeOpener: 'Write opener',
+    writeOpner: 'Write opener',
     placeholder: 'Write your opener message here, you can use variables, try type {{variable}}.',
     openingQuestion: 'Opening Questions',
     noDataPlaceHolder:
@@ -409,7 +369,7 @@ const translation = {
     },
     retrieveMultiWay: {
       title: 'Multi-path retrieval',
-      description: 'Based on user intent, queries across all Knowledge, retrieves relevant text from multi-sources, and selects the best results matching the user query after reranking. ',
+      description: 'Based on user intent, queries across all Knowledge, retrieves relevant text from multi-sources, and selects the best results matching the user query after reranking. Configuration of the Rerank model API is required.',
     },
     rerankModelRequired: 'Rerank model is required',
     params: 'Params',

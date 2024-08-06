@@ -4,11 +4,11 @@ import SystemModelSelector from './system-model-selector'
 import ProviderAddedCard, { UPDATE_MODEL_PROVIDER_CUSTOM_MODEL_LIST } from './provider-added-card'
 import ProviderCard from './provider-card'
 import type {
-  CustomConfigurationModelFixedFields,
+  CustomConfigrationModelFixedFields,
   ModelProvider,
 } from './declarations'
 import {
-  ConfigurationMethodEnum,
+  ConfigurateMethodEnum,
   CustomConfigurationStatusEnum,
   ModelTypeEnum,
 } from './declarations'
@@ -19,7 +19,7 @@ import {
 } from './hooks'
 import { AlertTriangle } from '@/app/components/base/icons/src/vender/solid/alertsAndFeedback'
 import { useProviderContext } from '@/context/provider-context'
-import { useModalContextSelector } from '@/context/modal-context'
+import { useModalContext } from '@/context/modal-context'
 import { useEventEmitterContextContext } from '@/context/event-emitter'
 
 const ModelProviderPage = () => {
@@ -33,7 +33,7 @@ const ModelProviderPage = () => {
   const { data: speech2textDefaultModel } = useDefaultModel(ModelTypeEnum.speech2text)
   const { data: ttsDefaultModel } = useDefaultModel(ModelTypeEnum.tts)
   const { modelProviders: providers } = useProviderContext()
-  const setShowModelModal = useModalContextSelector(state => state.setShowModelModal)
+  const { setShowModelModal } = useModalContext()
   const defaultModelNotConfigured = !textGenerationDefaultModel && !embeddingsDefaultModel && !speech2textDefaultModel && !rerankDefaultModel && !ttsDefaultModel
   const [configedProviders, notConfigedProviders] = useMemo(() => {
     const configedProviders: ModelProvider[] = []
@@ -57,32 +57,32 @@ const ModelProviderPage = () => {
 
   const handleOpenModal = (
     provider: ModelProvider,
-    configurateMethod: ConfigurationMethodEnum,
-    CustomConfigurationModelFixedFields?: CustomConfigurationModelFixedFields,
+    configurateMethod: ConfigurateMethodEnum,
+    customConfigrationModelFixedFields?: CustomConfigrationModelFixedFields,
   ) => {
     setShowModelModal({
       payload: {
         currentProvider: provider,
-        currentConfigurationMethod: configurateMethod,
-        currentCustomConfigurationModelFixedFields: CustomConfigurationModelFixedFields,
+        currentConfigurateMethod: configurateMethod,
+        currentCustomConfigrationModelFixedFields: customConfigrationModelFixedFields,
       },
       onSaveCallback: () => {
         updateModelProviders()
 
-        if (configurateMethod === ConfigurationMethodEnum.predefinedModel) {
+        if (configurateMethod === ConfigurateMethodEnum.predefinedModel) {
           provider.supported_model_types.forEach((type) => {
             updateModelList(type)
           })
         }
 
-        if (configurateMethod === ConfigurationMethodEnum.customizableModel && provider.custom_configuration.status === CustomConfigurationStatusEnum.active) {
+        if (configurateMethod === ConfigurateMethodEnum.customizableModel && provider.custom_configuration.status === CustomConfigurationStatusEnum.active) {
           eventEmitter?.emit({
             type: UPDATE_MODEL_PROVIDER_CUSTOM_MODEL_LIST,
             payload: provider.provider,
           } as any)
 
-          if (CustomConfigurationModelFixedFields?.__model_type)
-            updateModelList(CustomConfigurationModelFixedFields?.__model_type)
+          if (customConfigrationModelFixedFields?.__model_type)
+            updateModelList(customConfigrationModelFixedFields?.__model_type)
         }
       },
     })
@@ -117,7 +117,7 @@ const ModelProviderPage = () => {
                 <ProviderAddedCard
                   key={provider.provider}
                   provider={provider}
-                  onOpenModal={(configurateMethod: ConfigurationMethodEnum, currentCustomConfigurationModelFixedFields?: CustomConfigurationModelFixedFields) => handleOpenModal(provider, configurateMethod, currentCustomConfigurationModelFixedFields)}
+                  onOpenModal={(configurateMethod: ConfigurateMethodEnum, currentCustomConfigrationModelFixedFields?: CustomConfigrationModelFixedFields) => handleOpenModal(provider, configurateMethod, currentCustomConfigrationModelFixedFields)}
                 />
               ))
             }
@@ -137,7 +137,7 @@ const ModelProviderPage = () => {
                   <ProviderCard
                     key={provider.provider}
                     provider={provider}
-                    onOpenModal={(configurateMethod: ConfigurationMethodEnum) => handleOpenModal(provider, configurateMethod)}
+                    onOpenModal={(configurateMethod: ConfigurateMethodEnum) => handleOpenModal(provider, configurateMethod)}
                   />
                 ))
               }

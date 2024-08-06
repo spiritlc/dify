@@ -3,7 +3,7 @@ import type { FC } from 'react'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { PlusIcon } from '@heroicons/react/20/solid'
-import cn from '@/utils/classnames'
+import cn from 'classnames'
 
 export type IOperationBtnProps = {
   className?: string

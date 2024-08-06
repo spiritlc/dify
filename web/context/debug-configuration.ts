@@ -28,7 +28,7 @@ import type { Collection } from '@/app/components/tools/types'
 
 type IDebugConfiguration = {
   appId: string
-  isAPIKeySet: boolean
+  hasSetAPIKEY: boolean
   isTrailFinished: boolean
   mode: string
   modelModeType: ModelModeType
@@ -97,13 +97,11 @@ type IDebugConfiguration = {
   isShowVisionConfig: boolean
   visionConfig: VisionSettings
   setVisionConfig: (visionConfig: VisionSettings, noNotice?: boolean) => void
-  rerankSettingModalOpen: boolean
-  setRerankSettingModalOpen: (rerankSettingModalOpen: boolean) => void
 }
 
 const DebugConfigurationContext = createContext<IDebugConfiguration>({
   appId: '',
-  isAPIKeySet: false,
+  hasSetAPIKEY: false,
   isTrailFinished: false,
   mode: '',
   modelModeType: ModelModeType.chat,
@@ -136,7 +134,7 @@ const DebugConfigurationContext = createContext<IDebugConfiguration>({
   introduction: '',
   setIntroduction: () => { },
   suggestedQuestions: [],
-  setSuggestedQuestions: () => { },
+  setSuggestedQuestions: () => {},
   controlClearChatMessage: 0,
   setControlClearChatMessage: () => { },
   prevPromptConfig: {
@@ -219,7 +217,7 @@ const DebugConfigurationContext = createContext<IDebugConfiguration>({
   showSelectDataSet: () => { },
   setDataSets: () => { },
   datasetConfigs: {
-    retrieval_model: RETRIEVE_TYPE.multiWay,
+    retrieval_model: RETRIEVE_TYPE.oneWay,
     reranking_model: {
       reranking_provider_name: '',
       reranking_model_name: '',
@@ -241,8 +239,6 @@ const DebugConfigurationContext = createContext<IDebugConfiguration>({
     transfer_methods: [TransferMethod.remote_url],
   },
   setVisionConfig: () => { },
-  rerankSettingModalOpen: false,
-  setRerankSettingModalOpen: () => { },
 })
 
 export const useDebugConfigurationContext = () => useContext(DebugConfigurationContext)

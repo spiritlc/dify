@@ -5,6 +5,7 @@ import { useValidate } from './hooks'
 import type { Form, KeyFrom, Status, ValidateValue } from './declarations'
 import { useEventEmitterContextContext } from '@/context/event-emitter'
 import { LinkExternal02 } from '@/app/components/base/icons/src/vender/line/general'
+import { basicUrl } from '@/config'
 
 export type KeyValidatorProps = {
   type: string
@@ -108,7 +109,7 @@ const KeyValidator = ({
                 />
               ))
             }
-            <a className="flex items-center text-xs cursor-pointer text-primary-600" href={keyFrom.link} target='_blank' rel='noopener noreferrer'>
+            <a className="flex items-center text-xs cursor-pointer text-primary-600" href={`${basicUrl}${keyFrom.link}`} target='_blank' rel='noopener noreferrer'>
               {keyFrom.text}
               <LinkExternal02 className='w-3 h-3 ml-1 text-primary-600' />
             </a>

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { ChevronDownIcon, ChevronRightIcon } from '@heroicons/react/24/outline'
-import classNames from '@/utils/classnames'
+import classNames from 'classnames'
 
 export type IItem = {
   key: string

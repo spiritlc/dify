@@ -1,11 +1,11 @@
 import type { FC } from 'react'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import cn from 'classnames'
 import {
-  RiCloseLine,
-  RiLoader2Line,
-} from '@remixicon/react'
-import cn from '@/utils/classnames'
+  Loading02,
+  XClose,
+} from '@/app/components/base/icons/src/vender/line/general'
 import { RefreshCcw01 } from '@/app/components/base/icons/src/vender/line/arrows'
 import { AlertTriangle } from '@/app/components/base/icons/src/vender/solid/alertsAndFeedback'
 import TooltipPlus from '@/app/components/base/tooltip-plus'
@@ -77,14 +77,15 @@ const ImageList: FC<ImageListProps> = ({
             <div
               className={`
                   absolute inset-0 flex items-center justify-center rounded-lg z-[1] border
-                  ${item.progress === -1
+                  ${
+            item.progress === -1
               ? 'bg-[#FEF0C7] border-[#DC6803]'
               : 'bg-black/[0.16] border-transparent'
             }
                 `}
             >
               {item.progress > -1 && (
-                <RiLoader2Line className="animate-spin w-5 h-5 text-white" />
+                <Loading02 className="animate-spin w-5 h-5 text-white" />
               )}
               {item.progress === -1 && (
                 <TooltipPlus
@@ -119,12 +120,12 @@ const ImageList: FC<ImageListProps> = ({
               type="button"
               className={cn(
                 'absolute z-10 -top-[9px] -right-[9px] items-center justify-center w-[18px] h-[18px]',
-                'bg-white hover:bg-gray-50 border-[0.5px] border-black/2 rounded-2xl shadow-lg',
+                'bg-white hover:bg-gray-50 border-[0.5px] border-black/[0.02] rounded-2xl shadow-lg',
                 item.progress === -1 ? 'flex' : 'hidden group-hover:flex',
               )}
               onClick={() => onRemove && onRemove(item._id)}
             >
-              <RiCloseLine className="w-3 h-3 text-gray-500" />
+              <XClose className="w-3 h-3 text-gray-500" />
             </button>
           )}
         </div>

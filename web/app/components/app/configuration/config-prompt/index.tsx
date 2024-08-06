@@ -3,9 +3,6 @@ import type { FC } from 'react'
 import React from 'react'
 import { useContext } from 'use-context-selector'
 import produce from 'immer'
-import {
-  RiAddLine,
-} from '@remixicon/react'
 import { useTranslation } from 'react-i18next'
 import SimplePromptInput from './simple-prompt-input'
 import AdvancedMessageInput from '@/app/components/app/configuration/config-prompt/advanced-prompt-input'
@@ -13,16 +10,13 @@ import { PromptRole } from '@/models/debug'
 import type { PromptItem, PromptVariable } from '@/models/debug'
 import { type AppType, ModelModeType } from '@/types/app'
 import ConfigContext from '@/context/debug-configuration'
+import { Plus } from '@/app/components/base/icons/src/vender/line/general'
 import { MAX_PROMPT_MESSAGE_LENGTH } from '@/config'
 export type IPromptProps = {
   mode: AppType
   promptTemplate: string
   promptVariables: PromptVariable[]
   readonly?: boolean
-  noTitle?: boolean
-  gradientBorder?: boolean
-  editorHeight?: number
-  noResize?: boolean
   onChange?: (prompt: string, promptVariables: PromptVariable[]) => void
 }
 
@@ -30,11 +24,7 @@ const Prompt: FC<IPromptProps> = ({
   mode,
   promptTemplate,
   promptVariables,
-  noTitle,
-  gradientBorder,
   readonly = false,
-  editorHeight,
-  noResize,
   onChange,
 }) => {
   const { t } = useTranslation()
@@ -107,10 +97,6 @@ const Prompt: FC<IPromptProps> = ({
         promptVariables={promptVariables}
         readonly={readonly}
         onChange={onChange}
-        noTitle={noTitle}
-        gradientBorder={gradientBorder}
-        editorHeight={editorHeight}
-        noResize={noResize}
       />
     )
   }
@@ -133,7 +119,6 @@ const Prompt: FC<IPromptProps> = ({
                 promptVariables={promptVariables}
                 isContextMissing={isContextMissing && !isHideContextMissTip}
                 onHideContextMissingTip={() => setIsHideContextMissTip(true)}
-                noResize={noResize}
               />
             ))
           )
@@ -149,7 +134,6 @@ const Prompt: FC<IPromptProps> = ({
               promptVariables={promptVariables}
               isContextMissing={isContextMissing && !isHideContextMissTip}
               onHideContextMissingTip={() => setIsHideContextMissTip(true)}
-              noResize={noResize}
             />
           )
         }
@@ -158,7 +142,7 @@ const Prompt: FC<IPromptProps> = ({
         <div
           onClick={handleAddMessage}
           className='mt-3 flex items-center h-8 justify-center bg-gray-50 rounded-lg cursor-pointer text-[13px] font-medium text-gray-700 space-x-2'>
-          <RiAddLine className='w-4 h-4' />
+          <Plus className='w-4 h-4' />
           <div>{t('appDebug.promptMode.operation.addMessage')}</div>
         </div>
       )}

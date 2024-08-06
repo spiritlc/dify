@@ -13,7 +13,6 @@ type Props = {
   readonly: boolean
   list: Variable[]
   onChange: (list: Variable[]) => void
-  onVarNameChange?: (oldName: string, newName: string) => void
   isSupportConstantValue?: boolean
   onlyLeafNodeVar?: boolean
   filterVar?: (payload: Var, valueSelector: ValueSelector) => boolean
@@ -24,7 +23,6 @@ const VarList: FC<Props> = ({
   readonly,
   list,
   onChange,
-  onVarNameChange,
   isSupportConstantValue,
   onlyLeafNodeVar,
   filterVar,
@@ -33,13 +31,12 @@ const VarList: FC<Props> = ({
 
   const handleVarNameChange = useCallback((index: number) => {
     return (e: React.ChangeEvent<HTMLInputElement>) => {
-      onVarNameChange?.(list[index].variable, e.target.value)
       const newList = produce(list, (draft) => {
         draft[index].variable = e.target.value
       })
       onChange(newList)
     }
-  }, [list, onVarNameChange, onChange])
+  }, [list, onChange])
 
   const handleVarReferenceChange = useCallback((index: number) => {
     return (value: ValueSelector | string, varKindType: VarKindType) => {

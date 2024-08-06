@@ -7,14 +7,14 @@ import {
 import useSWR, { useSWRConfig } from 'swr'
 import { useContext } from 'use-context-selector'
 import type {
-  CustomConfigurationModelFixedFields,
+  CustomConfigrationModelFixedFields,
   DefaultModel,
   DefaultModelResponse,
   Model,
   ModelTypeEnum,
 } from './declarations'
 import {
-  ConfigurationMethodEnum,
+  ConfigurateMethodEnum,
   ModelStatusEnum,
 } from './declarations'
 import I18n from '@/context/i18n'
@@ -24,6 +24,7 @@ import {
   fetchModelProviderCredentials,
   fetchModelProviders,
   getPayUrl,
+  submitFreeQuota,
 } from '@/service/common'
 import { useProviderContext } from '@/context/provider-context'
 
@@ -61,55 +62,42 @@ export const useLanguage = () => {
   return locale.replace('-', '_')
 }
 
-export const useProviderCredentialsAndLoadBalancing = (
+export const useProviderCrenditialsFormSchemasValue = (
   provider: string,
-  configurationMethod: ConfigurationMethodEnum,
+  configurateMethod: ConfigurateMethodEnum,
   configured?: boolean,
-  currentCustomConfigurationModelFixedFields?: CustomConfigurationModelFixedFields,
+  currentCustomConfigrationModelFixedFields?: CustomConfigrationModelFixedFields,
 ) => {
-  const { data: predefinedFormSchemasValue, mutate: mutatePredefined } = useSWR(
-    (configurationMethod === ConfigurationMethodEnum.predefinedModel && configured)
+  const { data: predefinedFormSchemasValue } = useSWR(
+    (configurateMethod === ConfigurateMethodEnum.predefinedModel && configured)
       ? `/workspaces/current/model-providers/${provider}/credentials`
       : null,
     fetchModelProviderCredentials,
   )
-  const { data: customFormSchemasValue, mutate: mutateCustomized } = useSWR(
-    (configurationMethod === ConfigurationMethodEnum.customizableModel && currentCustomConfigurationModelFixedFields)
-      ? `/workspaces/current/model-providers/${provider}/models/credentials?model=${currentCustomConfigurationModelFixedFields?.__model_name}&model_type=${currentCustomConfigurationModelFixedFields?.__model_type}`
+  const { data: customFormSchemasValue } = useSWR(
+    (configurateMethod === ConfigurateMethodEnum.customizableModel && currentCustomConfigrationModelFixedFields)
+      ? `/workspaces/current/model-providers/${provider}/models/credentials?model=${currentCustomConfigrationModelFixedFields?.__model_name}&model_type=${currentCustomConfigrationModelFixedFields?.__model_type}`
       : null,
     fetchModelProviderCredentials,
   )
 
-  const credentials = useMemo(() => {
-    return configurationMethod === ConfigurationMethodEnum.predefinedModel
+  const value = useMemo(() => {
+    return configurateMethod === ConfigurateMethodEnum.predefinedModel
       ? predefinedFormSchemasValue?.credentials
       : customFormSchemasValue?.credentials
         ? {
           ...customFormSchemasValue?.credentials,
-          ...currentCustomConfigurationModelFixedFields,
+          ...currentCustomConfigrationModelFixedFields,
         }
         : undefined
   }, [
-    configurationMethod,
-    currentCustomConfigurationModelFixedFields,
+    configurateMethod,
+    currentCustomConfigrationModelFixedFields,
     customFormSchemasValue?.credentials,
     predefinedFormSchemasValue?.credentials,
   ])
 
-  const mutate = useMemo(() => () => {
-    mutatePredefined()
-    mutateCustomized()
-  }, [mutateCustomized, mutatePredefined])
-
-  return {
-    credentials,
-    loadBalancing: (configurationMethod === ConfigurationMethodEnum.predefinedModel
-      ? predefinedFormSchemasValue
-      : customFormSchemasValue
-    )?.load_balancing,
-    mutate,
-  }
-  // as ([Record<string, string | boolean | undefined> | undefined, ModelLoadBalancingConfig | undefined])
+  return value
 }
 
 export const useModelList = (type: ModelTypeEnum) => {
@@ -212,6 +200,30 @@ export const useAnthropicBuyQuota = () => {
   }
 
   return handleGetPayUrl
+}
+
+export const useFreeQuota = (onSuccess: () => void) => {
+  const [loading, setLoading] = useState(false)
+
+  const handleClick = async (type: string) => {
+    if (loading)
+      return
+
+    try {
+      setLoading(true)
+      const res = await submitFreeQuota(`/workspaces/current/model-providers/${type}/free-quota-submit`)
+
+      if (res.type === 'redirect' && res.redirect_url)
+        window.location.href = res.redirect_url
+      else if (res.type === 'submit' && res.result === 'success')
+        onSuccess()
+    }
+    finally {
+      setLoading(false)
+    }
+  }
+
+  return handleClick
 }
 
 export const useModelProviders = () => {

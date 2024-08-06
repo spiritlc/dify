@@ -1,12 +1,13 @@
 'use client'
+import cn from 'classnames'
 import React, { useRef } from 'react'
 
 import { useRouter } from 'next/navigation'
 import { useHover } from 'ahooks'
 import s from './style.module.css'
-import cn from '@/utils/classnames'
 import ItemOperation from '@/app/components/explore/item-operation'
 import AppIcon from '@/app/components/base/app-icon'
+import { basicUrl } from '@/config'
 
 export type IAppNavItemProps = {
   isMobile: boolean
@@ -34,7 +35,7 @@ export default function AppNavItem({
   onDelete,
 }: IAppNavItemProps) {
   const router = useRouter()
-  const url = `/explore/installed/${id}`
+  const url = `${basicUrl}/explore/installed/${id}`
   const ref = useRef(null)
   const isHovering = useHover(ref)
   return (
@@ -47,7 +48,7 @@ export default function AppNavItem({
         'flex h-8 items-center justify-between mobile:justify-center px-2 mobile:px-1 rounded-lg text-sm font-normal',
       )}
       onClick={() => {
-        router.push(url) // use Link causes popup item always trigger jump. Can not be solved by e.stopPropagation().
+        router.push(`${url}`) // use Link causes popup item always trigger jump. Can not be solved by e.stopPropagation().
       }}
     >
       {isMobile && <AppIcon size='tiny' icon={icon} background={icon_background} />}

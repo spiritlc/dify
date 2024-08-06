@@ -1,26 +1,7 @@
 'use client'
 import { useTranslation } from 'react-i18next'
 import { useEffect, useRef, useState } from 'react'
-import {
-  RiAccountCircleFill,
-  RiAccountCircleLine,
-  RiApps2AddFill,
-  RiApps2AddLine,
-  RiBox3Fill,
-  RiBox3Line,
-  RiCloseLine,
-  RiColorFilterFill,
-  RiColorFilterLine,
-  RiDatabase2Fill,
-  RiDatabase2Line,
-  RiGroup2Fill,
-  RiGroup2Line,
-  RiMoneyDollarCircleFill,
-  RiMoneyDollarCircleLine,
-  RiPuzzle2Fill,
-  RiPuzzle2Line,
-  RiTranslate2,
-} from '@remixicon/react'
+import cn from 'classnames'
 import AccountPage from './account-page'
 import MembersPage from './members-page'
 import IntegrationsPage from './Integrations-page'
@@ -29,10 +10,18 @@ import ApiBasedExtensionPage from './api-based-extension-page'
 import DataSourcePage from './data-source-page'
 import ModelProviderPage from './model-provider-page'
 import s from './index.module.css'
-import cn from '@/utils/classnames'
 import BillingPage from '@/app/components/billing/billing-page'
 import CustomPage from '@/app/components/custom/custom-page'
 import Modal from '@/app/components/base/modal'
+import {
+  Webhooks,
+} from '@/app/components/base/icons/src/vender/line/development'
+import { User01, Users01 } from '@/app/components/base/icons/src/vender/line/users'
+import { User01 as User01Solid, Users01 as Users01Solid } from '@/app/components/base/icons/src/vender/solid/users'
+// AtSign
+import { Globe01 } from '@/app/components/base/icons/src/vender/line/mapsAndTravel'
+import { XClose } from '@/app/components/base/icons/src/vender/line/general'
+import { CubeOutline } from '@/app/components/base/icons/src/vender/line/shapes'
 import useBreakpoints, { MediaType } from '@/hooks/use-breakpoints'
 import { useProviderContext } from '@/context/provider-context'
 import { useAppContext } from '@/context/app-context'
@@ -65,50 +54,49 @@ export default function AccountSetting({
   const [activeMenu, setActiveMenu] = useState(activeTab)
   const { t } = useTranslation()
   const { enableBilling, enableReplaceWebAppLogo } = useProviderContext()
-  const { isCurrentWorkspaceDatasetOperator } = useAppContext()
+
+  const { currentWorkspace, isCurrentWorkspaceManager } = useAppContext()
 
   const workplaceGroupItems = (() => {
-    if (isCurrentWorkspaceDatasetOperator)
-      return []
     return [
       {
         key: 'provider',
         name: t('common.settings.provider'),
-        icon: <RiBox3Line className={iconClassName} />,
-        activeIcon: <RiBox3Fill className={iconClassName} />,
+        icon: <CubeOutline className={iconClassName} />,
+        activeIcon: <CubeOutline className={iconClassName} />,
       },
       {
         key: 'members',
         name: t('common.settings.members'),
-        icon: <RiGroup2Line className={iconClassName} />,
-        activeIcon: <RiGroup2Fill className={iconClassName} />,
+        icon: <Users01 className={iconClassName} />,
+        activeIcon: <Users01Solid className={iconClassName} />,
       },
-      {
-        // Use key false to hide this item
-        key: enableBilling ? 'billing' : false,
-        name: t('common.settings.billing'),
-        description: t('billing.plansCommon.receiptInfo'),
-        icon: <RiMoneyDollarCircleLine className={iconClassName} />,
-        activeIcon: <RiMoneyDollarCircleFill className={iconClassName} />,
-      },
-      {
-        key: 'data-source',
-        name: t('common.settings.dataSource'),
-        icon: <RiDatabase2Line className={iconClassName} />,
-        activeIcon: <RiDatabase2Fill className={iconClassName} />,
-      },
+      // {
+      //   // Use key false to hide this item
+      //   key: enableBilling ? 'billing' : false,
+      //   name: t('common.settings.billing'),
+      //   description: t('billing.plansCommon.receiptInfo'),
+      //   icon: <GoldCoinOutLine className={iconClassName} />,
+      //   activeIcon: <GoldCoin className={iconClassName} />,
+      // },
+      // {
+      //   key: 'data-source',
+      //   name: t('common.settings.dataSource'),
+      //   icon: <Database03 className={iconClassName} />,
+      //   activeIcon: <Database03Solid className={iconClassName} />,
+      // },
       {
         key: 'api-based-extension',
         name: t('common.settings.apiBasedExtension'),
-        icon: <RiPuzzle2Line className={iconClassName} />,
-        activeIcon: <RiPuzzle2Fill className={iconClassName} />,
+        icon: <Webhooks className={iconClassName} />,
+        activeIcon: <Webhooks className={iconClassName} />,
       },
-      {
-        key: (enableReplaceWebAppLogo || enableBilling) ? 'custom' : false,
-        name: t('custom.custom'),
-        icon: <RiColorFilterLine className={iconClassName} />,
-        activeIcon: <RiColorFilterFill className={iconClassName} />,
-      },
+      // {
+      //   key: (enableReplaceWebAppLogo || enableBilling) ? 'custom' : false,
+      //   name: t('custom.custom'),
+      //   icon: <Colors className={iconClassName} />,
+      //   activeIcon: <ColorsSolid className={iconClassName} />,
+      // },
     ].filter(item => !!item.key) as GroupItem[]
   })()
 
@@ -116,8 +104,10 @@ export default function AccountSetting({
   const isMobile = media === MediaType.mobile
 
   const menuItems = [
+    // TODO: 添加权限管理
+    // enableBilling ? 'workspace-group' : false,
     {
-      key: 'workspace-group',
+      key: isCurrentWorkspaceManager ? 'workspace-group' : null,
       name: t('common.settings.workplaceGroup'),
       items: workplaceGroupItems,
     },
@@ -128,24 +118,25 @@ export default function AccountSetting({
         {
           key: 'account',
           name: t('common.settings.account'),
-          icon: <RiAccountCircleLine className={iconClassName} />,
-          activeIcon: <RiAccountCircleFill className={iconClassName} />,
+          icon: <User01 className={iconClassName} />,
+          activeIcon: <User01Solid className={iconClassName} />,
         },
-        {
-          key: 'integrations',
-          name: t('common.settings.integrations'),
-          icon: <RiApps2AddLine className={iconClassName} />,
-          activeIcon: <RiApps2AddFill className={iconClassName} />,
-        },
+        // {
+        //   key: 'integrations',
+        //   name: t('common.settings.integrations'),
+        //   icon: <AtSign className={iconClassName} />,
+        //   activeIcon: <AtSign className={iconClassName} />,
+        // },
         {
           key: 'language',
           name: t('common.settings.language'),
-          icon: <RiTranslate2 className={iconClassName} />,
-          activeIcon: <RiTranslate2 className={iconClassName} />,
+          icon: <Globe01 className={iconClassName} />,
+          activeIcon: <Globe01 className={iconClassName} />,
         },
       ],
     },
-  ]
+  ].filter(temp => temp.key)
+
   const scrollRef = useRef<HTMLDivElement>(null)
   const [scrolled, setScrolled] = useState(false)
   useEffect(() => {
@@ -160,14 +151,18 @@ export default function AccountSetting({
     }
   }, [])
 
-  const activeItem = [...menuItems[0].items, ...menuItems[1].items].find(item => item.key === activeMenu)
+  const allItems = []
+  menuItems.forEach((item) => {
+    allItems.push(item.items)
+  })
+  const activeItem = menuItems.find(item => item.key === activeMenu)
 
   return (
     <Modal
       isShow
       onClose={() => { }}
       className={s.modal}
-      wrapperClassName='pt-[60px]'
+      wrapperClassName='!z-20 pt-[60px]'
     >
       <div className='flex'>
         <div className='w-[44px] sm:w-[200px] px-[1px] py-4 sm:p-4 border border-gray-100 shrink-0 sm:shrink-1 flex flex-col items-center sm:items-start'>
@@ -176,9 +171,7 @@ export default function AccountSetting({
             {
               menuItems.map(menuItem => (
                 <div key={menuItem.key} className='mb-4'>
-                  {!isCurrentWorkspaceDatasetOperator && (
-                    <div className='px-2 mb-[6px] text-[10px] sm:text-xs font-medium text-gray-500'>{menuItem.name}</div>
-                  )}
+                  <div className='px-2 mb-[6px] text-[10px] sm:text-xs font-medium text-gray-500'>{menuItem.name}</div>
                   <div>
                     {
                       menuItem.items.map(item => (
@@ -212,7 +205,7 @@ export default function AccountSetting({
             }
             <div className='grow flex justify-end'>
               <div className='flex items-center justify-center -mr-4 w-6 h-6 cursor-pointer' onClick={onCancel}>
-                <RiCloseLine className='w-4 h-4 text-gray-400' />
+                <XClose className='w-4 h-4 text-gray-400' />
               </div>
             </div>
           </div>

@@ -8,7 +8,7 @@ const translation = {
   },
   contribute: {
     line1: 'Мені цікаво зробити свій внесок',
-    line2: 'створення інструментів для Dify.',
+    line2: 'створення інструментів для HomeGPTagent.',
     viewGuide: 'Переглянути інструкцію',
   },
   author: 'Автор',
@@ -70,10 +70,6 @@ const translation = {
     },
     privacyPolicy: 'Політика конфіденційності',
     privacyPolicyPlaceholder: 'Введіть політику конфіденційності',
-    customDisclaimer: 'Власний відомості',
-    customDisclaimerPlaceholder: 'Введіть власні відомості',
-    deleteToolConfirmTitle: 'Видалити цей інструмент?',
-    deleteToolConfirmContent: 'Видалення інструменту є незворотнім. Користувачі більше не зможуть отримати доступ до вашого інструменту.',
   },
 
   test: {

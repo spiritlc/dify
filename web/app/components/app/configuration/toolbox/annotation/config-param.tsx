@@ -4,18 +4,15 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useContext } from 'use-context-selector'
 import { usePathname, useRouter } from 'next/navigation'
-import {
-  RiQuestionLine,
-} from '@remixicon/react'
 import ConfigParamModal from './config-param-modal'
 import Panel from '@/app/components/app/configuration/base/feature-panel'
 import { MessageFast } from '@/app/components/base/icons/src/vender/solid/communication'
 import TooltipPlus from '@/app/components/base/tooltip-plus'
-import { LinkExternal02, Settings04 } from '@/app/components/base/icons/src/vender/line/general'
+import { HelpCircle, LinkExternal02, Settings04 } from '@/app/components/base/icons/src/vender/line/general'
 import ConfigContext from '@/context/debug-configuration'
 import type { EmbeddingModelConfig } from '@/app/components/app/annotation/type'
-import { fetchAnnotationConfig, updateAnnotationScore } from '@/service/annotation'
-import type { AnnotationReplyConfig as AnnotationReplyConfigType } from '@/models/debug'
+import { updateAnnotationScore } from '@/service/annotation'
+import { basicUrl } from '@/config'
 
 type Props = {
   onEmbeddingChange: (embeddingModel: EmbeddingModelConfig) => void
@@ -36,7 +33,7 @@ export const Item: FC<{ title: string; tooltip: string; children: JSX.Element }>
             <div className='max-w-[200px] leading-[18px] text-[13px] font-medium text-gray-800'>{tooltip}</div>
           }
         >
-          <RiQuestionLine className='w-3.5 h-3.5 text-gray-400' />
+          <HelpCircle className='w-3.5 h-3.5 text-gray-400' />
         </TooltipPlus>
       </div>
       <div>{children}</div>
@@ -82,7 +79,7 @@ const AnnotationReplyConfig: FC<Props> = ({
             <div
               className='ml-1 flex items-center h-7 px-3 space-x-1 leading-[18px] text-xs font-medium text-gray-700 rounded-md cursor-pointer hover:bg-gray-200'
               onClick={() => {
-                router.push(`/app/${appId}/annotations`)
+                router.push(`${basicUrl}/app/${appId}/annotations`)
               }}>
               <div>{t('appDebug.feature.annotation.cacheManagement')}</div>
               <LinkExternal02 className='w-3.5 h-3.5' />
@@ -99,7 +96,6 @@ const AnnotationReplyConfig: FC<Props> = ({
             setIsShowEdit(false)
           }}
           onSave={async (embeddingModel, score) => {
-            const annotationConfig = await fetchAnnotationConfig(appId) as AnnotationReplyConfigType
             let isEmbeddingModelChanged = false
             if (
               embeddingModel.embedding_model_name !== annotationConfig.embedding_model.embedding_model_name

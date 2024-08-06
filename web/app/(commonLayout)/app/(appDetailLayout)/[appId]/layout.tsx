@@ -3,27 +3,19 @@ import type { FC } from 'react'
 import { useUnmount } from 'ahooks'
 import React, { useCallback, useEffect, useState } from 'react'
 import { usePathname, useRouter } from 'next/navigation'
-import {
-  RiDashboard2Fill,
-  RiDashboard2Line,
-  RiFileList3Fill,
-  RiFileList3Line,
-  RiTerminalBoxFill,
-  RiTerminalBoxLine,
-  RiTerminalWindowFill,
-  RiTerminalWindowLine,
-} from '@remixicon/react'
+import cn from 'classnames'
 import { useTranslation } from 'react-i18next'
-import { useShallow } from 'zustand/react/shallow'
 import s from './style.module.css'
-import cn from '@/utils/classnames'
 import { useStore } from '@/app/components/app/store'
 import AppSideBar from '@/app/components/app-sidebar'
 import type { NavIcon } from '@/app/components/app-sidebar/navLink'
 import { fetchAppDetail } from '@/service/apps'
 import { useAppContext } from '@/context/app-context'
 import Loading from '@/app/components/base/loading'
+import { BarChartSquare02, FileHeart02, PromptEngineering, TerminalSquare } from '@/app/components/base/icons/src/vender/line/development'
+import { BarChartSquare02 as BarChartSquare02Solid, FileHeart02 as FileHeart02Solid, PromptEngineering as PromptEngineeringSolid, TerminalSquare as TerminalSquareSolid } from '@/app/components/base/icons/src/vender/solid/development'
 import useBreakpoints, { MediaType } from '@/hooks/use-breakpoints'
+import { basicUrl } from '@/config'
 
 export type IAppDetailLayoutProps = {
   children: React.ReactNode
@@ -40,12 +32,8 @@ const AppDetailLayout: FC<IAppDetailLayoutProps> = (props) => {
   const pathname = usePathname()
   const media = useBreakpoints()
   const isMobile = media === MediaType.mobile
-  const { isCurrentWorkspaceEditor } = useAppContext()
-  const { appDetail, setAppDetail, setAppSiderbarExpand } = useStore(useShallow(state => ({
-    appDetail: state.appDetail,
-    setAppDetail: state.setAppDetail,
-    setAppSiderbarExpand: state.setAppSiderbarExpand,
-  })))
+  const { isCurrentWorkspaceManager } = useAppContext()
+  const { appDetail, setAppDetail, setAppSiderbarExpand } = useStore()
   const [navigation, setNavigation] = useState<Array<{
     name: string
     href: string
@@ -53,39 +41,36 @@ const AppDetailLayout: FC<IAppDetailLayoutProps> = (props) => {
     selectedIcon: NavIcon
   }>>([])
 
-  const getNavigations = useCallback((appId: string, isCurrentWorkspaceEditor: boolean, mode: string) => {
+  const getNavigations = useCallback((appId: string, isCurrentWorkspaceManager: boolean, mode: string) => {
     const navs = [
-      ...(isCurrentWorkspaceEditor
+      ...(isCurrentWorkspaceManager
         ? [{
           name: t('common.appMenus.promptEng'),
           href: `/app/${appId}/${(mode === 'workflow' || mode === 'advanced-chat') ? 'workflow' : 'configuration'}`,
-          icon: RiTerminalWindowLine,
-          selectedIcon: RiTerminalWindowFill,
+          icon: PromptEngineering,
+          selectedIcon: PromptEngineeringSolid,
         }]
         : []
       ),
       {
         name: t('common.appMenus.apiAccess'),
         href: `/app/${appId}/develop`,
-        icon: RiTerminalBoxLine,
-        selectedIcon: RiTerminalBoxFill,
+        icon: TerminalSquare,
+        selectedIcon: TerminalSquareSolid,
       },
-      ...(isCurrentWorkspaceEditor
-        ? [{
-          name: mode !== 'workflow'
-            ? t('common.appMenus.logAndAnn')
-            : t('common.appMenus.logs'),
-          href: `/app/${appId}/logs`,
-          icon: RiFileList3Line,
-          selectedIcon: RiFileList3Fill,
-        }]
-        : []
-      ),
+      {
+        name: mode !== 'workflow'
+          ? t('common.appMenus.logAndAnn')
+          : t('common.appMenus.logs'),
+        href: `/app/${appId}/logs`,
+        icon: FileHeart02,
+        selectedIcon: FileHeart02Solid,
+      },
       {
         name: t('common.appMenus.overview'),
         href: `/app/${appId}/overview`,
-        icon: RiDashboard2Line,
-        selectedIcon: RiDashboard2Fill,
+        icon: BarChartSquare02,
+        selectedIcon: BarChartSquare02Solid,
       },
     ]
     return navs
@@ -93,7 +78,7 @@ const AppDetailLayout: FC<IAppDetailLayoutProps> = (props) => {
 
   useEffect(() => {
     if (appDetail) {
-      document.title = `${(appDetail.name || 'App')} - Dify`
+      document.title = `${(appDetail.name || 'App')} - HomeGPTagent`
       const localeMode = localStorage.getItem('app-detail-collapse-or-expand') || 'expand'
       const mode = isMobile ? 'collapse' : 'expand'
       setAppSiderbarExpand(isMobile ? mode : localeMode)
@@ -108,20 +93,17 @@ const AppDetailLayout: FC<IAppDetailLayoutProps> = (props) => {
     fetchAppDetail({ url: '/apps', id: appId }).then((res) => {
       // redirections
       if ((res.mode === 'workflow' || res.mode === 'advanced-chat') && (pathname).endsWith('configuration')) {
-        router.replace(`/app/${appId}/workflow`)
+        router.replace(`${basicUrl}/app/${appId}/workflow`)
       }
       else if ((res.mode !== 'workflow' && res.mode !== 'advanced-chat') && (pathname).endsWith('workflow')) {
-        router.replace(`/app/${appId}/configuration`)
+        router.replace(`${basicUrl}/app/${appId}/configuration`)
       }
       else {
         setAppDetail(res)
-        setNavigation(getNavigations(appId, isCurrentWorkspaceEditor, res.mode))
+        setNavigation(getNavigations(appId, isCurrentWorkspaceManager, res.mode))
       }
-    }).catch((e: any) => {
-      if (e.status === 404)
-        router.replace('/apps')
     })
-  }, [appId, isCurrentWorkspaceEditor])
+  }, [appId, isCurrentWorkspaceManager])
 
   useUnmount(() => {
     setAppDetail()

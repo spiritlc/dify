@@ -2,19 +2,19 @@
 import type { FC } from 'react'
 import React, { useRef, useState } from 'react'
 import { useGetState, useInfiniteScroll } from 'ahooks'
+import cn from 'classnames'
 import { useTranslation } from 'react-i18next'
 import Link from 'next/link'
 import produce from 'immer'
 import TypeIcon from '../type-icon'
 import s from './style.module.css'
-import cn from '@/utils/classnames'
 import Modal from '@/app/components/base/modal'
 import type { DataSet } from '@/models/datasets'
 import Button from '@/app/components/base/button'
 import { fetchDatasets } from '@/service/datasets'
 import Loading from '@/app/components/base/loading'
-import Badge from '@/app/components/base/badge'
-import { useKnowledge } from '@/hooks/use-knowledge'
+import { formatNumber } from '@/utils/format'
+import { basicUrl } from '@/config'
 
 export type ISelectDataSetProps = {
   isShow: boolean
@@ -39,7 +39,6 @@ const SelectDataSet: FC<ISelectDataSetProps> = ({
   const listRef = useRef<HTMLDivElement>(null)
   const [page, setPage, getPage] = useGetState(1)
   const [isNoMore, setIsNoMore] = useState(false)
-  const { formatIndexingTechniqueAndMethod } = useKnowledge()
 
   useInfiniteScroll(
     async () => {
@@ -47,7 +46,7 @@ const SelectDataSet: FC<ISelectDataSetProps> = ({
         const { data, has_more } = await fetchDatasets({ url: '/datasets', params: { page } })
         setPage(getPage() + 1)
         setIsNoMore(!has_more)
-        const newList = [...(datasets || []), ...data.filter(item => item.indexing_technique)]
+        const newList = [...(datasets || []), ...data]
         setDataSets(newList)
         setLoaded(true)
         if (!selected.find(item => !item.name))
@@ -96,6 +95,7 @@ const SelectDataSet: FC<ISelectDataSetProps> = ({
       isShow={isShow}
       onClose={onClose}
       className='w-[400px]'
+      wrapperClassName='!z-[101]'
       title={t('appDebug.feature.dataSet.selectTitle')}
     >
       {!loaded && (
@@ -112,7 +112,7 @@ const SelectDataSet: FC<ISelectDataSetProps> = ({
           }}
         >
           <span className='text-gray-500'>{t('appDebug.feature.dataSet.noDataSet')}</span>
-          <Link href="/datasets/create" className='font-normal text-[#155EEF]'>{t('appDebug.feature.dataSet.toCreate')}</Link>
+          <Link href={`${basicUrl}/datasets/create`} className='font-normal text-[#155EEF]'>{t('appDebug.feature.dataSet.toCreate')}</Link>
         </div>
       )}
 
@@ -138,13 +138,14 @@ const SelectDataSet: FC<ISelectDataSetProps> = ({
                     <span className='ml-1 shrink-0 px-1 border boder-gray-200 rounded-md text-gray-500 text-xs font-normal leading-[18px]'>{t('dataset.unavailable')}</span>
                   )}
                 </div>
-                {
-                  item.indexing_technique && (
-                    <Badge
-                      text={formatIndexingTechniqueAndMethod(item.indexing_technique, item.retrieval_model_dict?.search_method)}
-                    />
-                  )
-                }
+
+                <div className={cn('shrink-0 flex text-xs text-gray-500 overflow-hidden whitespace-nowrap', !item.embedding_available && 'opacity-50')}>
+                  <span className='max-w-[100px] overflow-hidden text-ellipsis whitespace-nowrap'>{formatNumber(item.word_count)}</span>
+                  {t('appDebug.feature.dataSet.words')}
+                  <span className='px-0.5'>·</span>
+                  <span className='max-w-[100px] min-w-[8px] overflow-hidden text-ellipsis whitespace-nowrap'>{formatNumber(item.document_count)} </span>
+                  {t('appDebug.feature.dataSet.textBlocks')}
+                </div>
               </div>
             ))}
           </div>
@@ -156,8 +157,8 @@ const SelectDataSet: FC<ISelectDataSetProps> = ({
             {selected.length > 0 && `${selected.length} ${t('appDebug.feature.dataSet.selected')}`}
           </div>
           <div className='flex space-x-2'>
-            <Button onClick={onClose}>{t('common.operation.cancel')}</Button>
-            <Button variant='primary' onClick={handleSelect} disabled={hasNoData}>{t('common.operation.add')}</Button>
+            <Button className='!w-24 !h-9' onClick={onClose}>{t('common.operation.cancel')}</Button>
+            <Button className='!w-24 !h-9' type='primary' onClick={handleSelect} disabled={hasNoData}>{t('common.operation.add')}</Button>
           </div>
         </div>
       )}

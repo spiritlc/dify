@@ -47,8 +47,6 @@ const TextToSpeech = ({
         { languageInfo?.example && (
           <AudioBtn
             value={languageInfo?.example}
-            voice={voiceItem?.value}
-            noCache={false}
             isAudition={true}
           />
         )}

@@ -5,6 +5,7 @@ import useSWR from 'swr'
 import { useTranslation } from 'react-i18next'
 import { useRouter } from 'next/navigation'
 import { debounce, groupBy, omit } from 'lodash-es'
+// import Link from 'next/link'
 import { PlusIcon } from '@heroicons/react/24/solid'
 import List from './list'
 import s from './style.module.css'
@@ -19,7 +20,8 @@ import { NotionPageSelectorModal } from '@/app/components/base/notion-page-selec
 import type { NotionPage } from '@/models/common'
 import type { CreateDocumentReq } from '@/models/datasets'
 import { DataSourceType } from '@/models/datasets'
-import RetryButton from '@/app/components/base/retry-button'
+import { basicUrl } from '@/config'
+
 // Custom page count is not currently supported.
 const limit = 15
 
@@ -83,8 +85,6 @@ const Documents: FC<IDocumentsProps> = ({ datasetId }) => {
   const [notionPageSelectorModalVisible, setNotionPageSelectorModalVisible] = useState(false)
   const [timerCanRun, setTimerCanRun] = useState(true)
   const isDataSourceNotion = dataset?.data_source_type === DataSourceType.NOTION
-  const isDataSourceWeb = dataset?.data_source_type === DataSourceType.WEB
-  const isDataSourceFile = dataset?.data_source_type === DataSourceType.FILE
   const embeddingAvailable = !!dataset?.embedding_available
 
   const query = useMemo(() => {
@@ -139,7 +139,7 @@ const Documents: FC<IDocumentsProps> = ({ datasetId }) => {
       setNotionPageSelectorModalVisible(true)
       return
     }
-    router.push(`/datasets/${datasetId}/documents/create`)
+    router.push(`${basicUrl}/datasets/${datasetId}/documents/create`)
   }
 
   const isLoading = !documentsRes && !error
@@ -199,7 +199,7 @@ const Documents: FC<IDocumentsProps> = ({ datasetId }) => {
         <p className={s.desc}>{t('datasetDocuments.list.desc')}</p>
       </div>
       <div className='flex flex-col px-6 py-4 flex-1'>
-        <div className='flex items-center justify-between flex-wrap'>
+        <div className='flex items-center justify-between flex-wrap gap-y-2 '>
           <Input
             showPrefix
             wrapperClassName='!w-[200px]'
@@ -207,17 +207,13 @@ const Documents: FC<IDocumentsProps> = ({ datasetId }) => {
             onChange={debounce(setSearchValue, 500)}
             value={searchValue}
           />
-          <div className='flex gap-2 justify-center items-center !h-8'>
-            <RetryButton datasetId={datasetId} />
-            {embeddingAvailable && (
-              <Button variant='primary' onClick={routeToDocCreate} className='shrink-0'>
-                <PlusIcon className='h-4 w-4 mr-2 stroke-current' />
-                {isDataSourceNotion && t('datasetDocuments.list.addPages')}
-                {isDataSourceWeb && t('datasetDocuments.list.addUrl')}
-                {isDataSourceFile && t('datasetDocuments.list.addFile')}
-              </Button>
-            )}
-          </div>
+          {embeddingAvailable && (
+            <Button type='primary' onClick={routeToDocCreate} className='!h-8 !text-[13px] !shrink-0'>
+              <PlusIcon className='h-4 w-4 mr-2 stroke-current' />
+              {isDataSourceNotion && t('datasetDocuments.list.addPages')}
+              {!isDataSourceNotion && t('datasetDocuments.list.addFile')}
+            </Button>
+          )}
         </div>
         {isLoading
           ? <Loading type='app' />

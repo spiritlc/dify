@@ -3,25 +3,17 @@ import { useTranslation } from 'react-i18next'
 import { Fragment, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useContext } from 'use-context-selector'
-import { RiArrowDownSLine } from '@remixicon/react'
-import Link from 'next/link'
 import { Menu, Transition } from '@headlessui/react'
-import Indicator from '../indicator'
 import AccountAbout from '../account-about'
-import { mailToSupport } from '../utils/util'
 import WorkplaceSelector from './workplace-selector'
-import classNames from '@/utils/classnames'
 import I18n from '@/context/i18n'
 import Avatar from '@/app/components/base/avatar'
-import { logout } from '@/service/common'
+// import { logout } from '@/service/common'
 import { useAppContext } from '@/context/app-context'
-import { ArrowUpRight } from '@/app/components/base/icons/src/vender/line/arrows'
+import { ChevronDown } from '@/app/components/base/icons/src/vender/line/arrows'
 import { LogOut01 } from '@/app/components/base/icons/src/vender/line/general'
 import { useModalContext } from '@/context/modal-context'
-import { LanguagesSupported } from '@/i18n/language'
-import { useProviderContext } from '@/context/provider-context'
-import { Plan } from '@/app/components/billing/type'
-
+import { logout } from '@/utils/login'
 export type IAppSelecotr = {
   isMobile: boolean
 }
@@ -36,21 +28,21 @@ export default function AppSelector({ isMobile }: IAppSelecotr) {
 
   const { locale } = useContext(I18n)
   const { t } = useTranslation()
-  const { userProfile, langeniusVersionInfo } = useAppContext()
+  const { userProfile, langeniusVersionInfo, currentWorkspace } = useAppContext()
+  const userInfo = JSON.parse(localStorage.getItem('haier-user-center-user-info') || '{}')
   const { setShowAccountSettingModal } = useModalContext()
-  const { plan } = useProviderContext()
-  const canEmailSupport = plan.type === Plan.professional || plan.type === Plan.team || plan.type === Plan.enterprise
 
   const handleLogout = async () => {
-    await logout({
-      url: '/logout',
-      params: {},
-    })
+    logout()
+    // await logout({
+    //   url: '/logout',
+    //   params: {},
+    // })
 
-    if (localStorage?.getItem('console_token'))
-      localStorage.removeItem('console_token')
+    // if (localStorage?.getItem('console_token'))
+    //   localStorage.removeItem('console_token')
 
-    router.push('/signin')
+    // router.push('/signin')
   }
 
   return (
@@ -69,10 +61,10 @@ export default function AppSelector({ isMobile }: IAppSelecotr) {
                     ${open && 'bg-gray-200'}
                   `}
                 >
-                  <Avatar name={userProfile.name} className='sm:mr-2 mr-0' size={32} />
+                  <Avatar name={userInfo.nickName} className='sm:mr-2 mr-0' size={32} />
                   {!isMobile && <>
-                    {userProfile.name}
-                    <RiArrowDownSLine className="w-3 h-3 ml-1 text-gray-700" />
+                    {userInfo.nickName}
+                    <ChevronDown className="w-3 h-3 ml-1 text-gray-700" />
                   </>}
                 </Menu.Button>
               </div>
@@ -94,10 +86,10 @@ export default function AppSelector({ isMobile }: IAppSelecotr) {
                 >
                   <Menu.Item>
                     <div className='flex flex-nowrap items-center px-4 py-[13px]'>
-                      <Avatar name={userProfile.name} size={36} className='mr-3' />
+                      <Avatar name={userInfo.nickName} size={36} className='mr-3' />
                       <div className='grow'>
-                        <div className='leading-5 font-normal text-[14px] text-gray-800 break-all'>{userProfile.name}</div>
-                        <div className='leading-[18px] text-xs font-normal text-gray-500 break-all'>{userProfile.email}</div>
+                        <div className='leading-5 font-normal text-[14px] text-gray-800 break-all'>{userInfo.nickName}</div>
+                        <div className='leading-[18px] text-xs font-normal text-gray-500 break-all'>{userInfo.email}</div>
                       </div>
                     </div>
                   </Menu.Item>
@@ -111,19 +103,10 @@ export default function AppSelector({ isMobile }: IAppSelecotr) {
                         <div>{t('common.userProfile.settings')}</div>
                       </div>
                     </Menu.Item>
-                    {canEmailSupport && <Menu.Item>
-                      <a
-                        className={classNames(itemClassName, 'group justify-between')}
-                        href={mailToSupport(userProfile.email, plan.type, langeniusVersionInfo.current_version)}
-                        target='_blank' rel='noopener noreferrer'>
-                        <div>{t('common.userProfile.emailSupport')}</div>
-                        <ArrowUpRight className='hidden w-[14px] h-[14px] text-gray-500 group-hover:flex' />
-                      </a>
-                    </Menu.Item>}
-                    <Menu.Item>
+                    {/* <Menu.Item>
                       <Link
                         className={classNames(itemClassName, 'group justify-between')}
-                        href='https://github.com/langgenius/dify/discussions/categories/feedbacks'
+                        href='https://github.com/langgenius/HomeGPTagent/discussions/categories/feedbacks'
                         target='_blank' rel='noopener noreferrer'>
                         <div>{t('common.userProfile.roadmapAndFeedback')}</div>
                         <ArrowUpRight className='hidden w-[14px] h-[14px] text-gray-500 group-hover:flex' />
@@ -142,7 +125,7 @@ export default function AppSelector({ isMobile }: IAppSelecotr) {
                       <Link
                         className={classNames(itemClassName, 'group justify-between')}
                         href={
-                          locale !== LanguagesSupported[1] ? 'https://docs.dify.ai/' : `https://docs.dify.ai/v/${locale.toLowerCase()}/`
+                          locale !== LanguagesSupported[1] ? 'https://docs.HomeGPTagent.ai/' : `https://docs.HomeGPTagent.ai/v/${locale.toLowerCase()}/`
                         }
                         target='_blank' rel='noopener noreferrer'>
                         <div>{t('common.userProfile.helpCenter')}</div>
@@ -161,7 +144,7 @@ export default function AppSelector({ isMobile }: IAppSelecotr) {
                           </div>
                         </Menu.Item>
                       )
-                    }
+                    } */}
                   </div>
                   <Menu.Item>
                     <div className='p-1' onClick={() => handleLogout()}>

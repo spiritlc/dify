@@ -1,5 +1,3 @@
-import { escape } from 'lodash-es'
-
 export const sleep = (ms: number) => {
   return new Promise(resolve => setTimeout(resolve, ms))
 }
@@ -37,5 +35,16 @@ export const getPurifyHref = (href: string) => {
   if (!href)
     return ''
 
-  return escape(href)
+  return href.replace(/javascript:/ig, '').replace(/vbscript:/ig, '').replace(/data:/ig, '')
+}
+
+export function publicCheckData(arr: Array<any>) { // 兼容 ?.
+  let data = arr[0]
+  const arrLength = arr.length
+  for (let i = 1; i < arr.length; i++) {
+    data = (data || {})[arr[i]]
+    if (i !== (arrLength - 1) && !data)
+      return undefined
+  }
+  return data
 }

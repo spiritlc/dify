@@ -1,17 +1,15 @@
 import type { FC } from 'react'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import {
-  RiLoader2Line,
-} from '@remixicon/react'
 import type {
-  CustomConfigurationModelFixedFields,
+  CustomConfigrationModelFixedFields,
   ModelItem,
   ModelProvider,
 } from '../declarations'
-import { ConfigurationMethodEnum } from '../declarations'
+import { ConfigurateMethodEnum } from '../declarations'
 import {
   DEFAULT_BACKGROUND_COLOR,
+  MODEL_PROVIDER_QUOTA_GET_FREE,
   MODEL_PROVIDER_QUOTA_GET_PAID,
   modelTypeFormat,
 } from '../utils'
@@ -22,15 +20,15 @@ import QuotaPanel from './quota-panel'
 import ModelList from './model-list'
 import AddModelButton from './add-model-button'
 import { ChevronDownDouble } from '@/app/components/base/icons/src/vender/line/arrows'
+import { Loading02 } from '@/app/components/base/icons/src/vender/line/general'
 import { fetchModelProviderModelList } from '@/service/common'
 import { useEventEmitterContextContext } from '@/context/event-emitter'
 import { IS_CE_EDITION } from '@/config'
-import { useAppContext } from '@/context/app-context'
 
 export const UPDATE_MODEL_PROVIDER_CUSTOM_MODEL_LIST = 'UPDATE_MODEL_PROVIDER_CUSTOM_MODEL_LIST'
 type ProviderAddedCardProps = {
   provider: ModelProvider
-  onOpenModal: (configurationMethod: ConfigurationMethodEnum, currentCustomConfigurationModelFixedFields?: CustomConfigurationModelFixedFields) => void
+  onOpenModal: (configurateMethod: ConfigurateMethodEnum, currentCustomConfigrationModelFixedFields?: CustomConfigrationModelFixedFields) => void
 }
 const ProviderAddedCard: FC<ProviderAddedCardProps> = ({
   provider,
@@ -42,11 +40,10 @@ const ProviderAddedCard: FC<ProviderAddedCardProps> = ({
   const [loading, setLoading] = useState(false)
   const [collapsed, setCollapsed] = useState(true)
   const [modelList, setModelList] = useState<ModelItem[]>([])
-  const configurationMethods = provider.configurate_methods.filter(method => method !== ConfigurationMethodEnum.fetchFromRemote)
+  const configurateMethods = provider.configurate_methods.filter(method => method !== ConfigurateMethodEnum.fetchFromRemote)
   const systemConfig = provider.system_configuration
   const hasModelList = fetched && !!modelList.length
-  const { isCurrentWorkspaceManager } = useAppContext()
-  const showQuota = systemConfig.enabled && [...MODEL_PROVIDER_QUOTA_GET_PAID].includes(provider.provider) && !IS_CE_EDITION
+  const showQuota = systemConfig.enabled && [...MODEL_PROVIDER_QUOTA_GET_FREE, ...MODEL_PROVIDER_QUOTA_GET_PAID].includes(provider.provider) && !IS_CE_EDITION
 
   const getModelList = async (providerName: string) => {
     if (loading)
@@ -105,9 +102,9 @@ const ProviderAddedCard: FC<ProviderAddedCardProps> = ({
           )
         }
         {
-          configurationMethods.includes(ConfigurationMethodEnum.predefinedModel) && isCurrentWorkspaceManager && (
+          configurateMethods.includes(ConfigurateMethodEnum.predefinedModel) && (
             <CredentialPanel
-              onSetup={() => onOpenModal(ConfigurationMethodEnum.predefinedModel)}
+              onSetup={() => onOpenModal(ConfigurateMethodEnum.predefinedModel)}
               provider={provider}
             />
           )
@@ -135,14 +132,14 @@ const ProviderAddedCard: FC<ProviderAddedCardProps> = ({
               }
               {
                 loading && (
-                  <RiLoader2Line className='ml-0.5 animate-spin w-3 h-3' />
+                  <Loading02 className='ml-0.5 animate-spin w-3 h-3' />
                 )
               }
             </div>
             {
-              configurationMethods.includes(ConfigurationMethodEnum.customizableModel) && isCurrentWorkspaceManager && (
+              configurateMethods.includes(ConfigurateMethodEnum.customizableModel) && (
                 <AddModelButton
-                  onClick={() => onOpenModal(ConfigurationMethodEnum.customizableModel)}
+                  onClick={() => onOpenModal(ConfigurateMethodEnum.customizableModel)}
                   className='hidden group-hover:flex group-hover:text-primary-600'
                 />
               )
@@ -156,8 +153,7 @@ const ProviderAddedCard: FC<ProviderAddedCardProps> = ({
             provider={provider}
             models={modelList}
             onCollapse={() => setCollapsed(true)}
-            onConfig={currentCustomConfigurationModelFixedFields => onOpenModal(ConfigurationMethodEnum.customizableModel, currentCustomConfigurationModelFixedFields)}
-            onChange={(provider: string) => getModelList(provider)}
+            onConfig={currentCustomConfigrationModelFixedFields => onOpenModal(ConfigurateMethodEnum.customizableModel, currentCustomConfigrationModelFixedFields)}
           />
         )
       }

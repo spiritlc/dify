@@ -1,7 +1,7 @@
 'use client'
-import { useCallback, useEffect } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
-import { useBoolean } from 'ahooks'
+import { useBoolean, useClickAway } from 'ahooks'
 import { useSelectedLayoutSegment } from 'next/navigation'
 import { Bars3Icon } from '@heroicons/react/20/solid'
 import HeaderBillingBtn from '../billing/header-billing-btn'
@@ -15,9 +15,10 @@ import GithubStar from './github-star'
 import { WorkspaceProvider } from '@/context/workspace-context'
 import { useAppContext } from '@/context/app-context'
 import LogoSite from '@/app/components/base/logo/logo-site'
+import PlanComp from '@/app/components/billing/plan'
 import useBreakpoints, { MediaType } from '@/hooks/use-breakpoints'
 import { useProviderContext } from '@/context/provider-context'
-import { useModalContext } from '@/context/modal-context'
+import { basicUrl } from '@/config'
 
 const navClassName = `
   flex items-center relative mr-0 sm:mr-3 px-3 h-8 rounded-xl
@@ -26,21 +27,18 @@ const navClassName = `
 `
 
 const Header = () => {
-  const { isCurrentWorkspaceEditor, isCurrentWorkspaceDatasetOperator } = useAppContext()
+  const { isCurrentWorkspaceManager, langeniusVersionInfo } = useAppContext()
+  const [showUpgradePanel, setShowUpgradePanel] = useState(false)
+  const upgradeBtnRef = useRef<HTMLElement>(null)
+  useClickAway(() => {
+    setShowUpgradePanel(false)
+  }, upgradeBtnRef)
 
   const selectedSegment = useSelectedLayoutSegment()
   const media = useBreakpoints()
   const isMobile = media === MediaType.mobile
   const [isShowNavMenu, { toggle, setFalse: hideNavMenu }] = useBoolean(false)
-  const { enableBilling, plan } = useProviderContext()
-  const { setShowPricingModal, setShowAccountSettingModal } = useModalContext()
-  const isFreePlan = plan.type === 'sandbox'
-  const handlePlanClick = useCallback(() => {
-    if (isFreePlan)
-      setShowPricingModal()
-    else
-      setShowAccountSettingModal({ payload: 'billing' })
-  }, [isFreePlan, setShowAccountSettingModal, setShowPricingModal])
+  const { enableBilling } = useProviderContext()
 
   useEffect(() => {
     hideNavMenu()
@@ -56,7 +54,7 @@ const Header = () => {
           <Bars3Icon className="h-4 w-4 text-gray-500" />
         </div>}
         {!isMobile && <>
-          <Link href="/apps" className='flex items-center mr-4'>
+          <Link href={`${basicUrl}/apps`} className='flex items-center mr-4'>
             <LogoSite className='object-contain' />
           </Link>
           <GithubStar />
@@ -64,7 +62,7 @@ const Header = () => {
       </div>
       {isMobile && (
         <div className='flex'>
-          <Link href="/apps" className='flex items-center mr-4'>
+          <Link href={`${basicUrl}/apps`} className='flex items-center mr-4'>
             <LogoSite />
           </Link>
           <GithubStar />
@@ -72,17 +70,25 @@ const Header = () => {
       )}
       {!isMobile && (
         <div className='flex items-center'>
-          {!isCurrentWorkspaceDatasetOperator && <ExploreNav className={navClassName} />}
-          {!isCurrentWorkspaceDatasetOperator && <AppNav />}
-          {(isCurrentWorkspaceEditor || isCurrentWorkspaceDatasetOperator) && <DatasetNav />}
-          {!isCurrentWorkspaceDatasetOperator && <ToolsNav className={navClassName} />}
+          <ExploreNav className={navClassName} />
+          <AppNav />
+          {isCurrentWorkspaceManager && <DatasetNav />}
+          <ToolsNav className={navClassName} />
         </div>
       )}
       <div className='flex items-center flex-shrink-0'>
         <EnvNav />
         {enableBilling && (
           <div className='mr-3 select-none'>
-            <HeaderBillingBtn onClick={handlePlanClick} />
+            <HeaderBillingBtn onClick={() => setShowUpgradePanel(true)} />
+            {showUpgradePanel && (
+              <div
+                ref={upgradeBtnRef as any}
+                className='fixed z-10 top-12 right-1 w-[360px]'
+              >
+                <PlanComp loc='header' />
+              </div>
+            )}
           </div>
         )}
         <WorkspaceProvider>
@@ -91,10 +97,10 @@ const Header = () => {
       </div>
       {(isMobile && isShowNavMenu) && (
         <div className='w-full flex flex-col p-2 gap-y-1'>
-          {!isCurrentWorkspaceDatasetOperator && <ExploreNav className={navClassName} />}
-          {!isCurrentWorkspaceDatasetOperator && <AppNav />}
-          {(isCurrentWorkspaceEditor || isCurrentWorkspaceDatasetOperator) && <DatasetNav />}
-          {!isCurrentWorkspaceDatasetOperator && <ToolsNav className={navClassName} />}
+          <ExploreNav className={navClassName} />
+          <AppNav />
+          {isCurrentWorkspaceManager && <DatasetNav />}
+          <ToolsNav className={navClassName} />
         </div>
       )}
     </div>

@@ -10,7 +10,7 @@ import Button from '@/app/components/base/button'
 import { Edit05 } from '@/app/components/base/icons/src/vender/line/general'
 import type { ConversationItem } from '@/models/share'
 import Confirm from '@/app/components/base/confirm'
-import RenameModal from '@/app/components/base/chat/chat-with-history/sidebar/rename-modal'
+import RenameModal from '@/app/components/share/chat/sidebar/rename-modal'
 
 const Sidebar = () => {
   const { t } = useTranslation()
@@ -78,8 +78,7 @@ const Sidebar = () => {
       }
       <div className='shrink-0 p-4'>
         <Button
-          variant='secondary-accent'
-          className='justify-start w-full'
+          className='justify-start px-3 py-0 w-full h-9 text-sm font-medium text-primary-600'
           onClick={handleNewConversation}
         >
           <Edit05 className='mr-2 w-4 h-4' />

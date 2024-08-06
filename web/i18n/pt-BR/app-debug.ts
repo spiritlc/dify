@@ -201,7 +201,7 @@ const translation = {
   },
   automatic: {
     title: 'Orquestração Automatizada de Aplicativos',
-    description: 'Descreva o seu cenário, o Dify irá orquestrar um aplicativo para você.',
+    description: 'Descreva o seu cenário, o HomeGPTagent irá orquestrar um aplicativo para você.',
     intendedAudience: 'Qual é o público-alvo?',
     intendedAudiencePlaceHolder: 'ex: Estudante',
     solveProblem: 'Quais problemas eles esperam que a IA possa resolver para eles?',
@@ -322,15 +322,12 @@ const translation = {
       language: 'línguas',
       resolutionTooltip: 'Texto para voz timbre suporta idiomas.',
       voice: 'voz',
-      autoPlay: 'Reprodução automática',
-      autoPlayEnabled: 'ligar',
-      autoPlayDisabled: 'fecho',
     },
   },
   openingStatement: {
     title: 'Abertura da Conversa',
     add: 'Adicionar',
-    writeOpener: 'Escrever abertura',
+    writeOpner: 'Escrever abertura',
     placeholder: 'Escreva sua mensagem de abertura aqui, você pode usar variáveis, tente digitar {{variável}}.',
     openingQuestion: 'Perguntas de Abertura',
     noDataPlaceHolder:

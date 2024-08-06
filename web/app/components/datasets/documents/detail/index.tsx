@@ -7,6 +7,7 @@ import { createContext, useContext } from 'use-context-selector'
 import { useTranslation } from 'react-i18next'
 import { useRouter } from 'next/navigation'
 import { omit } from 'lodash-es'
+import cn from 'classnames'
 import { OperationAction, StatusItem } from '../list'
 import s from '../style.module.css'
 import Completed from './completed'
@@ -15,7 +16,6 @@ import Metadata from './metadata'
 import SegmentAdd, { ProcessStatus } from './segment-add'
 import BatchModal from './batch-modal'
 import style from './style.module.css'
-import cn from '@/utils/classnames'
 import Divider from '@/app/components/base/divider'
 import Loading from '@/app/components/base/loading'
 import type { MetadataType } from '@/service/datasets'
@@ -25,6 +25,7 @@ import type { DocForm } from '@/models/datasets'
 import { useDatasetDetailContext } from '@/context/dataset-detail'
 import FloatRightContainer from '@/app/components/base/float-right-container'
 import useBreakpoints, { MediaType } from '@/hooks/use-breakpoints'
+import { basicUrl } from '@/config'
 
 export const DocumentContext = createContext<{ datasetId?: string; documentId?: string; docForm: string }>({ docForm: '' })
 
@@ -112,7 +113,7 @@ const DocumentDetail: FC<Props> = ({ datasetId, documentId }) => {
   )
 
   const backToPrev = () => {
-    router.push(`/datasets/${datasetId}/documents`)
+    router.push(`${basicUrl}/datasets/${datasetId}/documents`)
   }
 
   const isDetailLoading = !documentDetail && !error
@@ -150,7 +151,6 @@ const DocumentDetail: FC<Props> = ({ datasetId, documentId }) => {
               scene='detail'
               embeddingAvailable={embeddingAvailable}
               detail={{
-                name: documentDetail?.name || '',
                 enabled: documentDetail?.enabled || false,
                 archived: documentDetail?.archived || false,
                 id: documentId,

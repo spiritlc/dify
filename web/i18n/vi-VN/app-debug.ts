@@ -3,7 +3,7 @@ const translation = {
     line1: 'PROMPT',
     line2: 'Engineering',
   },
-  orchestrate: 'Dàn nhạc',
+  orchestrate: 'Orchestrate',
   promptMode: {
     simple: 'Chuyển sang Chế độ Chuyên gia để chỉnh sửa toàn bộ PROMPT',
     advanced: 'Chế độ Chuyên gia',
@@ -201,7 +201,7 @@ const translation = {
   },
   automatic: {
     title: 'Tự động hóa triển khai ứng dụng',
-    description: 'Mô tả tình huống của bạn, Dify sẽ tự động hóa một ứng dụng cho bạn.',
+    description: 'Mô tả tình huống của bạn, HomeGPTagent sẽ tự động hóa một ứng dụng cho bạn.',
     intendedAudience: 'Ai là đối tượng mục tiêu?',
     intendedAudiencePlaceHolder: 'ví dụ: Sinh viên',
     solveProblem: 'Họ hy vọng AI có thể giải quyết vấn đề gì cho họ?',
@@ -322,15 +322,12 @@ const translation = {
       language: 'Ngôn ngữ',
       resolutionTooltip: 'Giọng nói văn bản hỗ trợ ngôn ngữ。',
       voice: 'Giọng',
-      autoPlay: 'chạy tự động',
-      autoPlayEnabled: 'bật',
-      autoPlayDisabled: 'Khép kín',
     },
   },
   openingStatement: {
     title: 'Mở đầu Trò chuyện',
     add: 'Thêm',
-    writeOpener: 'Viết câu mở đầu',
+    writeOpner: 'Viết câu mở đầu',
     placeholder: 'Viết thông điệp mở đầu của bạn ở đây, bạn có thể sử dụng biến, hãy thử nhập {{biến}}.',
     openingQuestion: 'Câu Hỏi Mở đầu',
     noDataPlaceHolder:

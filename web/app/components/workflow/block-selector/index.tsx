@@ -12,9 +12,6 @@ import type {
   OffsetOptions,
   Placement,
 } from '@floating-ui/react'
-import {
-  RiSearchLine,
-} from '@remixicon/react'
 import type { BlockEnum, OnSelectBlock } from '../types'
 import Tabs from './tabs'
 import {
@@ -24,6 +21,7 @@ import {
 } from '@/app/components/base/portal-to-follow-elem'
 import {
   Plus02,
+  SearchLg,
 } from '@/app/components/base/icons/src/vender/line/general'
 import { XCircle } from '@/app/components/base/icons/src/vender/solid/general'
 
@@ -41,7 +39,6 @@ type NodeSelectorProps = {
   asChild?: boolean
   availableBlocksTypes?: BlockEnum[]
   disabled?: boolean
-  noBlocks?: boolean
 }
 const NodeSelector: FC<NodeSelectorProps> = ({
   open: openFromProps,
@@ -57,7 +54,6 @@ const NodeSelector: FC<NodeSelectorProps> = ({
   asChild,
   availableBlocksTypes,
   disabled,
-  noBlocks = false,
 }) => {
   const { t } = useTranslation()
   const [searchText, setSearchText] = useState('')
@@ -116,7 +112,7 @@ const NodeSelector: FC<NodeSelectorProps> = ({
               className='flex items-center px-2 rounded-lg bg-gray-100'
               onClick={e => e.stopPropagation()}
             >
-              <RiSearchLine className='shrink-0 ml-[1px] mr-[5px] w-3.5 h-3.5 text-gray-400' />
+              <SearchLg className='shrink-0 ml-[1px] mr-[5px] w-3.5 h-3.5 text-gray-400' />
               <input
                 value={searchText}
                 className='grow px-0.5 py-[7px] text-[13px] text-gray-700 bg-transparent appearance-none outline-none caret-primary-600 placeholder:text-gray-400'
@@ -140,7 +136,6 @@ const NodeSelector: FC<NodeSelectorProps> = ({
             onSelect={handleSelect}
             searchText={searchText}
             availableBlocksTypes={availableBlocksTypes}
-            noBlocks={noBlocks}
           />
         </div>
       </PortalToFollowElemContent>

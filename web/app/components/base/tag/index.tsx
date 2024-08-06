@@ -1,5 +1,5 @@
 import React from 'react'
-import classNames from '@/utils/classnames'
+import classNames from 'classnames'
 
 export type ITagProps = {
   children: string | React.ReactNode

@@ -1,18 +1,17 @@
 const translation = {
   knowledge: 'Wissen',
   documentCount: ' Dokumente',
-  wordCount: ' k Wörter',
+  wordCount: 'k Wörter',
   appCount: ' verknüpfte Apps',
   createDataset: 'Wissen erstellen',
   createDatasetIntro: 'Importiere deine eigenen Textdaten oder schreibe Daten in Echtzeit über Webhook für die LLM-Kontextverbesserung.',
   deleteDatasetConfirmTitle: 'Dieses Wissen löschen?',
   deleteDatasetConfirmContent:
     'Das Löschen des Wissens ist unwiderruflich. Benutzer werden nicht mehr auf Ihr Wissen zugreifen können und alle Eingabeaufforderungen, Konfigurationen und Protokolle werden dauerhaft gelöscht.',
-  datasetUsedByApp: 'Das Wissen wird von einigen Apps verwendet. Apps werden dieses Wissen nicht mehr nutzen können, und alle Prompt-Konfigurationen und Protokolle werden dauerhaft gelöscht.',
   datasetDeleted: 'Wissen gelöscht',
   datasetDeleteFailed: 'Löschen des Wissens fehlgeschlagen',
   didYouKnow: 'Wusstest du schon?',
-  intro1: 'Das Wissen kann in die Dify-Anwendung ',
+  intro1: 'Das Wissen kann in die HomeGPTagent-Anwendung ',
   intro2: 'als Kontext',
   intro3: ',',
   intro4: 'oder es ',
@@ -43,8 +42,6 @@ const translation = {
     change: 'Ändern',
     changeRetrievalMethod: 'Abfragemethode ändern',
   },
-  docsFailedNotice: 'Dokumente konnten nicht indiziert werden',
-  retry: 'Wiederholen',
 }
 
 export default translation

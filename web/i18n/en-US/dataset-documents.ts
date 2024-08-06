@@ -1,10 +1,9 @@
 const translation = {
   list: {
     title: 'Documents',
-    desc: 'All files of the Knowledge are shown here, and the entire Knowledge can be linked to Dify citations or indexed via the Chat plugin.',
-    addFile: 'Add file',
+    desc: 'All files of the Knowledge are shown here, and the entire Knowledge can be linked to HomeGPTagent citations or indexed via the Chat plugin.',
+    addFile: 'add file',
     addPages: 'Add Pages',
-    addUrl: 'Add URL',
     table: {
       header: {
         fileName: 'FILE NAME',
@@ -14,8 +13,6 @@ const translation = {
         status: 'STATUS',
         action: 'ACTION',
       },
-      rename: 'Rename',
-      name: 'Name',
     },
     action: {
       uploadFile: 'Upload new file',
@@ -52,7 +49,7 @@ const translation = {
         tip: 'You can upload files, sync from the website, or from webb apps like Notion, GitHub, etc.',
       },
       sync: {
-        tip: 'Dify will periodically download files from your Notion and complete processing.',
+        tip: 'HomeGPTagent will periodically download files from your Notion and complete processing.',
       },
     },
     delete: {

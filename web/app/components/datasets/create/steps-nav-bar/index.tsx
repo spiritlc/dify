@@ -2,10 +2,11 @@
 import { useTranslation } from 'react-i18next'
 import { useRouter } from 'next/navigation'
 
+import cn from 'classnames'
 import { useCallback } from 'react'
 import s from './index.module.css'
-import cn from '@/utils/classnames'
 import useBreakpoints, { MediaType } from '@/hooks/use-breakpoints'
+import { basicUrl } from '@/config'
 
 type IStepsNavBarProps = {
   step: number
@@ -32,9 +33,9 @@ const StepsNavBar = ({
 
   const navBackHandle = useCallback(() => {
     if (!datasetId)
-      router.replace('/datasets')
+      router.replace(`${basicUrl}/datasets`)
     else
-      router.replace(`/datasets/${datasetId}/documents`)
+      router.replace(`${basicUrl}/datasets/${datasetId}/documents`)
   }, [router, datasetId])
 
   return (

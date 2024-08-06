@@ -6,7 +6,7 @@ export const NUM_INFINITE = 99999999
 export const contractSales = 'contractSales'
 export const unAvailable = 'unAvailable'
 
-export const contactSalesUrl = 'mailto:business@dify.ai'
+export const contactSalesUrl = 'mailto:business@HomeGPTagent.ai'
 
 export const ALL_PLANS: Record<Plan, PlanInfo> = {
   sandbox: {
@@ -86,13 +86,11 @@ export const defaultPlan = {
     buildApps: 1,
     teamMembers: 1,
     annotatedResponse: 1,
-    documentsUploadQuota: 1,
   },
   total: {
     vectorSpace: 10,
     buildApps: 10,
     teamMembers: 1,
     annotatedResponse: 10,
-    documentsUploadQuota: 50,
   },
 }

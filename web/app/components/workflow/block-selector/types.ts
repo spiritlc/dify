@@ -1,13 +1,7 @@
 export enum TabsEnum {
   Blocks = 'blocks',
-  Tools = 'tools',
-}
-
-export enum ToolTypeEnum {
-  All = 'all',
-  BuiltIn = 'built-in',
-  Custom = 'custom',
-  Workflow = 'workflow',
+  BuiltInTool = 'built-in-tool',
+  CustomTool = 'custom-tool',
 }
 
 export enum BlockClassificationEnum {

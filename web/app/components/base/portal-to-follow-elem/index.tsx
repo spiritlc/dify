@@ -16,7 +16,7 @@ import {
 } from '@floating-ui/react'
 
 import type { OffsetOptions, Placement } from '@floating-ui/react'
-import cn from '@/utils/classnames'
+import cn from 'classnames'
 export type PortalToFollowElemOptions = {
   /*
   * top, bottom, left, right
@@ -150,10 +150,8 @@ React.HTMLProps<HTMLDivElement>
   if (!context.open)
     return null
 
-  const body = document.body
-
   return (
-    <FloatingPortal root={body}>
+    <FloatingPortal>
       <div
         ref={ref}
         style={{

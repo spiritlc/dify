@@ -8,8 +8,9 @@ import {
   useState,
 } from 'react'
 import { Tab } from '@headlessui/react'
+import classNames from 'classnames'
+
 import { Tag } from './tag'
-import classNames from '@/utils/classnames'
 
 const languageNames = {
   js: 'JavaScript',

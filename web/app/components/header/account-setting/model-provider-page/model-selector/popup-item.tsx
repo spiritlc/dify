@@ -13,7 +13,7 @@ import {
 import ModelIcon from '../model-icon'
 import ModelName from '../model-name'
 import {
-  ConfigurationMethodEnum,
+  ConfigurateMethodEnum,
   MODEL_STATUS_TEXT,
   ModelStatusEnum,
 } from '../declarations'
@@ -49,7 +49,7 @@ const PopupItem: FC<PopupItemProps> = ({
     setShowModelModal({
       payload: {
         currentProvider,
-        currentConfigurationMethod: ConfigurationMethodEnum.predefinedModel,
+        currentConfigurateMethod: ConfigurateMethodEnum.predefinedModel,
       },
       onSaveCallback: () => {
         updateModelProviders()

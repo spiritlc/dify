@@ -1,10 +1,8 @@
 'use client'
 import type { FC } from 'react'
 import React from 'react'
-import {
-  RiAddLine,
-} from '@remixicon/react'
-import cn from '@/utils/classnames'
+import cn from 'classnames'
+import { Plus } from '@/app/components/base/icons/src/vender/line/general'
 
 type Props = {
   className?: string
@@ -22,7 +20,7 @@ const AddButton: FC<Props> = ({
       className={cn(className, 'flex items-center h-7 justify-center bg-gray-100 hover:bg-gray-200 rounded-lg cursor-pointer text-xs font-medium text-gray-700 space-x-1')}
       onClick={onClick}
     >
-      <RiAddLine className='w-3.5 h-3.5' />
+      <Plus className='w-3.5 h-3.5' />
       <div>{text}</div>
     </div>
   )

@@ -1,18 +1,13 @@
 'use client'
 import type { FC } from 'react'
 import React from 'react'
-import {
-  RiArrowDownSLine,
-  RiQuestionLine,
-} from '@remixicon/react'
+import cn from 'classnames'
 import { useBoolean } from 'ahooks'
-import type { DefaultTFuncReturn } from 'i18next'
-import cn from '@/utils/classnames'
+import { HelpCircle } from '@/app/components/base/icons/src/vender/line/general'
 import TooltipPlus from '@/app/components/base/tooltip-plus'
-
+import { ChevronRight } from '@/app/components/base/icons/src/vender/line/arrows'
 type Props = {
-  className?: string
-  title: JSX.Element | string | DefaultTFuncReturn
+  title: string
   tooltip?: string
   supportFold?: boolean
   children?: JSX.Element | string | null
@@ -21,7 +16,6 @@ type Props = {
 }
 
 const Filed: FC<Props> = ({
-  className,
   title,
   tooltip,
   children,
@@ -33,18 +27,18 @@ const Filed: FC<Props> = ({
     toggle: toggleFold,
   }] = useBoolean(true)
   return (
-    <div className={cn(className, inline && 'flex justify-between items-center w-full')}>
+    <div className={cn(inline && 'flex justify-between items-center', supportFold && 'cursor-pointer')}>
       <div
         onClick={() => supportFold && toggleFold()}
-        className={cn('flex justify-between items-center', supportFold && 'cursor-pointer')}>
+        className='flex justify-between items-center'>
         <div className='flex items-center h-6'>
-          <div className='system-sm-semibold-uppercase text-text-secondary'>{title}</div>
+          <div className='text-[13px] font-medium text-gray-700 uppercase'>{title}</div>
           {tooltip && (
             <TooltipPlus popupContent={
               <div className='w-[120px]'>
                 {tooltip}
               </div>}>
-              <RiQuestionLine className='w-3.5 h-3.5 ml-0.5 text-text-quaternary' />
+              <HelpCircle className='w-3.5 h-3.5 ml-0.5 text-gray-400' />
             </TooltipPlus>
           )}
 
@@ -52,7 +46,7 @@ const Filed: FC<Props> = ({
         <div className='flex'>
           {operations && <div>{operations}</div>}
           {supportFold && (
-            <RiArrowDownSLine className='w-4 h-4 text-text-tertiary cursor-pointer transform transition-transform' style={{ transform: fold ? 'rotate(-90deg)' : 'rotate(0deg)' }} />
+            <ChevronRight className='w-3.5 h-3.5 text-gray-500 cursor-pointer transform transition-transform' style={{ transform: fold ? 'rotate(0deg)' : 'rotate(90deg)' }} />
           )}
         </div>
       </div>

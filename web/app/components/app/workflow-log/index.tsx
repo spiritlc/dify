@@ -12,7 +12,7 @@ import Filter from './filter'
 import s from './style.module.css'
 import Loading from '@/app/components/base/loading'
 import { fetchWorkflowLogs } from '@/service/log'
-import { APP_PAGE_LIMIT } from '@/config'
+import { APP_PAGE_LIMIT, basicUrl } from '@/config'
 import type { App, AppMode } from '@/types/app'
 
 export type ILogsProps = {
@@ -40,7 +40,7 @@ const EmptyElement: FC<{ appUrl: string }> = ({ appUrl }) => {
       <div className='mt-2 text-gray-500 text-sm font-normal'>
         <Trans
           i18nKey="appLog.table.empty.element.content"
-          components={{ shareLink: <Link href={`${pathSegments.join('/')}/overview`} className='text-primary-600' />, testLink: <Link href={appUrl} className='text-primary-600' target='_blank' rel='noopener noreferrer' /> }}
+          components={{ shareLink: <Link href={`${basicUrl}${pathSegments.join('/')}/overview`} className='text-primary-600' />, testLink: <Link href={`${basicUrl}${appUrl}`} className='text-primary-600' target='_blank' rel='noopener noreferrer' /> }}
         />
       </div>
     </div>

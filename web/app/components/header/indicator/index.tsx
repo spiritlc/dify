@@ -1,6 +1,6 @@
 'use client'
 
-import classNames from '@/utils/classnames'
+import classNames from 'classnames'
 
 export type IndicatorProps = {
   color?: 'green' | 'orange' | 'red' | 'blue' | 'yellow' | 'gray'

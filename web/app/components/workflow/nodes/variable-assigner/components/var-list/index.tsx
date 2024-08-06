@@ -4,7 +4,6 @@ import { useTranslation } from 'react-i18next'
 import React, { useCallback } from 'react'
 import produce from 'immer'
 import RemoveButton from '../../../_base/components/remove-button'
-import ListNoDataPlaceholder from '../../../_base/components/list-no-data-placeholder'
 import VarReferencePicker from '@/app/components/workflow/nodes/_base/components/variable/var-reference-picker'
 import type { ValueSelector, Var } from '@/app/components/workflow/types'
 import { VarType as VarKindType } from '@/app/components/workflow/nodes/tool/types'
@@ -13,8 +12,9 @@ type Props = {
   readonly: boolean
   nodeId: string
   list: ValueSelector[]
-  onChange: (list: ValueSelector[], value?: ValueSelector) => void
+  onChange: (list: ValueSelector[]) => void
   onOpen?: (index: number) => void
+  onlyLeafNodeVar?: boolean
   filterVar?: (payload: Var, valueSelector: ValueSelector) => boolean
 }
 
@@ -24,6 +24,7 @@ const VarList: FC<Props> = ({
   list,
   onChange,
   onOpen = () => { },
+  onlyLeafNodeVar,
   filterVar,
 }) => {
   const { t } = useTranslation()
@@ -32,7 +33,7 @@ const VarList: FC<Props> = ({
       const newList = produce(list, (draft) => {
         draft[index] = value as ValueSelector
       })
-      onChange(newList, value as ValueSelector)
+      onChange(newList)
     }
   }, [list, onChange])
 
@@ -51,9 +52,9 @@ const VarList: FC<Props> = ({
 
   if (list.length === 0) {
     return (
-      <ListNoDataPlaceholder>
+      <div className='flex rounded-md bg-gray-50 items-center h-[42px] justify-center leading-[18px] text-xs font-normal text-gray-500'>
         {t('workflow.nodes.variableAssigner.noVarTip')}
-      </ListNoDataPlaceholder>
+      </div>
     )
   }
 
@@ -69,6 +70,7 @@ const VarList: FC<Props> = ({
             value={item}
             onChange={handleVarReferenceChange(index)}
             onOpen={handleOpen(index)}
+            onlyLeafNodeVar={onlyLeafNodeVar}
             filterVar={filterVar}
             defaultVarKindType={VarKindType.variable}
           />

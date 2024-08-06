@@ -1,25 +1,24 @@
 'use client'
 import React, { useEffect, useState } from 'react'
+import cn from 'classnames'
 import Script from 'next/script'
 import Loading from '../components/base/loading'
 import Forms from './forms'
 import Header from './_header'
 import style from './page.module.css'
-import UserSSOForm from './userSSOForm'
-import cn from '@/utils/classnames'
+import EnterpriseSSOForm from './enterpriseSSOForm'
 import { IS_CE_EDITION } from '@/config'
-
-import type { SystemFeatures } from '@/types/feature'
-import { defaultSystemFeatures } from '@/types/feature'
-import { getSystemFeatures } from '@/service/common'
+import { getEnterpriseFeatures } from '@/service/enterprise'
+import type { EnterpriseFeatures } from '@/types/enterprise'
+import { defaultEnterpriseFeatures } from '@/types/enterprise'
 
 const SignIn = () => {
   const [loading, setLoading] = useState<boolean>(true)
-  const [systemFeatures, setSystemFeatures] = useState<SystemFeatures>(defaultSystemFeatures)
+  const [enterpriseFeatures, setEnterpriseFeatures] = useState<EnterpriseFeatures>(defaultEnterpriseFeatures)
 
   useEffect(() => {
-    getSystemFeatures().then((res) => {
-      setSystemFeatures(res)
+    getEnterpriseFeatures().then((res) => {
+      setEnterpriseFeatures(res)
     }).finally(() => {
       setLoading(false)
     })
@@ -27,6 +26,7 @@ const SignIn = () => {
 
   return (
     <>
+      13.0.0
       {!IS_CE_EDITION && (
         <>
           <Script strategy="beforeInteractive" async src={'https://www.googletagmanager.com/gtag/js?id=AW-11217955271'}></Script>
@@ -62,7 +62,7 @@ gtag('config', 'AW-11217955271"');
           {loading && (
             <div className={
               cn(
-                'flex flex-col items-center w-full grow justify-center',
+                'flex flex-col items-center w-full grow items-center justify-center',
                 'px-6',
                 'md:px-[108px]',
               )
@@ -71,17 +71,17 @@ gtag('config', 'AW-11217955271"');
             </div>
           )}
 
-          {!loading && !systemFeatures.sso_enforced_for_signin && (
+          {!loading && !enterpriseFeatures.sso_enforced_for_signin && (
             <>
               <Forms />
-              <div className='px-8 py-6 text-sm font-normal text-gray-500'>
+              {/* <div className='px-8 py-6 text-sm font-normal text-gray-500'>
                 © {new Date().getFullYear()} LangGenius, Inc. All rights reserved.
-              </div>
+              </div> */}
             </>
           )}
 
-          {!loading && systemFeatures.sso_enforced_for_signin && (
-            <UserSSOForm protocol={systemFeatures.sso_enforced_for_signin_protocol} />
+          {!loading && enterpriseFeatures.sso_enforced_for_signin && (
+            <EnterpriseSSOForm protocol={enterpriseFeatures.sso_enforced_for_signin_protocol} />
           )}
         </div>
 

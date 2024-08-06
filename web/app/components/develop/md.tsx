@@ -1,5 +1,6 @@
 'use client'
-import classNames from '@/utils/classnames'
+import { basicUrl } from '@/config'
+import classNames from 'classnames'
 
 type IChildrenProps = {
   children: React.ReactNode
@@ -45,7 +46,7 @@ export const Heading = function H2({
         <span className="font-mono text-xs text-zinc-400">{url}</span>
       </div>
       <h2 className='mt-2 scroll-mt-32'>
-        <a href={name} className='no-underline group text-inherit hover:text-inherit'>{title}</a>
+        <a href={`${basicUrl}${name}`} className='no-underline group text-inherit hover:text-inherit'>{title}</a>
       </h2>
     </>
 

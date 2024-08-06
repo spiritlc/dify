@@ -1,8 +1,5 @@
 import type { FC } from 'react'
-import {
-  memo,
-  useCallback,
-} from 'react'
+import React from 'react'
 import { useTranslation } from 'react-i18next'
 import VarReferencePicker from '../_base/components/variable/var-reference-picker'
 import useConfig from './use-config'
@@ -44,13 +41,7 @@ const Panel: FC<NodePanelProps<KnowledgeRetrievalNodeType>> = ({
     query,
     setQuery,
     runResult,
-    rerankModelOpen,
-    setRerankModelOpen,
   } = useConfig(id, data)
-
-  const handleOpenFromPropsChange = useCallback((openFromProps: boolean) => {
-    setRerankModelOpen(openFromProps)
-  }, [setRerankModelOpen])
 
   return (
     <div className='mt-2'>
@@ -84,10 +75,7 @@ const Panel: FC<NodePanelProps<KnowledgeRetrievalNodeType>> = ({
                 singleRetrievalModelConfig={inputs.single_retrieval_config?.model}
                 onSingleRetrievalModelChange={handleModelChanged as any}
                 onSingleRetrievalModelParamsChange={handleCompletionParamsChange}
-                readonly={readOnly || !selectedDatasets.length}
-                openFromProps={rerankModelOpen}
-                onOpenFromPropsChange={handleOpenFromPropsChange}
-                selectedDatasets={selectedDatasets}
+                readonly={readOnly}
               />
               {!readOnly && (<div className='w-px h-3 bg-gray-200'></div>)}
               {!readOnly && (
@@ -174,4 +162,4 @@ const Panel: FC<NodePanelProps<KnowledgeRetrievalNodeType>> = ({
   )
 }
 
-export default memo(Panel)
+export default React.memo(Panel)

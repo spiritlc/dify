@@ -3,11 +3,9 @@
 import { useTranslation } from 'react-i18next'
 import Link from 'next/link'
 import { useSelectedLayoutSegment } from 'next/navigation'
-import {
-  RiPlanetFill,
-  RiPlanetLine,
-} from '@remixicon/react'
-import classNames from '@/utils/classnames'
+import classNames from 'classnames'
+import { Explore, ExploreActive } from '../../base/icons/src/public/header-nav/explore'
+import { basicUrl } from '@/config'
 type ExploreNavProps = {
   className?: string
 }
@@ -20,15 +18,15 @@ const ExploreNav = ({
   const actived = selectedSegment === 'explore'
 
   return (
-    <Link href="/explore/apps" className={classNames(
+    <Link href={`${basicUrl}/explore/apps`} className={classNames(
       className, 'group',
-      actived && 'bg-components-main-nav-nav-button-bg-active shadow-md',
-      actived ? 'text-components-main-nav-nav-button-text-active' : 'text-components-main-nav-nav-button-text hover:bg-components-main-nav-nav-button-bg-hover',
+      actived && 'bg-white shadow-md',
+      actived ? 'text-primary-600' : 'text-gray-500 hover:bg-gray-200',
     )}>
       {
         actived
-          ? <RiPlanetFill className='mr-2 w-4 h-4' />
-          : <RiPlanetLine className='mr-2 w-4 h-4' />
+          ? <ExploreActive className='mr-2 w-4 h-4' />
+          : <Explore className='mr-2 w-4 h-4' />
       }
       {t('common.menus.explore')}
     </Link>

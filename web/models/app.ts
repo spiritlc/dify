@@ -1,4 +1,3 @@
-import type { LangFuseConfig, LangSmithConfig, TracingProvider } from '@/app/(commonLayout)/app/(appDetailLayout)/[appId]/overview/tracing/type'
 import type { App, AppTemplate, SiteConfig } from '@/types/app'
 
 /* export type App = {
@@ -130,13 +129,3 @@ export type AppVoicesListResponse = [{
   name: string
   value: string
 }]
-
-export type TracingStatus = {
-  enabled: boolean
-  tracing_provider: TracingProvider | null
-}
-
-export type TracingConfig = {
-  tracing_provider: TracingProvider
-  tracing_config: LangSmithConfig | LangFuseConfig
-}

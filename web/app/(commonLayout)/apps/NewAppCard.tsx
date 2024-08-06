@@ -1,14 +1,10 @@
 'use client'
 
-import { forwardRef, useMemo, useState } from 'react'
-import {
-  useRouter,
-  useSearchParams,
-} from 'next/navigation'
+import { forwardRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import CreateAppTemplateDialog from '@/app/components/app/create-app-dialog'
 import CreateAppModal from '@/app/components/app/create-app-modal'
-import CreateFromDSLModal, { CreateFromDSLModalTab } from '@/app/components/app/create-from-dsl-modal'
+import CreateFromDSLModal from '@/app/components/app/create-from-dsl-modal'
 import { useProviderContext } from '@/context/provider-context'
 import { FileArrow01, FilePlus01, FilePlus02 } from '@/app/components/base/icons/src/vender/line/files'
 
@@ -20,21 +16,10 @@ export type CreateAppCardProps = {
 const CreateAppCard = forwardRef<HTMLAnchorElement, CreateAppCardProps>(({ onSuccess }, ref) => {
   const { t } = useTranslation()
   const { onPlanInfoChanged } = useProviderContext()
-  const searchParams = useSearchParams()
-  const { replace } = useRouter()
-  const dslUrl = searchParams.get('remoteInstallUrl') || undefined
 
   const [showNewAppTemplateDialog, setShowNewAppTemplateDialog] = useState(false)
   const [showNewAppModal, setShowNewAppModal] = useState(false)
-  const [showCreateFromDSLModal, setShowCreateFromDSLModal] = useState(!!dslUrl)
-
-  const activeTab = useMemo(() => {
-    if (dslUrl)
-      return CreateFromDSLModalTab.FROM_URL
-
-    return undefined
-  }, [dslUrl])
-
+  const [showCreateFromDSLModal, setShowCreateFromDSLModal] = useState(false)
   return (
     <a
       ref={ref}
@@ -80,14 +65,7 @@ const CreateAppCard = forwardRef<HTMLAnchorElement, CreateAppCardProps>(({ onSuc
       />
       <CreateFromDSLModal
         show={showCreateFromDSLModal}
-        onClose={() => {
-          setShowCreateFromDSLModal(false)
-
-          if (dslUrl)
-            replace('/')
-        }}
-        activeTab={activeTab}
-        dslUrl={dslUrl}
+        onClose={() => setShowCreateFromDSLModal(false)}
         onSuccess={() => {
           onPlanInfoChanged()
           if (onSuccess)

@@ -1,5 +1,4 @@
-import React, { useEffect } from 'react'
-import { useShallow } from 'zustand/react/shallow'
+import React, { useEffect, useState } from 'react'
 import NavLink from './navLink'
 import type { NavIcon } from './navLink'
 import AppBasic from './basic'
@@ -27,13 +26,11 @@ export type IAppDetailNavProps = {
 }
 
 const AppDetailNav = ({ title, desc, icon, icon_background, navigation, extraInfo, iconType = 'app' }: IAppDetailNavProps) => {
-  const { appSidebarExpand, setAppSiderbarExpand } = useAppStore(useShallow(state => ({
-    appSidebarExpand: state.appSidebarExpand,
-    setAppSiderbarExpand: state.setAppSiderbarExpand,
-  })))
+  const { appSidebarExpand, setAppSiderbarExpand } = useAppStore()
   const media = useBreakpoints()
   const isMobile = media === MediaType.mobile
-  const expand = appSidebarExpand === 'expand'
+  const [modeState, setModeState] = useState(appSidebarExpand)
+  const expand = modeState === 'expand'
 
   const handleToggle = (state: string) => {
     setAppSiderbarExpand(state === 'expand' ? 'collapse' : 'expand')
@@ -42,14 +39,14 @@ const AppDetailNav = ({ title, desc, icon, icon_background, navigation, extraInf
   useEffect(() => {
     if (appSidebarExpand) {
       localStorage.setItem('app-detail-collapse-or-expand', appSidebarExpand)
-      setAppSiderbarExpand(appSidebarExpand)
+      setModeState(appSidebarExpand)
     }
-  }, [appSidebarExpand, setAppSiderbarExpand])
+  }, [appSidebarExpand])
 
   return (
     <div
       className={`
-        shrink-0 flex flex-col bg-background-default-subtle border-r border-divider-burn transition-all
+        shrink-0 flex flex-col bg-white border-r border-gray-200 transition-all
         ${expand ? 'w-[216px]' : 'w-14'}
       `}
     >
@@ -60,11 +57,11 @@ const AppDetailNav = ({ title, desc, icon, icon_background, navigation, extraInf
         `}
       >
         {iconType === 'app' && (
-          <AppInfo expand={expand} />
+          <AppInfo expand={expand}/>
         )}
         {iconType !== 'app' && (
           <AppBasic
-            mode={appSidebarExpand}
+            mode={modeState}
             iconType={iconType}
             icon={icon}
             icon_background={icon_background}
@@ -74,20 +71,20 @@ const AppDetailNav = ({ title, desc, icon, icon_background, navigation, extraInf
         )}
       </div>
       {!expand && (
-        <div className='mt-1 mx-auto w-6 h-[1px] bg-divider-subtle' />
+        <div className='mt-1 mx-auto w-6 h-[1px] bg-gray-100'/>
       )}
       <nav
         className={`
-          grow space-y-1
+          grow space-y-1 bg-white
           ${expand ? 'p-4' : 'px-2.5 py-4'}
         `}
       >
         {navigation.map((item, index) => {
           return (
-            <NavLink key={index} mode={appSidebarExpand} iconMap={{ selected: item.selectedIcon, normal: item.icon }} name={item.name} href={item.href} />
+            <NavLink key={index} mode={modeState} iconMap={{ selected: item.selectedIcon, normal: item.icon }} name={item.name} href={`${item.href}`} />
           )
         })}
-        {extraInfo && extraInfo(appSidebarExpand)}
+        {extraInfo && extraInfo(modeState)}
       </nav>
       {
         !isMobile && (
@@ -99,7 +96,7 @@ const AppDetailNav = ({ title, desc, icon, icon_background, navigation, extraInf
           >
             <div
               className='flex items-center justify-center w-6 h-6 text-gray-500 cursor-pointer'
-              onClick={() => handleToggle(appSidebarExpand)}
+              onClick={() => handleToggle(modeState)}
             >
               {
                 expand

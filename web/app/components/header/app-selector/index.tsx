@@ -9,6 +9,7 @@ import type { AppDetailResponse } from '@/models/app'
 import CreateAppDialog from '@/app/components/app/create-app-dialog'
 import AppIcon from '@/app/components/base/app-icon'
 import { useAppContext } from '@/context/app-context'
+import { basicUrl } from '@/config'
 
 type IAppSelectorProps = {
   appItems: AppDetailResponse[]
@@ -17,7 +18,7 @@ type IAppSelectorProps = {
 
 export default function AppSelector({ appItems, curApp }: IAppSelectorProps) {
   const router = useRouter()
-  const { isCurrentWorkspaceEditor } = useAppContext()
+  const { isCurrentWorkspaceManager } = useAppContext()
   const [showNewAppDialog, setShowNewAppDialog] = useState(false)
   const { t } = useTranslation()
 
@@ -65,7 +66,7 @@ export default function AppSelector({ appItems, curApp }: IAppSelectorProps) {
                 appItems.map((app: AppDetailResponse) => (
                   <Menu.Item key={app.id}>
                     <div className={itemClassName} onClick={() =>
-                      router.push(`/app/${app.id}/${isCurrentWorkspaceEditor ? 'configuration' : 'overview'}`)
+                      router.push(`${basicUrl}/app/${app.id}/${isCurrentWorkspaceManager ? 'configuration' : 'overview'}`)
                     }>
                       <div className='relative w-6 h-6 mr-2 bg-[#D5F5F6] rounded-[6px]'>
                         <AppIcon size='tiny' />
@@ -79,7 +80,7 @@ export default function AppSelector({ appItems, curApp }: IAppSelectorProps) {
                 ))
               }
             </div>)}
-            {isCurrentWorkspaceEditor && <Menu.Item>
+            {isCurrentWorkspaceManager && <Menu.Item>
               <div className='p-1' onClick={() => setShowNewAppDialog(true)}>
                 <div
                   className='flex items-center h-12 rounded-lg cursor-pointer hover:bg-gray-100'

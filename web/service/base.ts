@@ -1,11 +1,9 @@
-import { API_PREFIX, IS_CE_EDITION, PUBLIC_API_PREFIX } from '@/config'
+import { API_PREFIX, PUBLIC_API_PREFIX, appId, appKey } from '@/config'
 import Toast from '@/app/components/base/toast'
-import type { AnnotationReply, MessageEnd, MessageReplace, ThoughtItem } from '@/app/components/base/chat/chat/type'
+import type { AnnotationReply, MessageEnd, MessageReplace, ThoughtItem } from '@/app/components/app/chat/type'
 import type { VisionFile } from '@/types/app'
+// import { getSign } from '@/utils/sign'
 import type {
-  IterationFinishedResponse,
-  IterationNextedResponse,
-  IterationStartedResponse,
   NodeFinishedResponse,
   NodeStartedResponse,
   TextChunkResponse,
@@ -13,13 +11,14 @@ import type {
   WorkflowFinishedResponse,
   WorkflowStartedResponse,
 } from '@/types/workflow'
-import { removeAccessToken } from '@/app/components/share/utils'
+import { getSign } from '@/utils/sign'
+import { logout } from '@/utils/login'
+
 const TIME_OUT = 100000
 
 const ContentType = {
-  json: 'application/json',
+  json: 'application/json; charset=UTF-8',
   stream: 'text/event-stream',
-  audio: 'audio/mpeg',
   form: 'application/x-www-form-urlencoded; charset=UTF-8',
   download: 'application/octet-stream', // for download
   upload: 'multipart/form-data', // for upload
@@ -56,12 +55,7 @@ export type IOnWorkflowStarted = (workflowStarted: WorkflowStartedResponse) => v
 export type IOnWorkflowFinished = (workflowFinished: WorkflowFinishedResponse) => void
 export type IOnNodeStarted = (nodeStarted: NodeStartedResponse) => void
 export type IOnNodeFinished = (nodeFinished: NodeFinishedResponse) => void
-export type IOnIterationStarted = (workflowStarted: IterationStartedResponse) => void
-export type IOnIterationNexted = (workflowStarted: IterationNextedResponse) => void
-export type IOnIterationFinished = (workflowFinished: IterationFinishedResponse) => void
 export type IOnTextChunk = (textChunk: TextChunkResponse) => void
-export type IOnTTSChunk = (messageId: string, audioStr: string, audioType?: string) => void
-export type IOnTTSEnd = (messageId: string, audioStr: string, audioType?: string) => void
 export type IOnTextReplace = (textReplace: TextReplaceResponse) => void
 
 export type IOtherOptions = {
@@ -83,12 +77,7 @@ export type IOtherOptions = {
   onWorkflowFinished?: IOnWorkflowFinished
   onNodeStarted?: IOnNodeStarted
   onNodeFinished?: IOnNodeFinished
-  onIterationStart?: IOnIterationStarted
-  onIterationNext?: IOnIterationNexted
-  onIterationFinish?: IOnIterationFinished
   onTextChunk?: IOnTextChunk
-  onTTSChunk?: IOnTTSChunk
-  onTTSEnd?: IOnTTSEnd
   onTextReplace?: IOnTextReplace
 }
 
@@ -112,10 +101,6 @@ function unicodeToChar(text: string) {
   })
 }
 
-function requiredWebSSOLogin() {
-  globalThis.location.href = `/webapp-signin?redirect_url=${globalThis.location.pathname}`
-}
-
 export function format(text: string) {
   let res = text.trim()
   if (res.startsWith('\n'))
@@ -136,12 +121,7 @@ const handleStream = (
   onWorkflowFinished?: IOnWorkflowFinished,
   onNodeStarted?: IOnNodeStarted,
   onNodeFinished?: IOnNodeFinished,
-  onIterationStart?: IOnIterationStarted,
-  onIterationNext?: IOnIterationNexted,
-  onIterationFinish?: IOnIterationFinished,
   onTextChunk?: IOnTextChunk,
-  onTTSChunk?: IOnTTSChunk,
-  onTTSEnd?: IOnTTSEnd,
   onTextReplace?: IOnTextReplace,
 ) => {
   if (!response.ok)
@@ -219,26 +199,11 @@ const handleStream = (
             else if (bufferObj.event === 'node_finished') {
               onNodeFinished?.(bufferObj as NodeFinishedResponse)
             }
-            else if (bufferObj.event === 'iteration_started') {
-              onIterationStart?.(bufferObj as IterationStartedResponse)
-            }
-            else if (bufferObj.event === 'iteration_next') {
-              onIterationNext?.(bufferObj as IterationNextedResponse)
-            }
-            else if (bufferObj.event === 'iteration_completed') {
-              onIterationFinish?.(bufferObj as IterationFinishedResponse)
-            }
             else if (bufferObj.event === 'text_chunk') {
               onTextChunk?.(bufferObj as TextChunkResponse)
             }
             else if (bufferObj.event === 'text_replace') {
               onTextReplace?.(bufferObj as TextReplaceResponse)
-            }
-            else if (bufferObj.event === 'tts_message') {
-              onTTSChunk?.(bufferObj.message_id, bufferObj.audio, bufferObj.audio_type)
-            }
-            else if (bufferObj.event === 'tts_message_end') {
-              onTTSEnd?.(bufferObj.message_id, bufferObj.audio)
             }
           }
         })
@@ -259,6 +224,15 @@ const handleStream = (
     })
   }
   read()
+}
+
+const parseJson = (res: any) => {
+  const data = res.text()
+  return data.then((r: any) => {
+    if (r.length === 0)
+      return null
+    else return JSON.parse(r)
+  })
 }
 
 const baseFetch = <T>(
@@ -296,6 +270,8 @@ const baseFetch = <T>(
     options.headers.set('Authorization', `Bearer ${accessToken}`)
   }
 
+  const userInfo = JSON.parse(localStorage.getItem('haier-user-center-user-info') || '{}')
+  options.headers.set('Job-Number', userInfo.userName)
   if (deleteContentType) {
     options.headers.delete('Content-Type')
   }
@@ -306,9 +282,20 @@ const baseFetch = <T>(
   }
 
   const urlPrefix = isPublicAPI ? PUBLIC_API_PREFIX : API_PREFIX
-  let urlWithPrefix = `${urlPrefix}${url.startsWith('/') ? url : `/${url}`}`
+  let urlWithPrefix = (url.startsWith('/system-manager-rest') || url.startsWith('/ommp')) ? url : `${urlPrefix}${url.startsWith('/') ? url : `/${url}`}`
 
   const { method, params, body } = options
+
+  if (body && bodyStringify)
+    options.body = JSON.stringify(body)
+
+  // 添加sign
+  const timestamp = new Date().getTime().toString()
+  options.headers.set('appId', appId)
+  options.headers.set('timestamp', timestamp)
+  options.headers.set('sign', getSign(timestamp, body ? JSON.stringify(body) : '', `${urlWithPrefix}`, appId, appKey))
+  options.headers.set('Access-User-Token', localStorage.getItem('UserToken') || '')
+
   // handle query
   if (method === 'GET' && params) {
     const paramsArray: string[] = []
@@ -324,9 +311,6 @@ const baseFetch = <T>(
     delete options.params
   }
 
-  if (body && bodyStringify)
-    options.body = JSON.stringify(body)
-
   // Handle timeout
   return Promise.race([
     new Promise((resolve, reject) => {
@@ -338,55 +322,21 @@ const baseFetch = <T>(
       globalThis.fetch(urlWithPrefix, options as RequestInit)
         .then((res) => {
           const resClone = res.clone()
+          const loginUrl = `${globalThis.location.origin}/airtool/apps`
           // Error handler
           if (!/^(2|3)\d{2}$/.test(String(res.status))) {
             const bodyJson = res.json()
+            console.log(res.status)
             switch (res.status) {
               case 401: {
-                if (isPublicAPI) {
-                  return bodyJson.then((data: ResponseError) => {
-                    if (!silent)
-                      Toast.notify({ type: 'error', message: data.message })
-
-                    if (data.code === 'web_sso_auth_required')
-                      requiredWebSSOLogin()
-
-                    if (data.code === 'unauthorized') {
-                      removeAccessToken()
-                      globalThis.location.reload()
-                    }
-
-                    return Promise.reject(data)
-                  })
-                }
-                const loginUrl = `${globalThis.location.origin}/signin`
-                bodyJson.then((data: ResponseError) => {
-                  if (data.code === 'init_validate_failed' && IS_CE_EDITION && !silent)
-                    Toast.notify({ type: 'error', message: data.message, duration: 4000 })
-                  else if (data.code === 'not_init_validated' && IS_CE_EDITION)
-                    globalThis.location.href = `${globalThis.location.origin}/init`
-                  else if (data.code === 'not_setup' && IS_CE_EDITION)
-                    globalThis.location.href = `${globalThis.location.origin}/install`
-                  else if (location.pathname !== '/signin' || !IS_CE_EDITION)
-                    globalThis.location.href = loginUrl
-                  else if (!silent)
-                    Toast.notify({ type: 'error', message: data.message })
-                }).catch(() => {
-                  // Handle any other errors
-                  globalThis.location.href = loginUrl
-                })
-
+                console.log('??')
+                logout()
                 break
               }
               case 403:
-                bodyJson.then((data: ResponseError) => {
-                  if (!silent)
-                    Toast.notify({ type: 'error', message: data.message })
-                  if (data.code === 'already_setup')
-                    globalThis.location.href = `${globalThis.location.origin}/signin`
-                })
+                globalThis.location.href = loginUrl
+                logout()
                 break
-              // fall through
               default:
                 bodyJson.then((data: ResponseError) => {
                   if (!silent)
@@ -403,12 +353,17 @@ const baseFetch = <T>(
           }
 
           // return data
-          if (options.headers.get('Content-type') === ContentType.download || options.headers.get('Content-type') === ContentType.audio)
-            resolve(needAllResponseContent ? resClone : res.blob())
+          let data: any
+          if (options.headers.get('Content-type') === ContentType.download)
+            data = res.blob()
+          else
+            data = parseJson(res)
 
-          else resolve(needAllResponseContent ? resClone : res.json())
+          // const data: Promise<T> =  ? res.blob() : res.json()
+          resolve(needAllResponseContent ? resClone : data)
         })
-        .catch((err) => {
+        .catch((err: any) => {
+          console.log(err, '捕获到')
           if (!silent)
             Toast.notify({ type: 'error', message: err })
           reject(err)
@@ -436,9 +391,20 @@ export const upload = (options: any, isPublicAPI?: boolean, url?: string, search
     const accessToken = localStorage.getItem('console_token') || ''
     token = accessToken
   }
+
+  const urlWithPrefix = (url ? `${urlPrefix}${url}` : `${urlPrefix}/files/upload`) + (searchParams || '')
+  const headers: any = {}
+  const userInfo = JSON.parse(localStorage.getItem('haier-user-center-user-info') || '{}')
+  headers['Job-Number'] = userInfo.userName
+  const timestamp = new Date().getTime().toString()
+  headers.appId = appId
+  headers.timestamp = timestamp
+  headers.sign = getSign(timestamp, '', `${urlWithPrefix}`, appId, appKey)
+  headers['Access-User-Token'] = localStorage.getItem('UserToken') || ''
+
   const defaultOptions = {
     method: 'POST',
-    url: (url ? `${urlPrefix}${url}` : `${urlPrefix}/files/upload`) + (searchParams || ''),
+    url: urlWithPrefix,
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -447,7 +413,7 @@ export const upload = (options: any, isPublicAPI?: boolean, url?: string, search
   options = {
     ...defaultOptions,
     ...options,
-    headers: { ...defaultOptions.headers, ...options.headers },
+    headers: { ...defaultOptions.headers, ...options.headers, ...headers },
   }
   return new Promise((resolve, reject) => {
     const xhr = options.xhr
@@ -485,12 +451,7 @@ export const ssePost = (
     onWorkflowFinished,
     onNodeStarted,
     onNodeFinished,
-    onIterationStart,
-    onIterationNext,
-    onIterationFinish,
     onTextChunk,
-    onTTSChunk,
-    onTTSEnd,
     onTextReplace,
     onError,
     getAbortController,
@@ -516,21 +477,20 @@ export const ssePost = (
   if (body)
     options.body = JSON.stringify(body)
 
+  // 添加sign
+  const userInfo = JSON.parse(localStorage.getItem('haier-user-center-user-info') || '{}')
+  options.headers.set('Job-Number', userInfo.userName)
+  const timestamp = new Date().getTime().toString()
+  options.headers.set('appId', appId)
+  options.headers.set('timestamp', timestamp)
+  options.headers.set('sign', getSign(timestamp, body ? JSON.stringify(body) : '', `${urlWithPrefix}`, appId, appKey))
+  options.headers.set('Access-User-Token', localStorage.getItem('UserToken') || '')
+
   globalThis.fetch(urlWithPrefix, options as RequestInit)
     .then((res) => {
       if (!/^(2|3)\d{2}$/.test(String(res.status))) {
         res.json().then((data: any) => {
           Toast.notify({ type: 'error', message: data.message || 'Server Error' })
-
-          if (isPublicAPI) {
-            if (data.code === 'web_sso_auth_required')
-              requiredWebSSOLogin()
-
-            if (data.code === 'unauthorized') {
-              removeAccessToken()
-              globalThis.location.reload()
-            }
-          }
         })
         onError?.('Server Error')
         return
@@ -543,7 +503,7 @@ export const ssePost = (
           return
         }
         onData?.(str, isFirstMessage, moreInfo)
-      }, onCompleted, onThought, onMessageEnd, onMessageReplace, onFile, onWorkflowStarted, onWorkflowFinished, onNodeStarted, onNodeFinished, onIterationStart, onIterationNext, onIterationFinish, onTextChunk, onTTSChunk, onTTSEnd, onTextReplace)
+      }, onCompleted, onThought, onMessageEnd, onMessageReplace, onFile, onWorkflowStarted, onWorkflowFinished, onNodeStarted, onNodeFinished, onTextChunk, onTextReplace)
     }).catch((e) => {
       if (e.toString() !== 'AbortError: The user aborted a request.')
         Toast.notify({ type: 'error', message: e })

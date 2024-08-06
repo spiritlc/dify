@@ -20,7 +20,7 @@ import type { OnSend } from '@/app/components/base/chat/types'
 import { useEventEmitterContextContext } from '@/context/event-emitter'
 import { useProviderContext } from '@/context/provider-context'
 import {
-  fetchConversationMessages,
+  fetchConvesationMessages,
   fetchSuggestedQuestions,
   stopChatMessageResponding,
 } from '@/service/debug'
@@ -89,7 +89,7 @@ const ChatItem: FC<ChatItemProps> = ({
       `apps/${appId}/chat-messages`,
       data,
       {
-        onGetConvesationMessages: (conversationId, getAbortController) => fetchConversationMessages(appId, conversationId, getAbortController),
+        onGetConvesationMessages: (conversationId, getAbortController) => fetchConvesationMessages(appId, conversationId, getAbortController),
         onGetSuggestedQuestions: (responseItemId, getAbortController) => fetchSuggestedQuestions(appId, responseItemId, getAbortController),
       },
     )
@@ -128,7 +128,6 @@ const ChatItem: FC<ChatItemProps> = ({
       showPromptLog
       questionIcon={<Avatar name={userProfile.name} size={40} />}
       allToolIcons={allToolIcons}
-      hideLogModal
     />
   )
 }

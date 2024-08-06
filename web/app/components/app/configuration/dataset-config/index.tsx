@@ -44,8 +44,7 @@ const DatasetConfig: FC = () => {
   const handleSave = (newDataset: DataSet) => {
     const index = dataSet.findIndex(item => item.id === newDataset.id)
 
-    const newDatasets = [...dataSet.slice(0, index), newDataset, ...dataSet.slice(index + 1)]
-    setDataSet(newDatasets)
+    setDataSet([...dataSet.slice(0, index), newDataset, ...dataSet.slice(index + 1)])
     formattingChangedDispatcher()
   }
 
@@ -75,7 +74,7 @@ const DatasetConfig: FC = () => {
       title={t('appDebug.feature.dataSet.title')}
       headerRight={
         <div className='flex items-center gap-1'>
-          {!isAgent && <ParamsConfig disabled={!hasData} selectedDatasets={dataSet} />}
+          {!isAgent && <ParamsConfig />}
           <OperationBtn type="add" onClick={showSelectDataSet} />
         </div>
       }

@@ -11,7 +11,7 @@ import type {
 import BlockIcon from '@/app/components/workflow/block-icon'
 import BlockSelector from '@/app/components/workflow/block-selector'
 import {
-  useAvailableBlocks,
+  useNodesExtraData,
   useNodesInteractions,
   useNodesReadOnly,
   useToolIcon,
@@ -33,21 +33,18 @@ const Item = ({
   const { t } = useTranslation()
   const { handleNodeChange } = useNodesInteractions()
   const { nodesReadOnly } = useNodesReadOnly()
+  const nodesExtraData = useNodesExtraData()
   const toolIcon = useToolIcon(data)
-  const {
-    availablePrevBlocks,
-    availableNextBlocks,
-  } = useAvailableBlocks(data.type, data.isInIteration)
-
+  const availablePrevNodes = nodesExtraData[data.type].availablePrevNodes
+  const availableNextNodes = nodesExtraData[data.type].availableNextNodes
   const handleSelect = useCallback<OnSelectBlock>((type, toolDefaultValue) => {
     handleNodeChange(nodeId, type, sourceHandle, toolDefaultValue)
   }, [nodeId, sourceHandle, handleNodeChange])
   const renderTrigger = useCallback((open: boolean) => {
     return (
       <Button
-        size='small'
         className={`
-          hidden group-hover:flex
+          hidden group-hover:flex px-2 py-0 h-6 bg-white text-xs text-gray-700 font-medium rounded-md 
           ${open && '!bg-gray-100 !flex'}
         `}
       >
@@ -58,7 +55,7 @@ const Item = ({
 
   return (
     <div
-      className='relative group flex items-center mb-3 last-of-type:mb-0 px-2 h-9 rounded-lg border-[0.5px] border-divider-regular bg-background-default hover:bg-background-default-hover shadow-xs text-xs text-text-secondary cursor-pointer'
+      className='relative group flex items-center mb-3 last-of-type:mb-0 px-2 h-9 rounded-lg border-[0.5px] border-gray-200 bg-white hover:bg-gray-50 shadow-xs text-xs text-gray-700 cursor-pointer'
     >
       {
         branchName && (
@@ -75,7 +72,7 @@ const Item = ({
         toolIcon={toolIcon}
         className='shrink-0 mr-1.5'
       />
-      <div className='grow system-xs-medium text-text-secondary'>{data.title}</div>
+      <div className='grow'>{data.title}</div>
       {
         !nodesReadOnly && (
           <BlockSelector
@@ -87,7 +84,7 @@ const Item = ({
             }}
             trigger={renderTrigger}
             popupClassName='!w-[328px]'
-            availableBlocksTypes={intersection(availablePrevBlocks, availableNextBlocks).filter(item => item !== data.type)}
+            availableBlocksTypes={intersection(availablePrevNodes, availableNextNodes)}
           />
         )
       }

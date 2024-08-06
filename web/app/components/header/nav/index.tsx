@@ -3,11 +3,12 @@
 import React, { useState } from 'react'
 import Link from 'next/link'
 import { useSelectedLayoutSegment } from 'next/navigation'
+import classNames from 'classnames'
 import type { INavSelectorProps } from './nav-selector'
 import NavSelector from './nav-selector'
-import classNames from '@/utils/classnames'
 import { ArrowNarrowLeft } from '@/app/components/base/icons/src/vender/line/arrows'
 import { useStore as useAppStore } from '@/app/components/app/store'
+import { basicUrl } from '@/config'
 
 type INavProps = {
   icon: React.ReactNode
@@ -31,7 +32,7 @@ const Nav = ({
   onLoadmore,
   isApp,
 }: INavProps) => {
-  const setAppDetail = useAppStore(state => state.setAppDetail)
+  const { setAppDetail } = useAppStore()
   const [hovered, setHovered] = useState(false)
   const segment = useSelectedLayoutSegment()
   const isActived = Array.isArray(activeSegment) ? activeSegment.includes(segment!) : segment === activeSegment
@@ -39,16 +40,16 @@ const Nav = ({
   return (
     <div className={`
       flex items-center h-8 mr-0 sm:mr-3 px-0.5 rounded-xl text-sm shrink-0 font-medium
-      ${isActived && 'bg-components-main-nav-nav-button-bg-active shadow-md font-semibold'}
-      ${!curNav && !isActived && 'hover:bg-components-main-nav-nav-button-bg-hover'}
+      ${isActived && 'bg-white shadow-md font-semibold'}
+      ${!curNav && !isActived && 'hover:bg-gray-200'}
     `}>
-      <Link href={link}>
+      <Link href={`${basicUrl}${link}`}>
         <div
           onClick={() => setAppDetail()}
           className={classNames(`
             flex items-center h-7 px-2.5 cursor-pointer rounded-[10px]
-            ${isActived ? 'text-components-main-nav-nav-button-text-active' : 'text-components-main-nav-nav-button-text'}
-            ${curNav && isActived && 'hover:bg-components-main-nav-nav-button-bg-active-hover'}
+            ${isActived ? 'text-primary-600' : 'text-gray-500'}
+            ${curNav && isActived && 'hover:bg-primary-50'}
           `)}
           onMouseEnter={() => setHovered(true)}
           onMouseLeave={() => setHovered(false)}

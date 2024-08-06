@@ -22,11 +22,11 @@ import Tag from '@/app/components/base/tag'
 import Switch from '@/app/components/base/switch'
 import Divider from '@/app/components/base/divider'
 import CopyFeedback from '@/app/components/base/copy-feedback'
-import Confirm from '@/app/components/base/confirm'
 import ShareQRCode from '@/app/components/base/qrcode'
 import SecretKeyButton from '@/app/components/develop/secret-key/secret-key-button'
 import type { AppDetailResponse } from '@/models/app'
 import { useAppContext } from '@/context/app-context'
+import { basicUrl } from '@/config'
 
 export type IAppCardProps = {
   className?: string
@@ -53,13 +53,11 @@ function AppCard({
 }: IAppCardProps) {
   const router = useRouter()
   const pathname = usePathname()
-  const { currentWorkspace, isCurrentWorkspaceManager, isCurrentWorkspaceEditor } = useAppContext()
+  const { currentWorkspace, isCurrentWorkspaceManager } = useAppContext()
   const [showSettingsModal, setShowSettingsModal] = useState(false)
   const [showEmbedded, setShowEmbedded] = useState(false)
   const [showCustomizeModal, setShowCustomizeModal] = useState(false)
   const [genLoading, setGenLoading] = useState(false)
-  const [showConfirmDelete, setShowConfirmDelete] = useState(false)
-
   const { t } = useTranslation()
 
   const OPERATIONS_MAP = useMemo(() => {
@@ -74,17 +72,16 @@ function AppCard({
     if (appInfo.mode !== 'completion' && appInfo.mode !== 'workflow')
       operationsMap.webapp.push({ opName: t('appOverview.overview.appInfo.embedded.entry'), opIcon: EmbedIcon })
 
-    if (isCurrentWorkspaceEditor)
+    if (isCurrentWorkspaceManager)
       operationsMap.webapp.push({ opName: t('appOverview.overview.appInfo.settings.entry'), opIcon: Cog8ToothIcon })
 
     return operationsMap
-  }, [isCurrentWorkspaceEditor, appInfo, t])
+  }, [isCurrentWorkspaceManager, appInfo, t])
 
   const isApp = cardType === 'webapp'
   const basicName = isApp
     ? appInfo?.site?.title
     : t('appOverview.overview.apiInfo.title')
-  const toggleDisabled = isApp ? !isCurrentWorkspaceEditor : !isCurrentWorkspaceManager
   const runningStatus = isApp ? appInfo.enable_site : appInfo.enable_api
   const { app_base_url, access_token } = appInfo.site ?? {}
   const appMode = (appInfo.mode !== 'completion' && appInfo.mode !== 'workflow') ? 'chat' : appInfo.mode
@@ -118,7 +115,7 @@ function AppCard({
         return () => {
           const pathSegments = pathname.split('/')
           pathSegments.pop()
-          router.push(`${pathSegments.join('/')}/develop`)
+          router.push(`${basicUrl}${pathSegments.join('/')}/develop`)
         }
     }
   }
@@ -133,7 +130,8 @@ function AppCard({
 
   return (
     <div
-      className={`shadow-xs border-[0.5px] rounded-lg border-gray-200 ${className ?? ''
+      className={`shadow-xs border-[0.5px] rounded-lg border-gray-200 ${
+        className ?? ''
       }`}
     >
       <div className={`px-6 py-5 ${customBgColor ?? bgColor} rounded-lg`}>
@@ -155,7 +153,7 @@ function AppCard({
                 ? t('appOverview.overview.status.running')
                 : t('appOverview.overview.status.disable')}
             </Tag>
-            <Switch defaultValue={runningStatus} onChange={onChangeStatus} disabled={toggleDisabled} />
+            <Switch defaultValue={runningStatus} onChange={onChangeStatus} disabled={currentWorkspace?.role === 'normal'} />
           </div>
         </div>
         <div className="flex flex-col justify-center py-2">
@@ -165,7 +163,7 @@ function AppCard({
                 ? t('appOverview.overview.appInfo.accessibleAddress')
                 : t('appOverview.overview.apiInfo.accessibleAddress')}
             </div>
-            <div className="w-full h-9 pl-2 pr-0.5 py-0.5 bg-black bg-opacity-2 rounded-lg border border-black border-opacity-5 justify-start items-center inline-flex">
+            <div className="w-full h-9 pl-2 pr-0.5 py-0.5 bg-black bg-opacity-[0.02] rounded-lg border border-black border-opacity-5 justify-start items-center inline-flex">
               <div className="h-4 px-2 justify-start items-start gap-2 flex flex-1 min-w-0">
                 <div className="text-gray-700 text-xs font-medium text-ellipsis overflow-hidden whitespace-nowrap">
                   {isApp ? appUrl : apiUrl}
@@ -179,20 +177,6 @@ function AppCard({
                 className={'hover:bg-gray-200'}
               />
               {/* button copy link/ button regenerate */}
-              {showConfirmDelete && (
-                <Confirm
-                  type='warning'
-                  title={t('appOverview.overview.appInfo.regenerate')}
-                  content={t('appOverview.overview.appInfo.regenerateNotice')}
-                  isShow={showConfirmDelete}
-                  onClose={() => setShowConfirmDelete(false)}
-                  onConfirm={() => {
-                    onGenCode()
-                    setShowConfirmDelete(false)
-                  }}
-                  onCancel={() => setShowConfirmDelete(false)}
-                />
-              )}
               {isApp && isCurrentWorkspaceManager && (
                 <Tooltip
                   content={t('appOverview.overview.appInfo.regenerate') || ''}
@@ -200,10 +184,11 @@ function AppCard({
                 >
                   <div
                     className="w-8 h-8 ml-0.5 cursor-pointer hover:bg-gray-200 rounded-lg"
-                    onClick={() => setShowConfirmDelete(true)}
+                    onClick={onGenCode}
                   >
                     <div
-                      className={`w-full h-full ${style.refreshIcon} ${genLoading ? style.generateLogo : ''
+                      className={`w-full h-full ${style.refreshIcon} ${
+                        genLoading ? style.generateLogo : ''
                       }`}
                     ></div>
                   </div>
@@ -221,7 +206,7 @@ function AppCard({
                 : !runningStatus
             return (
               <Button
-                className="mr-2"
+                className="mr-2 border-[0.5px] !h-8 hover:outline hover:outline-[0.5px] hover:outline-gray-300 text-gray-700 font-medium bg-white shadow-[0px_1px_2px_0px_rgba(16,24,40,0.05)]"
                 key={op.opName}
                 onClick={genClickFuncByName(op.opName)}
                 disabled={disabled}
@@ -247,14 +232,12 @@ function AppCard({
         ? (
           <>
             <SettingsModal
-              isChat={appMode === 'chat'}
               appInfo={appInfo}
               isShow={showSettingsModal}
               onClose={() => setShowSettingsModal(false)}
               onSave={onSaveSiteConfig}
             />
             <EmbeddedModal
-              siteInfo={appInfo.site}
               isShow={showEmbedded}
               onClose={() => setShowEmbedded(false)}
               appBaseUrl={app_base_url}

@@ -1,5 +1,5 @@
 import type { HTMLProps, PropsWithChildren } from 'react'
-import classNames from '@/utils/classnames'
+import classNames from 'classnames'
 import { ArrowUpRight } from '@/app/components/base/icons/src/vender/line/arrows'
 
 export type SuggestedActionProps = PropsWithChildren<HTMLProps<HTMLAnchorElement> & {
@@ -7,7 +7,7 @@ export type SuggestedActionProps = PropsWithChildren<HTMLProps<HTMLAnchorElement
   link?: string
   disabled?: boolean
 }>
-
+// 全量地址，不需要拼装前缀
 const SuggestedAction = ({ icon, link, disabled, children, className, ...props }: SuggestedActionProps) => (
   <a
     href={disabled ? undefined : link}

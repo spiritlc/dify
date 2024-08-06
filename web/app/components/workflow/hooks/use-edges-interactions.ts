@@ -5,21 +5,22 @@ import type {
   OnEdgesChange,
 } from 'reactflow'
 import {
+  getConnectedEdges,
   useStoreApi,
 } from 'reactflow'
 import type {
+  Edge,
   Node,
 } from '../types'
+import { BlockEnum } from '../types'
 import { getNodesConnectedSourceOrTargetHandleIdsMap } from '../utils'
 import { useNodesSyncDraft } from './use-nodes-sync-draft'
 import { useNodesReadOnly } from './use-workflow'
-import { WorkflowHistoryEvent, useWorkflowHistory } from './use-workflow-history'
 
 export const useEdgesInteractions = () => {
   const store = useStoreApi()
   const { handleSyncWorkflowDraft } = useNodesSyncDraft()
   const { getNodesReadOnly } = useNodesReadOnly()
-  const { saveStateToHistory } = useWorkflowHistory()
 
   const handleEdgeEnter = useCallback<EdgeMouseHandler>((_, edge) => {
     if (getNodesReadOnly())
@@ -85,8 +86,7 @@ export const useEdgesInteractions = () => {
     })
     setEdges(newEdges)
     handleSyncWorkflowDraft()
-    saveStateToHistory(WorkflowHistoryEvent.EdgeDeleteByDeleteBranch)
-  }, [getNodesReadOnly, store, handleSyncWorkflowDraft, saveStateToHistory])
+  }, [store, handleSyncWorkflowDraft, getNodesReadOnly])
 
   const handleEdgeDelete = useCallback(() => {
     if (getNodesReadOnly())
@@ -126,8 +126,7 @@ export const useEdgesInteractions = () => {
     })
     setEdges(newEdges)
     handleSyncWorkflowDraft()
-    saveStateToHistory(WorkflowHistoryEvent.EdgeDelete)
-  }, [getNodesReadOnly, store, handleSyncWorkflowDraft, saveStateToHistory])
+  }, [store, getNodesReadOnly, handleSyncWorkflowDraft])
 
   const handleEdgesChange = useCallback<OnEdgesChange>((changes) => {
     if (getNodesReadOnly())
@@ -147,16 +146,57 @@ export const useEdgesInteractions = () => {
     setEdges(newEdges)
   }, [store, getNodesReadOnly])
 
-  const handleEdgeCancelRunningStatus = useCallback(() => {
+  const handleVariableAssignerEdgesChange = useCallback((nodeId: string, variables: any) => {
     const {
+      getNodes,
+      setNodes,
       edges,
       setEdges,
     } = store.getState()
+    const nodes = getNodes()
+    const newEdgesTargetHandleIds = variables.map((item: any) => item[0])
+    const connectedEdges = getConnectedEdges([{ id: nodeId } as Node], edges).filter(edge => edge.target === nodeId)
+    const needDeleteEdges = connectedEdges.filter(edge => !newEdgesTargetHandleIds.includes(edge.targetHandle))
+    const needAddEdgesTargetHandleIds = newEdgesTargetHandleIds.filter((targetHandle: string) => !connectedEdges.some(edge => edge.targetHandle === targetHandle))
+    const needAddEdges = needAddEdgesTargetHandleIds.map((targetHandle: string) => {
+      return {
+        id: `${targetHandle}-${nodeId}`,
+        type: 'custom',
+        source: targetHandle,
+        sourceHandle: 'source',
+        target: nodeId,
+        targetHandle,
+        data: {
+          sourceType: nodes.find(node => node.id === targetHandle)?.data.type,
+          targetType: BlockEnum.VariableAssigner,
+        },
+      }
+    })
 
-    const newEdges = produce(edges, (draft) => {
-      draft.forEach((edge) => {
-        edge.data._runned = false
+    const nodesConnectedSourceOrTargetHandleIdsMap = getNodesConnectedSourceOrTargetHandleIdsMap(
+      [
+        ...needDeleteEdges.map(edge => ({ type: 'remove', edge })),
+        ...needAddEdges.map((edge: Edge) => ({ type: 'add', edge })),
+      ],
+      nodes,
+    )
+    const newNodes = produce(nodes, (draft) => {
+      draft.forEach((node) => {
+        if (nodesConnectedSourceOrTargetHandleIdsMap[node.id]) {
+          node.data = {
+            ...node.data,
+            ...nodesConnectedSourceOrTargetHandleIdsMap[node.id],
+          }
+        }
       })
+    })
+    setNodes(newNodes)
+    const newEdges = produce(edges, (draft) => {
+      const filtered = draft.filter(edge => !needDeleteEdges.map(needDeleteEdge => needDeleteEdge.id).includes(edge.id))
+
+      filtered.push(...needAddEdges)
+
+      return filtered
     })
     setEdges(newEdges)
   }, [store])
@@ -167,6 +207,6 @@ export const useEdgesInteractions = () => {
     handleEdgeDeleteByDeleteBranch,
     handleEdgeDelete,
     handleEdgesChange,
-    handleEdgeCancelRunningStatus,
+    handleVariableAssignerEdgesChange,
   }
 }

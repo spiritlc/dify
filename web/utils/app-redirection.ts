@@ -1,15 +1,17 @@
+import { basicUrl } from '@/config'
+
 export const getRedirection = (
-  isCurrentWorkspaceEditor: boolean,
+  isCurrentWorkspaceManager: boolean,
   app: any,
   redirectionFunc: (href: string) => void,
 ) => {
-  if (!isCurrentWorkspaceEditor) {
-    redirectionFunc(`/app/${app.id}/overview`)
+  if (!isCurrentWorkspaceManager) {
+    redirectionFunc(`${basicUrl}/app/${app.id}/overview`)
   }
   else {
     if (app.mode === 'workflow' || app.mode === 'advanced-chat')
-      redirectionFunc(`/app/${app.id}/workflow`)
+      redirectionFunc(`${basicUrl}/app/${app.id}/workflow`)
     else
-      redirectionFunc(`/app/${app.id}/configuration`)
+      redirectionFunc(`${basicUrl}/app/${app.id}/configuration`)
   }
 }

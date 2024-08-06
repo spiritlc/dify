@@ -30,13 +30,10 @@ import type {
   DefaultModelResponse,
   Model,
   ModelItem,
-  ModelLoadBalancingConfig,
   ModelParameterRule,
   ModelProvider,
-  ModelTypeEnum,
 } from '@/app/components/header/account-setting/model-provider-page/declarations'
 import type { RETRIEVE_METHOD } from '@/types/app'
-import type { SystemFeatures } from '@/types/feature'
 
 export const login: Fetcher<CommonResponse & { data: string }, { url: string; body: Record<string, any> }> = ({ url, body }) => {
   return post(url, { body }) as Promise<CommonResponse & { data: string }>
@@ -168,22 +165,8 @@ export const fetchModelProviders: Fetcher<{ data: ModelProvider[] }, string> = (
   return get<{ data: ModelProvider[] }>(url)
 }
 
-export type ModelProviderCredentials = {
-  credentials?: Record<string, string | undefined | boolean>
-  load_balancing: ModelLoadBalancingConfig
-}
-export const fetchModelProviderCredentials: Fetcher<ModelProviderCredentials, string> = (url) => {
-  return get<ModelProviderCredentials>(url)
-}
-
-export const fetchModelLoadBalancingConfig: Fetcher<{
-  credentials?: Record<string, string | undefined | boolean>
-  load_balancing: ModelLoadBalancingConfig
-}, string> = (url) => {
-  return get<{
-    credentials?: Record<string, string | undefined | boolean>
-    load_balancing: ModelLoadBalancingConfig
-  }>(url)
+export const fetchModelProviderCredentials: Fetcher<{ credentials?: Record<string, string | undefined | boolean> }, string> = (url) => {
+  return get<{ credentials?: Record<string, string | undefined | boolean> }>(url)
 }
 
 export const fetchModelProviderModelList: Fetcher<{ data: ModelItem[] }, string> = (url) => {
@@ -195,10 +178,6 @@ export const fetchModelList: Fetcher<{ data: Model[] }, string> = (url) => {
 }
 
 export const validateModelProvider: Fetcher<ValidateOpenAIKeyResponse, { url: string; body: any }> = ({ url, body }) => {
-  return post<ValidateOpenAIKeyResponse>(url, { body })
-}
-
-export const validateModelLoadBalancingCredentials: Fetcher<ValidateOpenAIKeyResponse, { url: string; body: any }> = ({ url, body }) => {
   return post<ValidateOpenAIKeyResponse>(url, { body })
 }
 
@@ -236,6 +215,10 @@ export const updateDefaultModel: Fetcher<CommonResponse, { url: string; body: an
 
 export const fetchModelParameterRules: Fetcher<{ data: ModelParameterRule[] }, string> = (url) => {
   return get<{ data: ModelParameterRule[] }>(url)
+}
+
+export const submitFreeQuota: Fetcher<{ type: string; redirect_url?: string; result?: string }, string> = (url) => {
+  return post<{ type: string; redirect_url?: string; result?: string }>(url)
 }
 
 export const fetchFileUploadConfig: Fetcher<FileUploadConfigResponse, { url: string }> = ({ url }) => {
@@ -289,22 +272,20 @@ export const fetchSupportRetrievalMethods: Fetcher<RetrievalMethodsRes, string> 
   return get<RetrievalMethodsRes>(url)
 }
 
-export const getSystemFeatures = () => {
-  return get<SystemFeatures>('/system-features')
+// 更换token
+export const exchange = async (access_token: string) => {
+  const params = {
+    body: { accessToken: access_token, sysCode: 'Unified-platform' },
+  }
+  return post('/system-manager-rest/token/exchange', params) as Promise<ModerateResponse>
 }
 
-export const enableModel = (url: string, body: { model: string; model_type: ModelTypeEnum }) =>
-  patch<CommonResponse>(url, { body })
-
-export const disableModel = (url: string, body: { model: string; model_type: ModelTypeEnum }) =>
-  patch<CommonResponse>(url, { body })
-
-export const sendForgotPasswordEmail: Fetcher<CommonResponse, { url: string; body: { email: string } }> = ({ url, body }) =>
-  post<CommonResponse>(url, { body })
-
-export const verifyForgotPasswordToken: Fetcher<CommonResponse & { is_valid: boolean; email: string }, { url: string; body: { token: string } }> = ({ url, body }) => {
-  return post(url, { body }) as Promise<CommonResponse & { is_valid: boolean; email: string }>
+// 校验token是否过期
+export const checkToken = async (token: string) => {
+  return get(`/system-manager-rest/token/validate/${token}`)
 }
 
-export const changePasswordWithToken: Fetcher<CommonResponse, { url: string; body: { token: string; new_password: string; password_confirm: string } }> = ({ url, body }) =>
-  post<CommonResponse>(url, { body })
+// 通过userId获取用户信息
+export const getUserName = async (account: string) => {
+  return get(`/ommp/dbms/dbmsDatabaseInfo/queryDeptNames?account=${account}`)
+}

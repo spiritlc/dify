@@ -35,7 +35,7 @@ const nodeDefault: NodeDefault<QuestionClassifierNodeType> = {
   },
   getAvailableNextNodes(isChatMode: boolean) {
     const nodes = isChatMode ? ALL_CHAT_AVAILABLE_BLOCKS : ALL_COMPLETION_AVAILABLE_BLOCKS
-    return nodes
+    return nodes.filter(type => type !== BlockEnum.VariableAssigner)
   },
   checkValid(payload: QuestionClassifierNodeType, t: any) {
     let errorMessages = ''
