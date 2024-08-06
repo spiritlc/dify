@@ -12,6 +12,7 @@ import { HelpCircle, LinkExternal02, Settings04 } from '@/app/components/base/ic
 import ConfigContext from '@/context/debug-configuration'
 import type { EmbeddingModelConfig } from '@/app/components/app/annotation/type'
 import { updateAnnotationScore } from '@/service/annotation'
+import { basicUrl } from '@/config'
 
 type Props = {
   onEmbeddingChange: (embeddingModel: EmbeddingModelConfig) => void
@@ -78,7 +79,7 @@ const AnnotationReplyConfig: FC<Props> = ({
             <div
               className='ml-1 flex items-center h-7 px-3 space-x-1 leading-[18px] text-xs font-medium text-gray-700 rounded-md cursor-pointer hover:bg-gray-200'
               onClick={() => {
-                router.push(`/app/${appId}/annotations`)
+                router.push(`${basicUrl}/app/${appId}/annotations`)
               }}>
               <div>{t('appDebug.feature.annotation.cacheManagement')}</div>
               <LinkExternal02 className='w-3.5 h-3.5' />

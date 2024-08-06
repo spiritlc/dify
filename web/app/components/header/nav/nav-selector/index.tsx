@@ -13,6 +13,7 @@ import { useStore as useAppStore } from '@/app/components/app/store'
 import { ChevronDown, ChevronRight } from '@/app/components/base/icons/src/vender/line/arrows'
 import { FileArrow01, FilePlus01, FilePlus02 } from '@/app/components/base/icons/src/vender/line/files'
 import { Plus } from '@/app/components/base/icons/src/vender/line/general'
+import { basicUrl } from '@/config'
 
 export type NavItem = {
   id: string
@@ -74,7 +75,7 @@ const NavSelector = ({ curNav, navs, createText, isApp, onCreate, onLoadmore }: 
                     <Menu.Item key={nav.id}>
                       <div className='flex items-center w-full px-3 py-[6px] text-gray-700 text-[14px] rounded-lg font-normal hover:bg-gray-100 cursor-pointer truncate' onClick={() => {
                         setAppDetail()
-                        router.push(nav.link)
+                        router.push(`${basicUrl}${nav.link}`)
                       }} title={nav.name}>
                         <div className='relative w-6 h-6 mr-2 rounded-md'>
                           <AppIcon size='tiny' icon={nav.icon} background={nav.icon_background}/>

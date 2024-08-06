@@ -25,6 +25,7 @@ import type { DocForm } from '@/models/datasets'
 import { useDatasetDetailContext } from '@/context/dataset-detail'
 import FloatRightContainer from '@/app/components/base/float-right-container'
 import useBreakpoints, { MediaType } from '@/hooks/use-breakpoints'
+import { basicUrl } from '@/config'
 
 export const DocumentContext = createContext<{ datasetId?: string; documentId?: string; docForm: string }>({ docForm: '' })
 
@@ -112,7 +113,7 @@ const DocumentDetail: FC<Props> = ({ datasetId, documentId }) => {
   )
 
   const backToPrev = () => {
-    router.push(`/datasets/${datasetId}/documents`)
+    router.push(`${basicUrl}/datasets/${datasetId}/documents`)
   }
 
   const isDetailLoading = !documentDetail && !error

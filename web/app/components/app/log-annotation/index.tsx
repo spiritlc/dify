@@ -11,6 +11,7 @@ import Loading from '@/app/components/base/loading'
 import { PageType } from '@/app/components/app/configuration/toolbox/annotation/type'
 import TabSlider from '@/app/components/base/tab-slider-plain'
 import { useStore as useAppStore } from '@/app/components/app/store'
+import { basicUrl } from '@/config'
 
 type Props = {
   pageType: PageType
@@ -43,7 +44,7 @@ const LogAnnotation: FC<Props> = ({
           className='shrink-0'
           value={pageType}
           onChange={(value) => {
-            router.push(`/app/${appDetail.id}/${value === PageType.log ? 'logs' : 'annotations'}`)
+            router.push(`${basicUrl}/app/${appDetail.id}/${value === PageType.log ? 'logs' : 'annotations'}`)
           }}
           options={options}
         />

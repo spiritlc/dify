@@ -1,0 +1,27 @@
+node("$NODE") {
+  checkout scm
+  def newTag=sh(script:'date +%Y%m%d%H%M',returnStdout: true).trim()
+  def imageName="${params.imagePrefix}/${params.APP}:${newTag}"
+  echo "### imageName=${imageName} ###"
+  def IMAGE="${imageName.replaceAll('/', '\\\\/')}"
+
+  stage('build and push docker image') {
+        withDockerRegistry(credentialsId: '7ae2704f-03ba-4c1e-ac9d-abee8b78458f', url: 'https://uhome-registry-vpc.cn-beijing.cr.aliyuncs.com'){
+        docker.build(imageName, "-f ${params.dockerFile} .").push()
+    }
+  }
+  stage("deploy k8s") {
+    sh "cp ${params.deployYaml} ./deploy.yaml"
+    sh "sed -i \"s/#APP/${params.APP}/g\" ./deploy.yaml"
+    sh "sed -i \"s/#NAMESPACE/${params.NAMESPACE}/g\" ./deploy.yaml"
+    sh "sed -i \"s/#REPLICAS/${params.REPLICAS}/g\" ./deploy.yaml"
+    sh "sed -i \"s/#IMAGE/${IMAGE}/g\" ./deploy.yaml"
+    sh "sed -i \"s/#REQUEST_MEM/${params.REQUEST_MEM}/g\" ./deploy.yaml"
+    sh "sed -i \"s/#LIMIT_MEM/${params.LIMIT_MEM}/g\" ./deploy.yaml"
+    sh "sed -i \"s/#REQUEST_CPU/${params.REQUEST_CPU}/g\" ./deploy.yaml"
+    sh "sed -i \"s/#LIMIT_CPU/${params.LIMIT_CPU}/g\" ./deploy.yaml"
+    sh "sed -i \"s/#ConfigMap/${params.ConfigMap}/g\" ./deploy.yaml"
+    sh "#sudo kubectl apply -f ./deploy.yaml"
+    sh "sudo docker rmi ${imageName}"
+  }
+}

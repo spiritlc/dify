@@ -22,6 +22,7 @@ import { formatNumber } from '@/utils/format'
 import { fetchIndexingStatus as doFetchIndexingStatus, fetchIndexingEstimate, fetchProcessRule, pauseDocIndexing, resumeDocIndexing } from '@/service/datasets'
 import DatasetDetailContext from '@/context/dataset-detail'
 import StopEmbeddingModal from '@/app/components/datasets/create/stop-embedding-modal'
+import { basicUrl } from '@/config'
 
 type Props = {
   detail?: FullDocumentDetail
@@ -184,7 +185,7 @@ const EmbeddingDetail: FC<Props> = ({ detail, stopPosition = 'top', datasetId: d
   const modalCloseHandle = () => setShowModal(false)
   const router = useRouter()
   const navToDocument = () => {
-    router.push(`/datasets/${localDatasetId}/documents/${localDocumentId}`)
+    router.push(`${basicUrl}/datasets/${localDatasetId}/documents/${localDocumentId}`)
   }
 
   const isEmbedding = useMemo(() => ['indexing', 'splitting', 'parsing', 'cleaning'].includes(indexingStatusDetail?.indexing_status || ''), [indexingStatusDetail])

@@ -13,6 +13,7 @@ import { deleteDataset } from '@/service/datasets'
 import AppIcon from '@/app/components/base/app-icon'
 import type { DataSet } from '@/models/datasets'
 import Tooltip from '@/app/components/base/tooltip'
+import { basicUrl } from '@/config'
 
 export type DatasetCardProps = {
   dataset: DataSet
@@ -46,7 +47,7 @@ const DatasetCard = ({
 
   return (
     <>
-      <Link href={`/datasets/${dataset.id}/documents`} className={cn(style.listItem)} data-disable-nprogress={true}>
+      <Link href={`${basicUrl}/datasets/${dataset.id}/documents`} className={cn(style.listItem)} data-disable-nprogress={true}>
         <div className={style.listItemTitle}>
           <AppIcon size='small' className={cn(!dataset.embedding_available && style.unavailable)} />
           <div className={cn(style.listItemHeading, !dataset.embedding_available && style.unavailable)}>

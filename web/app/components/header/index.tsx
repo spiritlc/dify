@@ -18,6 +18,7 @@ import LogoSite from '@/app/components/base/logo/logo-site'
 import PlanComp from '@/app/components/billing/plan'
 import useBreakpoints, { MediaType } from '@/hooks/use-breakpoints'
 import { useProviderContext } from '@/context/provider-context'
+import { basicUrl } from '@/config'
 
 const navClassName = `
   flex items-center relative mr-0 sm:mr-3 px-3 h-8 rounded-xl
@@ -53,7 +54,7 @@ const Header = () => {
           <Bars3Icon className="h-4 w-4 text-gray-500" />
         </div>}
         {!isMobile && <>
-          <Link href="/apps" className='flex items-center mr-4'>
+          <Link href={`${basicUrl}/apps`} className='flex items-center mr-4'>
             <LogoSite className='object-contain' />
           </Link>
           <GithubStar />
@@ -61,7 +62,7 @@ const Header = () => {
       </div>
       {isMobile && (
         <div className='flex'>
-          <Link href="/apps" className='flex items-center mr-4'>
+          <Link href={`${basicUrl}/apps`} className='flex items-center mr-4'>
             <LogoSite />
           </Link>
           <GithubStar />

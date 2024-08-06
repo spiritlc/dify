@@ -7,6 +7,7 @@ import { useTranslation } from 'react-i18next'
 import Toast from '@/app/components/base/toast'
 import { getOIDCSSOUrl, getSAMLSSOUrl } from '@/service/enterprise'
 import Button from '@/app/components/base/button'
+import { basicUrl } from '@/config'
 
 type EnterpriseSSOFormProps = {
   protocol: string
@@ -27,7 +28,7 @@ const EnterpriseSSOForm: FC<EnterpriseSSOFormProps> = ({
   useEffect(() => {
     if (consoleToken) {
       localStorage.setItem('console_token', consoleToken)
-      router.replace('/apps')
+      router.replace(`${basicUrl}/apps`)
     }
 
     if (message) {
@@ -42,7 +43,7 @@ const EnterpriseSSOForm: FC<EnterpriseSSOFormProps> = ({
     setIsLoading(true)
     if (protocol === 'saml') {
       getSAMLSSOUrl().then((res) => {
-        router.push(res.url)
+        router.push(`${basicUrl}${res.url}`)
       }).finally(() => {
         setIsLoading(false)
       })
@@ -50,7 +51,7 @@ const EnterpriseSSOForm: FC<EnterpriseSSOFormProps> = ({
     else {
       getOIDCSSOUrl().then((res) => {
         document.cookie = `oidc-state=${res.state}`
-        router.push(res.url)
+        router.push(`${basicUrl}${res.url}`)
       }).finally(() => {
         setIsLoading(false)
       })

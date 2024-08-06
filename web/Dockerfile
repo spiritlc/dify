@@ -36,8 +36,8 @@ FROM base as production
 ENV NODE_ENV production
 ENV EDITION SELF_HOSTED
 ENV DEPLOY_ENV PRODUCTION
-ENV CONSOLE_API_URL http://127.0.0.1:5001
-ENV APP_API_URL http://127.0.0.1:5001
+ENV CONSOLE_API_URL /skytool/console/api
+ENV APP_API_URL /skytool/api
 ENV PORT 3000
 
 # set timezone
@@ -63,3 +63,4 @@ ENV COMMIT_SHA ${COMMIT_SHA}
 
 EXPOSE 3000
 ENTRYPOINT ["/bin/sh", "./entrypoint.sh"]
+

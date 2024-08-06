@@ -14,6 +14,7 @@ import Button from '@/app/components/base/button'
 import { fetchDatasets } from '@/service/datasets'
 import Loading from '@/app/components/base/loading'
 import { formatNumber } from '@/utils/format'
+import { basicUrl } from '@/config'
 
 export type ISelectDataSetProps = {
   isShow: boolean
@@ -111,7 +112,7 @@ const SelectDataSet: FC<ISelectDataSetProps> = ({
           }}
         >
           <span className='text-gray-500'>{t('appDebug.feature.dataSet.noDataSet')}</span>
-          <Link href="/datasets/create" className='font-normal text-[#155EEF]'>{t('appDebug.feature.dataSet.toCreate')}</Link>
+          <Link href={`${basicUrl}/datasets/create`} className='font-normal text-[#155EEF]'>{t('appDebug.feature.dataSet.toCreate')}</Link>
         </div>
       )}
 

@@ -22,6 +22,8 @@ import { useProviderContext } from '@/context/provider-context'
 import TooltipPlus from '@/app/components/base/tooltip-plus'
 import { AlertCircle } from '@/app/components/base/icons/src/vender/solid/alertsAndFeedback'
 import { sleep } from '@/utils'
+import { basicUrl } from '@/config'
+
 
 type Props = {
   datasetId: string
@@ -151,7 +153,7 @@ const EmbeddingProcess: FC<Props> = ({ datasetId, batchId, documents = [], index
 
   const router = useRouter()
   const navToDocumentList = () => {
-    router.push(`/datasets/${datasetId}/documents`)
+    router.push(`${basicUrl}/datasets/${datasetId}/documents`)
   }
 
   const isEmbedding = useMemo(() => {

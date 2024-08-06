@@ -20,6 +20,7 @@ import {
   BezierCurve03,
   TypeSquare,
 } from '@/app/components/base/icons/src/vender/line/editor'
+import { basicUrl } from '@/config'
 
 type PopupProps = {
   data: Resources
@@ -75,7 +76,7 @@ const Popup: FC<PopupProps> = ({
                       {
                         showHitInfo && (
                           <Link
-                            href={`/datasets/${source.dataset_id}/documents/${source.document_id}`}
+                            href={`${basicUrl}/datasets/${source.dataset_id}/documents/${source.document_id}`}
                             className='hidden items-center h-[18px] text-xs text-primary-600 group-hover:flex'>
                             {t('common.chat.citation.linkToDataset')}
                             <ArrowUpRight className='ml-1 w-3 h-3' />

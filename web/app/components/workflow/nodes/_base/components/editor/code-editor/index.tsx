@@ -4,10 +4,11 @@ import Editor, { loader } from '@monaco-editor/react'
 import React, { useRef } from 'react'
 import Base from '../base'
 import { CodeLanguage } from '@/app/components/workflow/nodes/code/types'
+import { basicLocation, basicUrl } from '@/config'
 import './style.css'
 
 // load file from local instead of cdn https://github.com/suren-atoyan/monaco-react/issues/482
-loader.config({ paths: { vs: '/vs' } })
+loader.config({ paths: { vs: `${basicLocation}${basicUrl}/vs` } })
 
 type Props = {
   value?: string | object

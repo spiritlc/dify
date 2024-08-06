@@ -26,6 +26,7 @@ import ShareQRCode from '@/app/components/base/qrcode'
 import SecretKeyButton from '@/app/components/develop/secret-key/secret-key-button'
 import type { AppDetailResponse } from '@/models/app'
 import { useAppContext } from '@/context/app-context'
+import { basicUrl } from '@/config'
 
 export type IAppCardProps = {
   className?: string
@@ -114,7 +115,7 @@ function AppCard({
         return () => {
           const pathSegments = pathname.split('/')
           pathSegments.pop()
-          router.push(`${pathSegments.join('/')}/develop`)
+          router.push(`${basicUrl}${pathSegments.join('/')}/develop`)
         }
     }
   }

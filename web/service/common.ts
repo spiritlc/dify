@@ -271,3 +271,21 @@ type RetrievalMethodsRes = {
 export const fetchSupportRetrievalMethods: Fetcher<RetrievalMethodsRes, string> = (url) => {
   return get<RetrievalMethodsRes>(url)
 }
+
+// 更换token
+export const exchange = async (access_token: string) => {
+  const params = {
+    body: { accessToken: access_token, sysCode: 'Unified-platform' },
+  }
+  return post('/system-manager-rest/token/exchange', params) as Promise<ModerateResponse>
+}
+
+// 校验token是否过期
+export const checkToken = async (token: string) => {
+  return get(`/system-manager-rest/token/validate/${token}`)
+}
+
+// 通过userId获取用户信息
+export const getUserName = async (account: string) => {
+  return get(`/ommp/dbms/dbmsDatabaseInfo/queryDeptNames?account=${account}`)
+}

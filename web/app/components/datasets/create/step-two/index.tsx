@@ -36,7 +36,7 @@ import { MessageChatSquare } from '@/app/components/base/icons/src/public/common
 import { HelpCircle, XClose } from '@/app/components/base/icons/src/vender/line/general'
 import { useDatasetDetailContext } from '@/context/dataset-detail'
 import I18n from '@/context/i18n'
-import { IS_CE_EDITION } from '@/config'
+import { IS_CE_EDITION, basicUrl } from '@/config'
 import { RETRIEVE_METHOD } from '@/types/app'
 import useBreakpoints, { MediaType } from '@/hooks/use-breakpoints'
 import Tooltip from '@/app/components/base/tooltip'
@@ -699,7 +699,7 @@ const StepTwo = ({
             {hasSetIndexType && (
               <div className='mt-2 text-xs text-gray-500 font-medium'>
                 {t('datasetCreation.stepTwo.indexSettedTip')}
-                <Link className='text-[#155EEF]' href={`/datasets/${datasetId}/settings`}>{t('datasetCreation.stepTwo.datasetSettingLink')}</Link>
+                <Link className='text-[#155EEF]' href={`${basicUrl}/datasets/${datasetId}/settings`}>{t('datasetCreation.stepTwo.datasetSettingLink')}</Link>
               </div>
             )}
             {IS_CE_EDITION && indexType === IndexingType.QUALIFIED && (
@@ -738,7 +738,7 @@ const StepTwo = ({
                   <div className={s.label}>
                     {t('datasetSettings.form.retrievalSetting.title')}
                     <div className='leading-[18px] text-xs font-normal text-gray-500'>
-                      <a target='_blank' rel='noopener noreferrer' href='https://docs.dify.ai/features/retrieval-augment' className='text-[#155eef]'>{t('datasetSettings.form.retrievalSetting.learnMore')}</a>
+                      <a target='_blank' rel='noopener noreferrer' href='https://docs.HomeGPTagent.ai/features/retrieval-augment' className='text-[#155eef]'>{t('datasetSettings.form.retrievalSetting.learnMore')}</a>
                       {t('datasetSettings.form.retrievalSetting.longDescription')}
                     </div>
                   </div>
@@ -773,7 +773,7 @@ const StepTwo = ({
                       />
                       <div className='mt-2 text-xs text-gray-500 font-medium'>
                         {t('datasetCreation.stepTwo.retrivalSettedTip')}
-                        <Link className='text-[#155EEF]' href={`/datasets/${datasetId}/settings`}>{t('datasetCreation.stepTwo.datasetSettingLink')}</Link>
+                        <Link className='text-[#155EEF]' href={`${basicUrl}/datasets/${datasetId}/settings`}>{t('datasetCreation.stepTwo.datasetSettingLink')}</Link>
                       </div>
                     </div>
                   )}

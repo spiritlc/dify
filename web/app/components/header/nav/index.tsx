@@ -8,6 +8,7 @@ import type { INavSelectorProps } from './nav-selector'
 import NavSelector from './nav-selector'
 import { ArrowNarrowLeft } from '@/app/components/base/icons/src/vender/line/arrows'
 import { useStore as useAppStore } from '@/app/components/app/store'
+import { basicUrl } from '@/config'
 
 type INavProps = {
   icon: React.ReactNode
@@ -42,7 +43,7 @@ const Nav = ({
       ${isActived && 'bg-white shadow-md font-semibold'}
       ${!curNav && !isActived && 'hover:bg-gray-200'}
     `}>
-      <Link href={link}>
+      <Link href={`${basicUrl}${link}`}>
         <div
           onClick={() => setAppDetail()}
           className={classNames(`

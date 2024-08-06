@@ -6,6 +6,7 @@ import useSWR from 'swr'
 import Link from 'next/link'
 import s from './index.module.css'
 import { fetchAccountIntegrates } from '@/service/common'
+import { basicUrl } from '@/config'
 
 const titleClassName = `
   mb-2 text-sm font-medium text-gray-900
@@ -44,7 +45,7 @@ export default function IntegrationsPage() {
                 !integrate.is_bound && (
                   <Link
                     className='flex items-center h-8 px-[7px] bg-white rounded-lg border border-gray-200 text-xs font-medium text-gray-700 cursor-pointer'
-                    href={integrate.link}
+                    href={`${basicUrl}${integrate.link}`}
                     target='_blank' rel='noopener noreferrer'>
                     {t('common.integrations.connect')}
                   </Link>

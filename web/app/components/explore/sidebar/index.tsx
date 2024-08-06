@@ -12,6 +12,7 @@ import { fetchInstalledAppList as doFetchInstalledAppList, uninstallApp, updateP
 import ExploreContext from '@/context/explore-context'
 import Confirm from '@/app/components/base/confirm'
 import useBreakpoints, { MediaType } from '@/hooks/use-breakpoints'
+import { basicUrl } from '@/config'
 
 const SelectedDiscoveryIcon = () => (
   <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -93,7 +94,7 @@ const SideBar: FC<IExploreSideBarProps> = ({
     <div className='w-fit sm:w-[216px] shrink-0 pt-6 px-4 border-gray-200 cursor-pointer'>
       <div>
         <Link
-          href='/explore/apps'
+          href={`${basicUrl}/explore/apps`}
           className={cn(isDiscoverySelected ? 'text-primary-600  bg-white font-semibold' : 'text-gray-700 font-medium hover:bg-gray-200', 'flex items-center pc:justify-start pc:w-full mobile:justify-center mobile:w-fit h-9 px-3 mobile:px-2 gap-2 rounded-lg')}
           style={isDiscoverySelected ? { boxShadow: '0px 1px 2px rgba(16, 24, 40, 0.05)' } : {}}
         >

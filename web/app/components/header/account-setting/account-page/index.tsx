@@ -3,20 +3,15 @@ import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import classNames from 'classnames'
 import { useContext } from 'use-context-selector'
-import Collapse from '../collapse'
 import type { IItem } from '../collapse'
-import s from './index.module.css'
-import Modal from '@/app/components/base/modal'
-import Button from '@/app/components/base/button'
 import { updateUserProfile } from '@/service/common'
 import { useAppContext } from '@/context/app-context'
 import { ToastContext } from '@/app/components/base/toast'
 import AppIcon from '@/app/components/base/app-icon'
 import Avatar from '@/app/components/base/avatar'
-import { IS_CE_EDITION } from '@/config'
 
 const titleClassName = `
-  text-sm font-medium text-gray-900
+  text-sm font-medium text-gray-900 mr-4
 `
 const descriptionClassName = `
   mt-1 text-xs font-normal text-gray-500
@@ -31,6 +26,7 @@ const validPassword = /^(?=.*[a-zA-Z])(?=.*\d).{8,}$/
 export default function AccountPage() {
   const { t } = useTranslation()
   const { mutateUserProfile, userProfile, apps } = useAppContext()
+  const userInfo = JSON.parse(localStorage.getItem('haier-user-center-user-info') || '{}')
   const { notify } = useContext(ToastContext)
   const [editNameModalVisible, setEditNameModalVisible] = useState(false)
   const [editName, setEditName] = useState('')
@@ -126,22 +122,22 @@ export default function AccountPage() {
 
   return (
     <>
-      <div className='mb-8'>
+      <div className='mb-8 flex items-center'>
         <div className={titleClassName}>{t('common.account.avatar')}</div>
-        <Avatar name={userProfile.name} size={64} className='mt-2' />
+        <Avatar name={userInfo.nickName} size={64} className='mt-2' />
       </div>
       <div className='mb-8'>
         <div className={titleClassName}>{t('common.account.name')}</div>
         <div className={classNames('flex items-center justify-between mt-2 w-full h-9 px-3 bg-gray-100 rounded text-sm font-normal text-gray-800 cursor-pointer group')}>
-          {userProfile.name}
-          <div className='items-center hidden h-6 px-2 text-xs font-normal bg-white border border-gray-200 rounded-md group-hover:flex' onClick={handleEditName}>{t('common.operation.edit')}</div>
+          {userInfo.nickName}
+          {/* <div className='items-center hidden h-6 px-2 text-xs font-normal bg-white border border-gray-200 rounded-md group-hover:flex' onClick={handleEditName}>{t('common.operation.edit')}</div> */}
         </div>
       </div>
       <div className='mb-8'>
         <div className={titleClassName}>{t('common.account.email')}</div>
-        <div className={classNames(inputClassName, 'cursor-pointer')}>{userProfile.email}</div>
+        <div className={classNames(inputClassName, 'cursor-pointer')}>{userInfo.email}</div>
       </div>
-      {IS_CE_EDITION && (
+      {/* {IS_CE_EDITION && (
         <div className='mb-8'>
           <div className='mb-1 text-sm font-medium text-gray-900'>{t('common.account.password')}</div>
           <div className='mb-2 text-xs text-gray-500'>{t('common.account.passwordTip')}</div>
@@ -243,7 +239,7 @@ export default function AccountPage() {
             </Button>
           </div>
         </Modal>
-      )}
+      )} */}
     </>
   )
 }

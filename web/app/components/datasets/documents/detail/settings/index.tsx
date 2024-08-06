@@ -15,6 +15,8 @@ import AccountSetting from '@/app/components/header/account-setting'
 import AppUnavailable from '@/app/components/base/app-unavailable'
 import { useDefaultModel } from '@/app/components/header/account-setting/model-provider-page/hooks'
 import { ModelTypeEnum } from '@/app/components/header/account-setting/model-provider-page/declarations'
+import { basicUrl } from '@/config'
+
 
 type DocumentSettingsProps = {
   datasetId: string
@@ -29,7 +31,7 @@ const DocumentSettings = ({ datasetId, documentId }: DocumentSettingsProps) => {
   const { indexingTechnique, dataset } = useContext(DatasetDetailContext)
   const { data: embeddingsDefaultModel } = useDefaultModel(ModelTypeEnum.textEmbedding)
 
-  const saveHandler = () => router.push(`/datasets/${datasetId}/documents/${documentId}`)
+  const saveHandler = () => router.push(`${basicUrl}/datasets/${datasetId}/documents/${documentId}`)
 
   const cancelHandler = () => router.back()
 

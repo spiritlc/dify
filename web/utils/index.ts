@@ -37,3 +37,14 @@ export const getPurifyHref = (href: string) => {
 
   return href.replace(/javascript:/ig, '').replace(/vbscript:/ig, '').replace(/data:/ig, '')
 }
+
+export function publicCheckData(arr: Array<any>) { // 兼容 ?.
+  let data = arr[0]
+  const arrLength = arr.length
+  for (let i = 1; i < arr.length; i++) {
+    data = (data || {})[arr[i]]
+    if (i !== (arrLength - 1) && !data)
+      return undefined
+  }
+  return data
+}

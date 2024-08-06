@@ -427,6 +427,7 @@ export const useWorkflowInit = () => {
 
   if (error && error.json && !error.bodyUsed && appDetail) {
     error.json().then((err: any) => {
+      console.log(err, '错误是')
       if (err.code === 'draft_workflow_not_exist') {
         workflowStore.setState({ notInitialWorkflow: true })
         syncWorkflowDraft({

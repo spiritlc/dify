@@ -147,4 +147,29 @@ button:focus-within {
   bottom: 0;
 }
 
+:where(.ant-btn-primary) {
+  color: #fff !important;
+  background: #1677ff !important;
+  box-shadow: 0 2px 0 rgba(5, 145, 255, 0.1) !important;
+}
+
+
+.self-scroll::-webkit-scrollbar {
+	/*滚动条整体样式*/
+	width: 4px; /*高宽分别对应横竖滚动条的尺寸*/
+	height: 1px;
+}
+.self-scroll::-webkit-scrollbar-thumb {
+	/*滚动条里面小方块*/
+	border-radius: 4px;
+	box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+	background: #d6dbe3;
+}
+.self-scroll::-webkit-scrollbar-track {
+	/*滚动条里面轨道*/
+	box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+	border-radius: 4px;
+	background: #ffffff;
+}
+
 @import '../components/base/button/index.css';

@@ -20,6 +20,7 @@ import { NotionPageSelectorModal } from '@/app/components/base/notion-page-selec
 import type { NotionPage } from '@/models/common'
 import type { CreateDocumentReq } from '@/models/datasets'
 import { DataSourceType } from '@/models/datasets'
+import { basicUrl } from '@/config'
 
 // Custom page count is not currently supported.
 const limit = 15
@@ -138,7 +139,7 @@ const Documents: FC<IDocumentsProps> = ({ datasetId }) => {
       setNotionPageSelectorModalVisible(true)
       return
     }
-    router.push(`/datasets/${datasetId}/documents/create`)
+    router.push(`${basicUrl}/datasets/${datasetId}/documents/create`)
   }
 
   const isLoading = !documentsRes && !error

@@ -4,11 +4,10 @@ import { useTranslation } from 'react-i18next'
 import { useRouter } from 'next/navigation'
 import classNames from 'classnames'
 import useSWR from 'swr'
-import Link from 'next/link'
 import { useContext } from 'use-context-selector'
 import Toast from '../components/base/toast'
 import style from './page.module.css'
-import { IS_CE_EDITION, apiPrefix } from '@/config'
+import { IS_CE_EDITION, apiPrefix, basicUrl } from '@/config'
 import Button from '@/app/components/base/button'
 import { login, oauth } from '@/service/common'
 import I18n from '@/context/i18n'
@@ -99,7 +98,7 @@ const NormalForm = () => {
 
       if (res.result === 'success') {
         localStorage.setItem('console_token', res.data)
-        router.replace('/apps')
+        router.replace(`${basicUrl}/apps`)
       }
       else {
         Toast.notify({
@@ -284,21 +283,21 @@ const NormalForm = () => {
             </>
           }
           {/*  agree to our Terms and Privacy Policy. */}
-          <div className="w-hull text-center block mt-2 text-xs text-gray-600">
+          {/* <div className="w-hull text-center block mt-2 text-xs text-gray-600">
             {t('login.tosDesc')}
             &nbsp;
             <Link
               className='text-primary-600'
               target='_blank' rel='noopener noreferrer'
-              href='https://dify.ai/terms'
+              href='https://HomeGPTagent.ai/terms'
             >{t('login.tos')}</Link>
             &nbsp;&&nbsp;
             <Link
               className='text-primary-600'
               target='_blank' rel='noopener noreferrer'
-              href='https://dify.ai/privacy'
+              href='https://HomeGPTagent.ai/privacy'
             >{t('login.pp')}</Link>
-          </div>
+          </div> */}
 
         </div>
       </div>

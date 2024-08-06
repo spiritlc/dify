@@ -6,6 +6,7 @@ import cn from 'classnames'
 import { useCallback } from 'react'
 import s from './index.module.css'
 import useBreakpoints, { MediaType } from '@/hooks/use-breakpoints'
+import { basicUrl } from '@/config'
 
 type IStepsNavBarProps = {
   step: number
@@ -32,9 +33,9 @@ const StepsNavBar = ({
 
   const navBackHandle = useCallback(() => {
     if (!datasetId)
-      router.replace('/datasets')
+      router.replace(`${basicUrl}/datasets`)
     else
-      router.replace(`/datasets/${datasetId}/documents`)
+      router.replace(`${basicUrl}/datasets/${datasetId}/documents`)
   }, [router, datasetId])
 
   return (

@@ -11,6 +11,7 @@ import Button from '@/app/components/base/button'
 
 import { ToastContext } from '@/app/components/base/toast'
 import { createEmptyDataset } from '@/service/datasets'
+import { basicUrl } from '@/config'
 
 type IProps = {
   show: boolean
@@ -38,7 +39,7 @@ const EmptyDatasetCreationModal = ({
     try {
       const dataset = await createEmptyDataset({ name: inputValue })
       onHide()
-      router.push(`/datasets/${dataset.id}/documents`)
+      router.push(`${basicUrl}/datasets/${dataset.id}/documents`)
     }
     catch (err) {
       notify({ type: 'error', message: t('datasetCreation.stepOne.modal.failed') })

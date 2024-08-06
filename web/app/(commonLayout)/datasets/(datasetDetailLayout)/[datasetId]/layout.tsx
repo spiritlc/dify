@@ -38,6 +38,7 @@ import { LanguagesSupported } from '@/i18n/language'
 import { useStore } from '@/app/components/app/store'
 import { AiText, ChatBot, CuteRobote } from '@/app/components/base/icons/src/vender/solid/communication'
 import { Route } from '@/app/components/base/icons/src/vender/solid/mapsAndTravel'
+import { basicUrl } from '@/config'
 
 export type IAppDetailLayoutProps = {
   children: React.ReactNode
@@ -57,7 +58,7 @@ const LikedItem = ({
   isMobile,
 }: ILikedItemProps) => {
   return (
-    <Link className={classNames(s.itemWrapper, 'px-2', isMobile && 'justify-center')} href={`/app/${detail?.id}/overview`}>
+    <Link className={classNames(s.itemWrapper, 'px-2', isMobile && 'justify-center')} href={`${basicUrl}/app/${detail?.id}/overview`}>
       <div className={classNames(s.iconWrapper, 'mr-0')}>
         <AppIcon size='tiny' icon={detail?.icon} background={detail?.icon_background} />
         {type === 'app' && (
@@ -165,8 +166,8 @@ const ExtraInfo = ({ isMobile, relatedApps }: IExtraInfoProps) => {
             className='inline-flex items-center text-xs text-primary-600 mt-2 cursor-pointer'
             href={
               locale === LanguagesSupported[1]
-                ? 'https://docs.dify.ai/v/zh-hans/guides/application-design/prompt-engineering'
-                : 'https://docs.dify.ai/user-guide/creating-dify-apps/prompt-engineering'
+                ? 'https://docs.HomeGPTagent.ai/v/zh-hans/guides/application-design/prompt-engineering'
+                : 'https://docs.HomeGPTagent.ai/user-guide/creating-HomeGPTagent-apps/prompt-engineering'
             }
             target='_blank' rel='noopener noreferrer'
           >
@@ -210,7 +211,7 @@ const DatasetDetailLayout: FC<IAppDetailLayoutProps> = (props) => {
 
   useEffect(() => {
     if (datasetRes)
-      document.title = `${datasetRes.name || 'Dataset'} - Dify`
+      document.title = `${datasetRes.name || 'Dataset'} - HomeGPTagent`
   }, [datasetRes])
 
   const { setAppSiderbarExpand } = useStore()
@@ -228,7 +229,7 @@ const DatasetDetailLayout: FC<IAppDetailLayoutProps> = (props) => {
     <div className='grow flex overflow-hidden'>
       {!hideSideBar && <AppSideBar
         title={datasetRes?.name || '--'}
-        icon={datasetRes?.icon || 'https://static.dify.ai/images/dataset-default-icon.png'}
+        icon={datasetRes?.icon || 'https://static.HomeGPTagent.ai/images/dataset-default-icon.png'}
         icon_background={datasetRes?.icon_background || '#F5F5F5'}
         desc={datasetRes?.description || '--'}
         navigation={navigation}

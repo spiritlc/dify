@@ -8,7 +8,7 @@ const translation = {
   },
   contribute: {
     line1: 'I\'m interested in ',
-    line2: 'contributing tools to Dify.',
+    line2: 'contributing tools to HomeGPTagent.',
     viewGuide: 'View the guide',
   },
   author: 'By',
@@ -55,6 +55,7 @@ const translation = {
       types: {
         none: 'None',
         api_key: 'API Key',
+        sign_key: 'Sign Key',
         apiKeyPlaceholder: 'HTTP header name for API Key',
         apiValuePlaceholder: 'Enter API Key',
       },
@@ -67,6 +68,9 @@ const translation = {
         basic: 'Basic',
         bearer: 'Bearer',
         custom: 'Custom',
+        bigData: 'Big Data',
+        iot: 'IOT',
+        haigeek: 'Haigeek',
       },
     },
     privacyPolicy: 'Privacy policy',

@@ -9,6 +9,7 @@ import { useWorkspacesContext } from '@/context/workspace-context'
 import { ChevronRight } from '@/app/components/base/icons/src/vender/line/arrows'
 import { Check } from '@/app/components/base/icons/src/vender/line/general'
 import { ToastContext } from '@/app/components/base/toast'
+import { basicUrl } from '@/config'
 
 const itemClassName = `
   flex items-center px-3 py-2 h-10 cursor-pointer
@@ -35,7 +36,7 @@ const WorkplaceSelector = () => {
         return
       await switchWorkspace({ url: '/workspaces/switch', body: { tenant_id } })
       notify({ type: 'success', message: t('common.actionMsg.modifiedSuccessfully') })
-      location.assign(`${location.origin}`)
+      location.assign(`${location.origin}${basicUrl}/apps`)
     }
     catch (e) {
       notify({ type: 'error', message: t('common.provider.saveFailed') })

@@ -30,7 +30,7 @@ const OPTION_MAP = {
   scripts: {
     getContent: (url: string, token: string, isTestEnv?: boolean) =>
       `<script>
- window.difyChatbotConfig = {
+ window.HomeGPTagentChatbotConfig = {
   token: '${token}'${isTestEnv
   ? `,
   isDev: true`
@@ -89,7 +89,7 @@ const Embedded = ({ isShow, onClose, appBaseUrl, accessToken, className }: Props
   }
 
   const navigateToChromeUrl = () => {
-    window.open('https://chrome.google.com/webstore/detail/dify-chatbot/ceehdapohffmjmkdcifjofadiaoeggaf', '_blank')
+    window.open('https://chrome.google.com/webstore/detail/HomeGPTagent-chatbot/ceehdapohffmjmkdcifjofadiaoeggaf', '_blank')
   }
 
   useEffect(() => {

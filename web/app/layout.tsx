@@ -1,14 +1,18 @@
 import type { Viewport } from 'next'
+import { ConfigProvider } from 'antd'
+import enUS from 'antd/locale/en_US'
+import zhCN from 'antd/locale/zh_CN'
 import I18nServer from './components/i18n-server'
 import BrowerInitor from './components/browser-initor'
 import SentryInitor from './components/sentry-initor'
 import Topbar from './components/base/topbar'
 import { getLocaleOnServer } from '@/i18n/server'
+
 import './styles/globals.css'
 import './styles/markdown.scss'
 
 export const metadata = {
-  title: 'Dify',
+  title: 'HomeGPTagent',
 }
 
 export const viewport: Viewport = {
@@ -17,6 +21,11 @@ export const viewport: Viewport = {
   maximumScale: 1,
   viewportFit: 'cover',
   userScalable: false,
+}
+
+const localeMap: any = {
+  'en-US': enUS,
+  'zh-Hans': zhCN,
 }
 
 const LocaleLayout = ({
@@ -43,13 +52,16 @@ const LocaleLayout = ({
         data-public-maintenance-notice={process.env.NEXT_PUBLIC_MAINTENANCE_NOTICE}
         data-public-site-about={process.env.NEXT_PUBLIC_SITE_ABOUT}
       >
-        <Topbar/>
-        <BrowerInitor>
-          <SentryInitor>
-            {/* @ts-expect-error Async Server Component */}
-            <I18nServer locale={locale}>{children}</I18nServer>
-          </SentryInitor>
-        </BrowerInitor>
+        <script src="https://r.haier.net/assets/prod/dts-fe/fe-stub-usercenter/3.0.58/core.js"></script>
+        <ConfigProvider locale={localeMap[locale]}>
+          <Topbar/>
+          <BrowerInitor>
+            <SentryInitor>
+              {/* @ts-expect-error Async Server Component */}
+              <I18nServer locale={locale}>{children}</I18nServer>
+            </SentryInitor>
+          </BrowerInitor>
+        </ConfigProvider>
       </body>
     </html>
   )

@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { useSelectedLayoutSegment } from 'next/navigation'
 import classNames from 'classnames'
 import { Tools, ToolsActive } from '../../base/icons/src/public/header-nav/tools'
+import { basicUrl } from '@/config'
 type ToolsNavProps = {
   className?: string
 }
@@ -17,7 +18,7 @@ const ToolsNav = ({
   const actived = selectedSegment === 'tools'
 
   return (
-    <Link href="/tools" className={classNames(
+    <Link href={`${basicUrl}/tools`} className={classNames(
       className, 'group',
       actived && 'bg-white shadow-md',
       actived ? 'text-primary-600' : 'text-gray-500 hover:bg-gray-200',

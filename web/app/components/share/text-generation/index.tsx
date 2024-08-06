@@ -30,7 +30,7 @@ import { userInputsFormToPromptVariables } from '@/utils/model-config'
 import Res from '@/app/components/share/text-generation/result'
 import SavedItems from '@/app/components/app/text-generate/saved-items'
 import type { InstalledApp } from '@/models/explore'
-import { DEFAULT_VALUE_MAX_LEN, appDefaultIconBackground } from '@/config'
+import { DEFAULT_VALUE_MAX_LEN, appDefaultIconBackground, basicUrl } from '@/config'
 import Toast from '@/app/components/base/toast'
 import type { VisionFile, VisionSettings } from '@/types/app'
 import { Resolution, TransferMethod } from '@/types/app'
@@ -81,7 +81,7 @@ const TextGeneration: FC<IMainProps> = ({
   useEffect(() => {
     const params = new URLSearchParams(searchParams)
     params.delete('mode')
-    router.replace(`${pathname}?${params.toString()}`)
+    router.replace(`${pathname.startsWith(basicUrl) ? '' : basicUrl}${pathname}?${params.toString()}`)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -400,7 +400,7 @@ const TextGeneration: FC<IMainProps> = ({
       if (canReplaceLogo)
         document.title = `${siteInfo.title}`
       else
-        document.title = `${siteInfo.title} - Powered by Dify`
+        document.title = `${siteInfo.title} - Powered by HomeGPTagent`
     }
   }, [siteInfo?.title, canReplaceLogo])
 
@@ -619,7 +619,7 @@ const TextGeneration: FC<IMainProps> = ({
                 <div>{t('share.chat.privacyPolicyLeft')}
                   <a
                     className='text-gray-500'
-                    href={siteInfo.privacy_policy}
+                    href={`${basicUrl}${siteInfo.privacy_policy}`}
                     target='_blank' rel='noopener noreferrer'>{t('share.chat.privacyPolicyMiddle')}</a>
                   {t('share.chat.privacyPolicyRight')}
                 </div>

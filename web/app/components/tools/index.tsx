@@ -16,10 +16,25 @@ import EditCustomToolModal from './edit-custom-collection-modal'
 import NoCustomTool from './info/no-custom-tool'
 import NoSearchRes from './info/no-search-res'
 import NoCustomToolPlaceholder from './no-custom-tool-placeholder'
+import googleBg from './tool/google.svg'
+import bingBg from './tool/bing.svg'
+import mathsBg from './tool/maths.svg'
+import chartBg from './tool/chart.png'
+import timeBg from './tool/time.svg'
+import sparkBg from './tool/spark.svg'
 import { useTabSearchParams } from '@/hooks/use-tab-searchparams'
 import TabSlider from '@/app/components/base/tab-slider'
 import { createCustomCollection, fetchCollectionList as doFetchCollectionList, fetchBuiltInToolList, fetchCustomToolList, fetchModelToolList } from '@/service/tools'
 import type { AgentTool } from '@/types/app'
+
+const iconMap: any = {
+  google: googleBg.src,
+  bing: bingBg.src,
+  chart: chartBg.src,
+  time: timeBg.src,
+  spark: sparkBg.src,
+  maths: mathsBg.src,
+}
 
 type Props = {
   loc: LOC
@@ -45,6 +60,11 @@ const Tools: FC<Props> = ({
 
   const fetchCollectionList = async () => {
     const list = await doFetchCollectionList()
+    list.forEach((item) => {
+      if (iconMap[item.id])
+        item.icon = iconMap[item.id]
+    })
+    console.log(list, '列表是')
     setCollectionList(list)
     if (list.length > 0 && currCollectionIndex === null) {
       let index = 0

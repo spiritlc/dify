@@ -8,7 +8,7 @@ const translation = {
   },
   contribute: {
     line1: '我有兴趣为 ',
-    line2: 'Dify 贡献工具。',
+    line2: 'HomeGPT 贡献工具。',
     viewGuide: '查看指南',
   },
   author: '作者',
@@ -55,11 +55,14 @@ const translation = {
       types: {
         none: '无',
         api_key: 'API Key',
+        sign_key: 'Sign Key',
         apiKeyPlaceholder: 'HTTP 头部名称，用于传递 API Key',
         apiValuePlaceholder: '输入 API Key',
       },
       key: '键',
       value: '值',
+      signKey: '业务标识(System ID)',
+      signValue: '签名(System Key)',
     },
     authHeaderPrefix: {
       title: '鉴权头部前缀',
@@ -67,6 +70,9 @@ const translation = {
         basic: 'Basic',
         bearer: 'Bearer',
         custom: 'Custom',
+        bigData: '大数据',
+        iot: 'IOT',
+        haigeek: '海极网',
       },
     },
     privacyPolicy: '隐私协议',

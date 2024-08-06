@@ -9,6 +9,7 @@ import { LinkExternal01 } from '../../base/icons/src/vender/line/general'
 import { fetchBillingUrl } from '@/service/billing'
 import { useAppContext } from '@/context/app-context'
 import { useProviderContext } from '@/context/provider-context'
+import { basicUrl } from '@/config'
 
 const Billing: FC = () => {
   const { t } = useTranslation()
@@ -23,7 +24,7 @@ const Billing: FC = () => {
     <div>
       <PlanComp loc={'billing-page'} />
       {enableBilling && isCurrentWorkspaceManager && billingUrl && (
-        <a className='mt-5 flex px-6 justify-between h-12 items-center bg-gray-50 rounded-xl cursor-pointer' href={billingUrl} target='_blank' rel='noopener noreferrer'>
+        <a className='mt-5 flex px-6 justify-between h-12 items-center bg-gray-50 rounded-xl cursor-pointer' href={`${basicUrl}${billingUrl}`} target='_blank' rel='noopener noreferrer'>
           <div className='flex items-center'>
             <ReceiptList className='w-4 h-4 text-gray-700' />
             <div className='ml-2 text-sm font-normal text-gray-700'>{t('billing.viewBilling')}</div>

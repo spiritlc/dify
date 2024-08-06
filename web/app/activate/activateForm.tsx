@@ -17,6 +17,7 @@ import { activateMember, invitationCheck } from '@/service/common'
 import Toast from '@/app/components/base/toast'
 import Loading from '@/app/components/base/loading'
 import I18n from '@/context/i18n'
+import { basicUrl } from '@/config'
 const validPassword = /^(?=.*[a-zA-Z])(?=.*\d).{8,}$/
 
 const ActivateForm = () => {
@@ -111,7 +112,7 @@ const ActivateForm = () => {
           </div>
           <div className="w-full mx-auto mt-6">
             <Button type='primary' className='w-full !fone-medium !text-sm'>
-              <a href="https://dify.ai">{t('login.explore')}</a>
+              <a href="https://HomeGPTagent.ai">{t('login.explore')}</a>
             </Button>
           </div>
         </div>
@@ -209,7 +210,7 @@ const ActivateForm = () => {
                 <Link
                   className='text-primary-600'
                   target='_blank' rel='noopener noreferrer'
-                  href={`https://docs.dify.ai/${language !== LanguagesSupported[1] ? 'user-agreement' : `v/${locale.toLowerCase()}/policies`}/open-source`}
+                  href={`https://docs.HomeGPTagent.ai/${language !== LanguagesSupported[1] ? 'user-agreement' : `v/${locale.toLowerCase()}/policies`}/open-source`}
                 >{t('login.license.link')}</Link>
               </div>
             </div>
@@ -228,7 +229,7 @@ const ActivateForm = () => {
           </div>
           <div className="w-full mx-auto mt-6">
             <Button type='primary' className='w-full !fone-medium !text-sm'>
-              <a href="/signin">{t('login.activated')}</a>
+              <a href={`${basicUrl}/signin`}>{t('login.activated')}</a>
             </Button>
           </div>
         </div>

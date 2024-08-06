@@ -1,9 +1,9 @@
 'use client'
 
 import { SWRConfig } from 'swr'
-import { useEffect, useState } from 'react'
+// import { useEffect, useState } from 'react'
 import type { ReactNode } from 'react'
-import { useRouter, useSearchParams } from 'next/navigation'
+// import { checkLogin, setLoginConfig } from '@/utils/login'
 
 type SwrInitorProps = {
   children: ReactNode
@@ -11,33 +11,23 @@ type SwrInitorProps = {
 const SwrInitor = ({
   children,
 }: SwrInitorProps) => {
-  const router = useRouter()
-  const searchParams = useSearchParams()
-  const consoleToken = searchParams.get('console_token')
-  const consoleTokenFromLocalStorage = localStorage?.getItem('console_token')
-  const [init, setInit] = useState(false)
+  // const AccessToken = localStorage?.getItem('UserToken')
+  // const [token, setToken] = useState()
 
-  useEffect(() => {
-    if (!(consoleToken || consoleTokenFromLocalStorage))
-      router.replace('/signin')
+  // useEffect(() => {
+  //   setLoginConfig()
 
-    if (consoleToken) {
-      localStorage?.setItem('console_token', consoleToken!)
-      router.replace('/apps', { forceOptimisticNavigation: false } as any)
-    }
-    setInit(true)
-  }, [])
+  //   // 校验token
+  //   console.log('校验token')
+  //   checkLogin((res: any) => setToken(res))
+  // }, [])
 
-  return init
-    ? (
-      <SWRConfig value={{
-        shouldRetryOnError: false,
-        revalidateOnFocus: false,
-      }}>
-        {children}
-      </SWRConfig>
-    )
-    : null
+  return <SWRConfig value={{
+    shouldRetryOnError: false,
+    revalidateOnFocus: false,
+  }}>
+    {children}
+  </SWRConfig>
 }
 
 export default SwrInitor

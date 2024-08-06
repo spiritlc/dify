@@ -10,7 +10,7 @@ import type { SiteInfo } from '@/models/share'
 import type { PromptConfig } from '@/models/debug'
 import { ToastContext } from '@/app/components/base/toast'
 import Select from '@/app/components/base/select'
-import { DEFAULT_VALUE_MAX_LEN } from '@/config'
+import { DEFAULT_VALUE_MAX_LEN, basicUrl } from '@/config'
 
 // regex to match the {{}} and replace it with a span
 const regex = /\{\{([^}]+)\}\}/g
@@ -358,7 +358,7 @@ const Welcome: FC<IWelcomeProps> = ({
               ? <div>{t('share.chat.privacyPolicyLeft')}
                 <a
                   className='text-gray-500'
-                  href={siteInfo.privacy_policy}
+                  href={`${basicUrl}${siteInfo.privacy_policy}`}
                   target='_blank' rel='noopener noreferrer'>{t('share.chat.privacyPolicyMiddle')}</a>
                 {t('share.chat.privacyPolicyRight')}
               </div>
@@ -368,7 +368,7 @@ const Welcome: FC<IWelcomeProps> = ({
               customConfig?.remove_webapp_brand
                 ? null
                 : (
-                  <a className='flex items-center pr-3 space-x-3' href="https://dify.ai/" target="_blank">
+                  <a className='flex items-center pr-3 space-x-3' href="https://HomeGPTagent.ai/" target="_blank">
                     <span className='uppercase'>{t('share.chat.powerBy')}</span>
                     {
                       customConfig?.replace_webapp_logo

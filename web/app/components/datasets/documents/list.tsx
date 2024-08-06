@@ -29,6 +29,7 @@ import ProgressBar from '@/app/components/base/progress-bar'
 import { DataSourceType, type DocumentDisplayStatus, type SimpleDocumentDetail } from '@/models/datasets'
 import type { CommonResponse } from '@/models/common'
 import { DotsHorizontal, HelpCircle } from '@/app/components/base/icons/src/vender/line/general'
+import { basicUrl } from '@/config'
 
 export const SettingsIcon = ({ className }: SVGProps<SVGElement>) => {
   return <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" className={className ?? ''}>
@@ -212,7 +213,7 @@ export const OperationAction: FC<{
             </>}
             {!archived && (
               <>
-                <div className={s.actionItem} onClick={() => router.push(`/datasets/${datasetId}/documents/${detail.id}/settings`)}>
+                <div className={s.actionItem} onClick={() => router.push(`${basicUrl}/datasets/${datasetId}/documents/${detail.id}/settings`)}>
                   <SettingsIcon />
                   <span className={s.actionName}>{t('datasetDocuments.list.action.settings')}</span>
                 </div>
@@ -350,7 +351,7 @@ const DocumentList: FC<IDocumentListProps> = ({ embeddingAvailable, documents = 
               key={doc.id}
               className={'border-b border-gray-200 h-8 hover:bg-gray-50 cursor-pointer'}
               onClick={() => {
-                router.push(`/datasets/${datasetId}/documents/${doc.id}`)
+                router.push(`${basicUrl}/datasets/${datasetId}/documents/${doc.id}`)
               }}>
               <td className='text-left align-middle text-gray-500 text-xs'>{doc.position}</td>
               <td className={s.tdValue}>

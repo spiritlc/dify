@@ -125,7 +125,7 @@ const DebugWithSingleModel = forwardRef<DebugWithSingleModelRefType, DebugWithSi
       onSend={doSend}
       onStopResponding={handleStop}
       showPromptLog
-      questionIcon={<Avatar name={userProfile.name} size={40} />}
+      questionIcon={<Avatar nickName={userProfile.name} size={40} />}
       allToolIcons={allToolIcons}
       onAnnotationEdited={handleAnnotationEdited}
       onAnnotationAdded={handleAnnotationAdded}

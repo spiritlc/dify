@@ -115,12 +115,13 @@ const ToolList: FC<Props> = ({
   if (!collection || isLoading)
     return <Loading type='app' />
 
+  console.log(collection, 'icc')
   const icon = <>{typeof collection.icon === 'string'
     ? (
       <div
         className='p-2 bg-cover bg-center border border-gray-100 rounded-lg'
       >
-        <div className='w-6 h-6 bg-center bg-contain rounded-md'
+        <div className='w-6 h-6 bg-center bg-contain rounded-md textIcon'
           style={{
             backgroundImage: `url(${collection.icon})`,
           }}

@@ -11,6 +11,7 @@ import Button from '@/app/components/base/button'
 
 import { fetchInitValidateStatus, fetchSetupStatus, setup } from '@/service/common'
 import type { InitValidateStatusResponse, SetupStatusResponse } from '@/models/common'
+import { logout } from '@/utils/login'
 
 const validEmailReg = /^[\w\.-]+@([\w-]+\.)+[\w-]{2,}$/
 const validPassword = /^(?=.*[a-zA-Z])(?=.*\d).{8,}$/
@@ -63,7 +64,8 @@ const InstallForm = () => {
         password,
       },
     })
-    router.push('/signin')
+    logout()
+    // router.push(`/signin`)
   }
 
   useEffect(() => {
@@ -174,7 +176,7 @@ const InstallForm = () => {
               <Link
                 className='text-primary-600'
                 target='_blank' rel='noopener noreferrer'
-                href={'https://docs.dify.ai/user-agreement/open-source'}
+                href={'https://docs.HomeGPTagent.ai/user-agreement/open-source'}
               >{t('login.license.link')}</Link>
             </div>
           </div>

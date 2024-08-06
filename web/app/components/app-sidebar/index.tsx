@@ -81,7 +81,7 @@ const AppDetailNav = ({ title, desc, icon, icon_background, navigation, extraInf
       >
         {navigation.map((item, index) => {
           return (
-            <NavLink key={index} mode={modeState} iconMap={{ selected: item.selectedIcon, normal: item.icon }} name={item.name} href={item.href} />
+            <NavLink key={index} mode={modeState} iconMap={{ selected: item.selectedIcon, normal: item.icon }} name={item.name} href={`${item.href}`} />
           )
         })}
         {extraInfo && extraInfo(modeState)}

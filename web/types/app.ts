@@ -238,7 +238,6 @@ export type Language = typeof LanguagesSupported[number]
  * Web Application Configuration
  */
 export type SiteConfig = {
-  /** Application URL Identifier: `http://dify.app/{access_token}` */
   access_token: string
   /** Public Title */
   title: string

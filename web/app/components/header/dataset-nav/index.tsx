@@ -10,6 +10,7 @@ import Nav from '../nav'
 import { Knowledge, KnowledgeActive } from '../../base/icons/src/public/header-nav/knowledge'
 import { fetchDatasetDetail, fetchDatasets } from '@/service/datasets'
 import type { DataSetListResponse } from '@/models/datasets'
+import { basicUrl } from '@/config'
 
 const getKey = (pageIndex: number, previousPageData: DataSetListResponse) => {
   if (!pageIndex || previousPageData.has_more)
@@ -52,7 +53,7 @@ const DatasetNav = () => {
         icon_background: dataset.icon_background,
       }))}
       createText={t('common.menus.newDataset')}
-      onCreate={() => router.push('/datasets/create')}
+      onCreate={() => router.push(`${basicUrl}/datasets/create`)}
       onLoadmore={handleLoadmore}
     />
   )

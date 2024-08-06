@@ -11,8 +11,15 @@ const withMDX = require('@next/mdx')({
   },
 })
 
+const env = process.env.NODE_ENV
+console.log('环境', env)
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  basePath: env === 'development' ? '' : '',
+  // // // // publicRuntimeConfig: {
+  // // // //   basePath: "/app",
+  // // // // },
+  assetPrefix: env === 'development' ? '' : '/airtool/',
   productionBrowserSourceMaps: false, // enable browser source map generation during the production build
   // Configure pageExtensions to include md and mdx
   pageExtensions: ['ts', 'tsx', 'js', 'jsx', 'md', 'mdx'],
@@ -33,8 +40,28 @@ const nextConfig = {
     return [
       {
         source: '/',
-        destination: '/apps',
+        destination: '/airtool/apps',
         permanent: false,
+      },
+    ]
+  },
+  async rewrites() {
+    return [
+      {
+        source: '/skytool/console/:path*',
+        destination: 'https://bd-ys.haier.net/skytool/console/:path*',
+      },
+      {
+        source: '/skytool/:path*',
+        destination: 'https://bd-ys.haier.net/skytool/:path*',
+      },
+      {
+        source: '/system-manager-rest/:path*',
+        destination: 'https://data.haier.net/system-manager-rest/:path*',
+      },
+      {
+        source: '/ommp/:path*',
+        destination: 'https://ommp.haiersmarthomes.com:9999/ommp/:path*',
       },
     ]
   },

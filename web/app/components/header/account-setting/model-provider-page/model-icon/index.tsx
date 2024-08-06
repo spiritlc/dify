@@ -6,6 +6,7 @@ import type {
 import { useLanguage } from '../hooks'
 import { CubeOutline } from '@/app/components/base/icons/src/vender/line/shapes'
 import { OpenaiViolet } from '@/app/components/base/icons/src/public/llm'
+import { imgUrl } from '@/config'
 
 type ModelIconProps = {
   provider?: Model | ModelProvider
@@ -26,7 +27,7 @@ const ModelIcon: FC<ModelIconProps> = ({
     return (
       <img
         alt='model-icon'
-        src={`${provider.icon_small[language] || provider.icon_small.en_US}?_token=${localStorage.getItem('console_token')}`}
+        src={`${imgUrl}${provider.icon_small[language] || provider.icon_small.en_US}?_token=${localStorage.getItem('console_token')}`}
         className={`w-4 h-4 ${className}`}
       />
     )

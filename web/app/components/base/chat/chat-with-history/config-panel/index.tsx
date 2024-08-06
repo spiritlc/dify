@@ -8,6 +8,7 @@ import { MessageDotsCircle } from '@/app/components/base/icons/src/vender/solid/
 import { Edit02 } from '@/app/components/base/icons/src/vender/line/general'
 import { Star06 } from '@/app/components/base/icons/src/vender/solid/shapes'
 import { FootLogo } from '@/app/components/share/chat/welcome/massive-component'
+import { basicUrl } from '@/config'
 
 const ConfigPanel = () => {
   const { t } = useTranslation()
@@ -135,7 +136,7 @@ const ConfigPanel = () => {
               ? <div className={`flex items-center ${isMobile && 'w-full justify-end'}`}>{t('share.chat.privacyPolicyLeft')}
                 <a
                   className='text-gray-500'
-                  href={site?.privacy_policy}
+                  href={`${basicUrl}${site?.privacy_policy}`}
                   target='_blank' rel='noopener noreferrer'>{t('share.chat.privacyPolicyMiddle')}</a>
                 {t('share.chat.privacyPolicyRight')}
               </div>
@@ -146,7 +147,7 @@ const ConfigPanel = () => {
                 ? null
                 : (
                   <div className={`flex items-center justify-end ${isMobile && 'w-full'}`}>
-                    <a className='flex items-center pr-3 space-x-3' href="https://dify.ai/" target="_blank">
+                    <a className='flex items-center pr-3 space-x-3' href="https://HomeGPTagent.ai/" target="_blank">
                       <span className='uppercase'>{t('share.chat.powerBy')}</span>
                       {
                         customConfig?.replace_webapp_logo

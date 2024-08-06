@@ -7,12 +7,16 @@ export enum LOC {
 export enum AuthType {
   none = 'none',
   apiKey = 'api_key',
+  signKey = 'sign_key',
 }
 
 export enum AuthHeaderPrefix {
   basic = 'basic',
   bearer = 'bearer',
   custom = 'custom',
+  // bigData = 'BIGDATA',
+  // iot = 'IOT',
+  haigeek = 'HAIGEEK',
 }
 
 export type Credential = {
@@ -20,6 +24,9 @@ export type Credential = {
   'api_key_header'?: string
   'api_key_value'?: string
   'api_key_header_prefix'?: AuthHeaderPrefix
+  'sign_mode'?: AuthHeaderPrefix
+  'system_id'?: string
+  'system_key'?: string
 }
 
 export enum CollectionType {

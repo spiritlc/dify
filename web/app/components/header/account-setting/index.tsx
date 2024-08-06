@@ -2,8 +2,6 @@
 import { useTranslation } from 'react-i18next'
 import { useEffect, useRef, useState } from 'react'
 import cn from 'classnames'
-import { GoldCoin } from '../../base/icons/src/vender/solid/FinanceAndECommerce'
-import { GoldCoin as GoldCoinOutLine } from '../../base/icons/src/vender/line/financeAndECommerce'
 import AccountPage from './account-page'
 import MembersPage from './members-page'
 import IntegrationsPage from './Integrations-page'
@@ -16,19 +14,17 @@ import BillingPage from '@/app/components/billing/billing-page'
 import CustomPage from '@/app/components/custom/custom-page'
 import Modal from '@/app/components/base/modal'
 import {
-  Database03,
   Webhooks,
 } from '@/app/components/base/icons/src/vender/line/development'
-import { Database03 as Database03Solid } from '@/app/components/base/icons/src/vender/solid/development'
 import { User01, Users01 } from '@/app/components/base/icons/src/vender/line/users'
 import { User01 as User01Solid, Users01 as Users01Solid } from '@/app/components/base/icons/src/vender/solid/users'
+// AtSign
 import { Globe01 } from '@/app/components/base/icons/src/vender/line/mapsAndTravel'
-import { AtSign, XClose } from '@/app/components/base/icons/src/vender/line/general'
+import { XClose } from '@/app/components/base/icons/src/vender/line/general'
 import { CubeOutline } from '@/app/components/base/icons/src/vender/line/shapes'
-import { Colors } from '@/app/components/base/icons/src/vender/line/editor'
-import { Colors as ColorsSolid } from '@/app/components/base/icons/src/vender/solid/editor'
 import useBreakpoints, { MediaType } from '@/hooks/use-breakpoints'
 import { useProviderContext } from '@/context/provider-context'
+import { useAppContext } from '@/context/app-context'
 
 const iconClassName = `
   w-4 h-4 ml-3 mr-2
@@ -59,6 +55,8 @@ export default function AccountSetting({
   const { t } = useTranslation()
   const { enableBilling, enableReplaceWebAppLogo } = useProviderContext()
 
+  const { currentWorkspace, isCurrentWorkspaceManager } = useAppContext()
+
   const workplaceGroupItems = (() => {
     return [
       {
@@ -73,32 +71,32 @@ export default function AccountSetting({
         icon: <Users01 className={iconClassName} />,
         activeIcon: <Users01Solid className={iconClassName} />,
       },
-      {
-        // Use key false to hide this item
-        key: enableBilling ? 'billing' : false,
-        name: t('common.settings.billing'),
-        description: t('billing.plansCommon.receiptInfo'),
-        icon: <GoldCoinOutLine className={iconClassName} />,
-        activeIcon: <GoldCoin className={iconClassName} />,
-      },
-      {
-        key: 'data-source',
-        name: t('common.settings.dataSource'),
-        icon: <Database03 className={iconClassName} />,
-        activeIcon: <Database03Solid className={iconClassName} />,
-      },
+      // {
+      //   // Use key false to hide this item
+      //   key: enableBilling ? 'billing' : false,
+      //   name: t('common.settings.billing'),
+      //   description: t('billing.plansCommon.receiptInfo'),
+      //   icon: <GoldCoinOutLine className={iconClassName} />,
+      //   activeIcon: <GoldCoin className={iconClassName} />,
+      // },
+      // {
+      //   key: 'data-source',
+      //   name: t('common.settings.dataSource'),
+      //   icon: <Database03 className={iconClassName} />,
+      //   activeIcon: <Database03Solid className={iconClassName} />,
+      // },
       {
         key: 'api-based-extension',
         name: t('common.settings.apiBasedExtension'),
         icon: <Webhooks className={iconClassName} />,
         activeIcon: <Webhooks className={iconClassName} />,
       },
-      {
-        key: (enableReplaceWebAppLogo || enableBilling) ? 'custom' : false,
-        name: t('custom.custom'),
-        icon: <Colors className={iconClassName} />,
-        activeIcon: <ColorsSolid className={iconClassName} />,
-      },
+      // {
+      //   key: (enableReplaceWebAppLogo || enableBilling) ? 'custom' : false,
+      //   name: t('custom.custom'),
+      //   icon: <Colors className={iconClassName} />,
+      //   activeIcon: <ColorsSolid className={iconClassName} />,
+      // },
     ].filter(item => !!item.key) as GroupItem[]
   })()
 
@@ -106,8 +104,10 @@ export default function AccountSetting({
   const isMobile = media === MediaType.mobile
 
   const menuItems = [
+    // TODO: 添加权限管理
+    // enableBilling ? 'workspace-group' : false,
     {
-      key: 'workspace-group',
+      key: isCurrentWorkspaceManager ? 'workspace-group' : null,
       name: t('common.settings.workplaceGroup'),
       items: workplaceGroupItems,
     },
@@ -121,12 +121,12 @@ export default function AccountSetting({
           icon: <User01 className={iconClassName} />,
           activeIcon: <User01Solid className={iconClassName} />,
         },
-        {
-          key: 'integrations',
-          name: t('common.settings.integrations'),
-          icon: <AtSign className={iconClassName} />,
-          activeIcon: <AtSign className={iconClassName} />,
-        },
+        // {
+        //   key: 'integrations',
+        //   name: t('common.settings.integrations'),
+        //   icon: <AtSign className={iconClassName} />,
+        //   activeIcon: <AtSign className={iconClassName} />,
+        // },
         {
           key: 'language',
           name: t('common.settings.language'),
@@ -135,7 +135,8 @@ export default function AccountSetting({
         },
       ],
     },
-  ]
+  ].filter(temp => temp.key)
+
   const scrollRef = useRef<HTMLDivElement>(null)
   const [scrolled, setScrolled] = useState(false)
   useEffect(() => {
@@ -150,7 +151,11 @@ export default function AccountSetting({
     }
   }, [])
 
-  const activeItem = [...menuItems[0].items, ...menuItems[1].items].find(item => item.key === activeMenu)
+  const allItems = []
+  menuItems.forEach((item) => {
+    allItems.push(item.items)
+  })
+  const activeItem = menuItems.find(item => item.key === activeMenu)
 
   return (
     <Modal

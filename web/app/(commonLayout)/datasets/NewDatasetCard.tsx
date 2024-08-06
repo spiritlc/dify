@@ -5,12 +5,13 @@ import classNames from 'classnames'
 import { useTranslation } from 'react-i18next'
 import Link from 'next/link'
 import style from '../list.module.css'
+import { basicUrl } from '@/config'
 
 const CreateAppCard = forwardRef<HTMLAnchorElement>((_, ref) => {
   const { t } = useTranslation()
 
   return (
-    <Link ref={ref} className={classNames(style.listItem, style.newItemCard)} href='/datasets/create'>
+    <Link ref={ref} className={classNames(style.listItem, style.newItemCard)} href={`${basicUrl}/datasets/create`}>
       <div className={style.listItemTitle}>
         <span className={style.newItemIcon}>
           <span className={classNames(style.newItemIconImage, style.newItemIconAdd)} />

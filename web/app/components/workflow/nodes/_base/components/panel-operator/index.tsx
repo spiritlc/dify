@@ -114,8 +114,8 @@ const PanelOperator = ({
             <a
               href={
                 language === 'zh_Hans'
-                  ? 'https://docs.dify.ai/v/zh-hans/guides/workflow'
-                  : 'https://docs.dify.ai/features/workflow'
+                  ? 'https://docs.HomeGPTagent.ai/v/zh-hans/guides/workflow'
+                  : 'https://docs.HomeGPTagent.ai/features/workflow'
               }
               target='_blank'
               className='flex items-center px-3 h-8 text-sm text-gray-700 rounded-lg cursor-pointer hover:bg-gray-50'

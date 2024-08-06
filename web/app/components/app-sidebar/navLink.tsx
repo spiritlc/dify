@@ -3,6 +3,7 @@
 import { useSelectedLayoutSegment } from 'next/navigation'
 import classNames from 'classnames'
 import Link from 'next/link'
+import { basicUrl } from '@/config'
 
 export type NavIcon = React.ComponentType<
 React.PropsWithoutRef<React.ComponentProps<'svg'>> & {
@@ -42,7 +43,7 @@ export default function NavLink({
   return (
     <Link
       key={name}
-      href={href}
+      href={`${basicUrl}${href}`}
       className={classNames(
         isActive ? 'bg-primary-50 text-primary-600 font-semibold' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-700',
         'group flex items-center h-9 rounded-md py-2 text-sm font-normal',

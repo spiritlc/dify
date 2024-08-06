@@ -29,9 +29,10 @@ const Item: FC<Props> = ({
       {typeof payload.icon === 'string'
         ? (
           <div
-            className='w-6 h-6 bg-cover bg-center rounded-md'
+            className='w-6 h-6 bg-cover bg-center rounded-md ww'
             style={{
               backgroundImage: `url(${payload.icon})`,
+              // backgroundImage: 'url("./tool/google.svg")',
             }}
           ></div>
         )

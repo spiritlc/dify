@@ -15,6 +15,7 @@ import Loading from '@/app/components/base/loading'
 import { BarChartSquare02, FileHeart02, PromptEngineering, TerminalSquare } from '@/app/components/base/icons/src/vender/line/development'
 import { BarChartSquare02 as BarChartSquare02Solid, FileHeart02 as FileHeart02Solid, PromptEngineering as PromptEngineeringSolid, TerminalSquare as TerminalSquareSolid } from '@/app/components/base/icons/src/vender/solid/development'
 import useBreakpoints, { MediaType } from '@/hooks/use-breakpoints'
+import { basicUrl } from '@/config'
 
 export type IAppDetailLayoutProps = {
   children: React.ReactNode
@@ -77,7 +78,7 @@ const AppDetailLayout: FC<IAppDetailLayoutProps> = (props) => {
 
   useEffect(() => {
     if (appDetail) {
-      document.title = `${(appDetail.name || 'App')} - Dify`
+      document.title = `${(appDetail.name || 'App')} - HomeGPTagent`
       const localeMode = localStorage.getItem('app-detail-collapse-or-expand') || 'expand'
       const mode = isMobile ? 'collapse' : 'expand'
       setAppSiderbarExpand(isMobile ? mode : localeMode)
@@ -92,10 +93,10 @@ const AppDetailLayout: FC<IAppDetailLayoutProps> = (props) => {
     fetchAppDetail({ url: '/apps', id: appId }).then((res) => {
       // redirections
       if ((res.mode === 'workflow' || res.mode === 'advanced-chat') && (pathname).endsWith('configuration')) {
-        router.replace(`/app/${appId}/workflow`)
+        router.replace(`${basicUrl}/app/${appId}/workflow`)
       }
       else if ((res.mode !== 'workflow' && res.mode !== 'advanced-chat') && (pathname).endsWith('workflow')) {
-        router.replace(`/app/${appId}/configuration`)
+        router.replace(`${basicUrl}/app/${appId}/configuration`)
       }
       else {
         setAppDetail(res)
